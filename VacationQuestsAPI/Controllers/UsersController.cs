@@ -94,7 +94,7 @@ namespace VacationQuestsAPI.Controllers
                 return NotFound();
             }
 
-            await _userCollection.DeleteOneAsync(vacation => vacation.Id == id);
+            await _userCollection.DeleteOneAsync(user => user.Id == id);
             return Ok();
         }
     }
