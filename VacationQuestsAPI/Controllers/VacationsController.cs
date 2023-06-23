@@ -39,7 +39,7 @@ namespace VacationQuestsAPI.Controllers
 
         // GET: api/<VacationsController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VacationModel>>> GetVacation()
+        public async Task<ActionResult<IEnumerable<VacationModel>>> GetVacations()
         {
             try
             {
