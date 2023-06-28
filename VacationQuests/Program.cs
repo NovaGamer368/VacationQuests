@@ -23,7 +23,6 @@ builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
 //GOOGLE ATHENTICATION
-
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 {
     googleOptions.ClientId = builder.Configuration["Google:ClientId"];
@@ -34,6 +33,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+//builder.Services.AddSpaStaticFiles(configuration =>
+//{
+//    configuration.RootPath = "ClientApp/build";
+//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
