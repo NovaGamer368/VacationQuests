@@ -13,6 +13,7 @@ const Login = () => {
 
     const loginUser = () => {
         console.log("Logging in user")
+
     }
 
     return (

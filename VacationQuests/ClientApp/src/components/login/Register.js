@@ -4,13 +4,57 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); 
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [message, setMessage] = useState('')
 
     const navigate = useNavigate();
 
     const createUser = () => {
-        console.log("Creating New User")
-        navigate('/Register/User-Info')
+
+        if (passwordCheck()) {
+            console.log("Creating New User")
+
+            //const requestOptions = {
+            //    method: 'POST',
+            //    headers: { 'Content-Type': 'application/json' },
+            //    body: JSON.stringify({ email: email, password: password }),
+            //    mode: 'cors'
+            //};
+            const requestOptions = {
+                mode: 'cors',
+                method: 'Post',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, password: password }),
+                origin: "https://localhost:44455"
+            };
+
+            fetch("https://localhost:7259/api/users", requestOptions)
+                .then(resp => resp.json()   )
+                .then(data => {
+                    console.log("Data from fetch:  ", data)
+                    navigate(`/Register/User-Info`)
+                })
+                .catch(e => console.log(e))
+        }
+    }
+
+    const passwordCheck = () => {
+        if (password !== '') {
+            if (confirmPassword === password) {
+                return true
+            }
+            else {
+                setMessage("Password doesn't match")
+                return false
+            }
+        }
+        else {
+            setMessage('Must have a password')
+            return false
+        }
     }
 
     return (
@@ -32,6 +76,7 @@ const Register = () => {
                             <label for="floatingPassword">Confirm Password</label>
                         </div>
                     </div>
+                    <div className="text-danger">{message}</div>
                     <button className="btn btn-primary w-100 mt-3" onClick={createUser}>Create User</button>
                 </div>
             </div>

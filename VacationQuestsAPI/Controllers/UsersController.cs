@@ -80,7 +80,7 @@ namespace VacationQuestsAPI.Controllers
                 return NotFound();
             }
             updatedModel.Id = user.Id;
-            await _userCollection.ReplaceOneAsync(book => book.Id == id, updatedModel);
+            await _userCollection.ReplaceOneAsync(user => user.Id == id, updatedModel);
             return Ok();
         }
 

@@ -10,10 +10,10 @@ namespace VacationQuestsAPI.Model
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public string? Icon { get; set; }
         //public string UserName { get; set; }
-        //public string Email { get; set; }
-        //public string Password { get; set; }
         public string? userGUID { get; set; }
         public string? Bio { get; set; }
         public IEnumerable<VacationModel>? Vacations { get; set; }
