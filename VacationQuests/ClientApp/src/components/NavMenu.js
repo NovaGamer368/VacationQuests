@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 import Cookies from 'js-cookie';
+import NavIcon from './NavIcon';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -23,7 +24,7 @@ export class NavMenu extends Component {
         });
     }
 
-    render() {        
+    render() {       
         if (Cookies.get("UserId") === undefined) {
             return (
                 <header>
@@ -53,7 +54,7 @@ export class NavMenu extends Component {
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem className="nav-item">
-                                    <NavLink tag={Link} className="nav-item" to="/Profile">Profile</NavLink>
+                                    <NavLink tag={Link} className="nav-item" to="/Profile"><NavIcon /> Profile</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>
