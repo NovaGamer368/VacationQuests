@@ -11,35 +11,58 @@ const Register = () => {
     const navigate = useNavigate();
 
     const createUser = () => {
+        if (emailCheck) {
+            console.log('Email passed!')
+            if (passwordCheck()) {
+                console.log("Creating New User")
 
-        if (passwordCheck()) {
-            console.log("Creating New User")
+                const requestOptions = {
+                    mode: 'cors',
+                    method: 'Post',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email, password: password }),
+                    origin: "https://localhost:44455"
+                };
 
-            //const requestOptions = {
-            //    method: 'POST',
-            //    headers: { 'Content-Type': 'application/json' },
-            //    body: JSON.stringify({ email: email, password: password }),
-            //    mode: 'cors'
-            //};
-            const requestOptions = {
-                mode: 'cors',
-                method: 'Post',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email, password: password }),
-                origin: "https://localhost:44455"
-            };
+                fetch("https://localhost:7259/api/users", requestOptions)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log("Data from fetch:  ", data.id)
+                        Cookies.set('UserId', data.id, { expires: 7 });
+                        navigate(`/Register/User-Info`)
+                    })
+                    .catch(e => console.log(e))
+            }
+        }
+        else {
+            console.log('Failed')
+        }
+    }
 
-            fetch("https://localhost:7259/api/users", requestOptions)
+    const emailCheck = () => {
+        if (email !== '') {
+            fetch(`https://localhost:7259/api/users`)
                 .then(resp => resp.json())
                 .then(data => {
-                    console.log("Data from fetch:  ", data.id)
-                    Cookies.set('UserId', data.id, { expires: 7 });
-                    navigate(`/Register/User-Info`)
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(email.toLowerCase())
+                        console.log(data[i].email.toLowerCase())
+                        if (email.toLowerCase() === data[i].email.toLowerCase()) {
+                            setMessage("Email Already exists")
+                            return false
+                        }
+                    }
+                    return true
                 })
                 .catch(e => console.log(e))
+                      
+        }
+        else {
+            setMessage('Please fill in email address')
+            return false
         }
     }
 
