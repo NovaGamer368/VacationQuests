@@ -1,8 +1,9 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Home } from "./components/Home";
+import Home from "./components/Home";
 import Login from './components/login/Login';
 import Register from './components/login/Register';
 import UserInfo from './components/login/UserInfo';
+import Profile from './components/user/Profile';
 
 const AppRoutes = [
     {
@@ -21,8 +22,12 @@ const AppRoutes = [
         path: "/Register/User-Info",
         element: <UserInfo />
     },
+    {
+        path: "/Profile",
+        element: <Profile />
+    },
 
-   //...ApiAuthorzationRoutes
+    //...ApiAuthorzationRoutes
 ];
 
 export default AppRoutes;

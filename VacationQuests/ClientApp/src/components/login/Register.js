@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -32,9 +33,10 @@ const Register = () => {
             };
 
             fetch("https://localhost:7259/api/users", requestOptions)
-                .then(resp => resp.json()   )
+                .then(resp => resp.json())
                 .then(data => {
-                    console.log("Data from fetch:  ", data)
+                    console.log("Data from fetch:  ", data.id)
+                    Cookies.set('UserId', data.id, { expires: 7 });
                     navigate(`/Register/User-Info`)
                 })
                 .catch(e => console.log(e))

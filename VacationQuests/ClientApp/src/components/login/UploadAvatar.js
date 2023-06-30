@@ -1,12 +1,12 @@
 ﻿import { useEffect, useState } from 'react'
 import Avatar from 'react-avatar-edit'
 
-const UploadAvatar = () => {
+const UploadAvatar = ({ icon }) => {
     const [src, setSrc] = useState(null)
     const [preview, setPreview] = useState(null)
 
     useEffect(() => {
-        console.log(preview)
+        icon(preview)
     }, [preview])
 
     const onClose = () => {

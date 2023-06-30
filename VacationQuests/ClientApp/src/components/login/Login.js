@@ -2,6 +2,7 @@
 import GoogleLoginButton from './GoogleLoginButton';
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const Login = () => {
 
     useEffect(() => {
         //renderButton()
+        console.log(Cookies.get("UserId"))
     })
 
     const loginUser = () => {
