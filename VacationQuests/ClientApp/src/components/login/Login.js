@@ -7,15 +7,35 @@ import Cookies from 'js-cookie';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [users, setUsers] = useState();
 
     useEffect(() => {
-        //renderButton()
-        console.log(Cookies.get("UserId"))
-    })
+        fetch(`https://localhost:7259/api/users`)
+            .then(resp => resp.json())
+            .then(data => {
+                setUsers(data)
+            })
+            .catch(e => console.log(e))
+    }, [])
 
     const loginUser = () => {
-        console.log("Logging in user")
-
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].email.toLowerCase() === email.toLowerCase()) {
+                setMessage('')
+                if (password === users[i].password) {
+                    setMessage('')
+                    Cookies.set('UserId', users[i].id, { expires: 7 })
+                    window.location.href = '/'
+                }
+                else {
+                    setMessage('Invalid Password')
+                }
+                break
+            }
+            setMessage('Invalid Email')
+        }
+        
     }
 
     return (
@@ -25,7 +45,7 @@ const Login = () => {
                     <div className="form-group">
                         <h1 className="mt-4">Login</h1>
                         <div className="form-floating mb-3">
-                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" onKeyUp={(e) => setEmail(e.target.value) } />
+                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} />
                             <label for="floatingInput">Email address</label>
                         </div>
                         <div class="form-floating">
@@ -33,6 +53,7 @@ const Login = () => {
                             <label for="floatingPassword">Password</label>
                         </div>
                     </div>
+                    <div className="text-danger">{message}</div>
                     <button className="btn btn-primary w-100 mt-3" onClick={loginUser}>Login</button>
                 </div>
 
