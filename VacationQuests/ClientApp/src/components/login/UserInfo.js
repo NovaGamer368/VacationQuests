@@ -45,7 +45,7 @@ const UserInfo = () => {
                     <UploadAvatar className="align-items-center" icon={ setIcon } />
                     <div class="form-floating mb-3">
                         <input type="text" className="form-control" id="floatingBio" placeholder="Bio" onKeyUp={(e) => setBio(e.target.value)} />
-                        <label for="floatingBio">Bio</label>
+                        <label for="floatingBio" className='text-dark'>Bio</label>
                     </div>
                 </div>
                 <div className="flex-row">

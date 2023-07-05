@@ -54,6 +54,9 @@ export class NavMenu extends Component {
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem className="nav-item">
+                                    <NavLink tag={Link} className="nav-item" to="/Create">Create</NavLink>
+                                </NavItem>
+                                <NavItem className="nav-item">
                                     <NavLink tag={Link} className="nav-item" to="/Profile"><NavIcon /> Profile</NavLink>
                                 </NavItem>
                             </ul>

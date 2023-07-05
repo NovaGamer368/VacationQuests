@@ -3,7 +3,7 @@ import Avatar from 'react-avatar-edit'
 
 const UploadAvatar = ({ icon }) => {
     const [src, setSrc] = useState(null)
-    const [preview, setPreview] = useState(null)
+    const [preview, setPreview] = useState('')
 
     useEffect(() => {
         icon(preview)

@@ -46,11 +46,11 @@ const Login = () => {
                         <h1 className="mt-4">Login</h1>
                         <div className="form-floating mb-3">
                             <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} />
-                            <label for="floatingInput">Email address</label>
+                            <label for="floatingInput" className='text-dark'>Email address</label>
                         </div>
                         <div class="form-floating">
                             <input type="password" className="form-control" id="floatingPassword" placeholder="Password" onKeyUp={(e) => setPassword(e.target.value)} />
-                            <label for="floatingPassword">Password</label>
+                            <label for="floatingPassword" className='text-dark'>Password</label>
                         </div>
                     </div>
                     <div className="text-danger">{message}</div>

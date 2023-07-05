@@ -4,6 +4,7 @@ import Login from './components/login/Login';
 import Register from './components/login/Register';
 import UserInfo from './components/login/UserInfo';
 import Profile from './components/user/Profile';
+import CreateVacation from './components/vacation/CreateVacation';
 
 const AppRoutes = [
     {
@@ -25,6 +26,10 @@ const AppRoutes = [
     {
         path: "/Profile",
         element: <Profile />
+    },
+    {
+        path: "/Create",
+        element: <CreateVacation />
     },
 
     //...ApiAuthorzationRoutes
