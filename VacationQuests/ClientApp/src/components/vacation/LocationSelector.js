@@ -42,7 +42,7 @@ const LocationSelector = ({ location, locationFound }) => {
                         <Dropdown.Menu>
                             {
                                 countries.map((country) => (
-                                    <Dropdown.Item onClick={() => { setSelected(country.name.common); console.log(selected) }}> {country.name.common}</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => { setSelected(country.name.common)}}> {country.name.common}</Dropdown.Item>
                                 ))
                             }
                         </Dropdown.Menu>
