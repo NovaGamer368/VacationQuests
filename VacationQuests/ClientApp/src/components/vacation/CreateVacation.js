@@ -33,14 +33,14 @@ const CreateVacation = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ VacationTitle: location + ' Vacation', StartDate: startDate, EndDate: endDate, planners: [currentUser]}),
+                    body: JSON.stringify({ VacationTitle: location + ' Vacation', StartDate: startDate, EndDate: endDate, planners: [currentUser] }),
                     origin: "https://localhost:44455"
                 };
 
                 fetch("https://localhost:7259/api/vacations", requestOptions)
                     .then(resp => resp.json())
                     .then(data => {
-                        window.location.href = '/'
+                        updateUser(data)
                     })
                     .catch(e => console.log(e))
             }
@@ -49,6 +49,29 @@ const CreateVacation = () => {
             console.log('Failed')
         }
     }
+    const updateUser = (data) => {
+        let tempArr
+        if (currentUser.Vacations != null) {
+            tempArr = new Array(currentUser.Vacations)
+        }
+        tempArr.push(data)
+        const requestOptions = {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: currentUser.email, password: currentUser.password, icon: currentUser.icon, bio: currentUser.bio, Vacations: tempArr }),
+            origin: "https://localhost:44455"
+        };
+
+        fetch(`https://localhost:7259/api/users/${Cookies.get('UserId')}`, requestOptions)
+            .then(resp => resp.json())
+            .then(window.location.href = '/')
+            .catch(e => console.log(e))
+    }
+
 
     if (locationFound) {
         return (

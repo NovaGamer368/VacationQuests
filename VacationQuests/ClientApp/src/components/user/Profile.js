@@ -1,14 +1,15 @@
 ﻿import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import moment from 'moment'
 import Edit from './Edit';
 
 const Profile = () => {
     const [email, setEmail] = useState('')
     const [icon, setIcon] = useState('')
     const [bio, setBio] = useState('')
-    const [vacations, setVacations] = useState(null)
-    const [friends, setFriends] = useState(null)
+    const [vacations, setVacations] = useState([])
+    const [friends, setFriends] = useState([])
     const [editMode, setEditMode] = useState(false)
     const [user, setUser] = useState(null)
 
@@ -18,6 +19,7 @@ const Profile = () => {
         fetch(`https://localhost:7259/api/users/${Cookies.get("UserId")}`)
             .then(resp => resp.json())
             .then(data => {
+                console.log(data)
                 setEmail(data.email)
                 setIcon(data.icon)
                 setBio(data.bio)
@@ -57,8 +59,20 @@ const Profile = () => {
                             <u><b>Bio</b></u>
                             {bio}
                         </div>
-                        <div>
-                            {vacations}
+                        <div className='d-flex flex-row'>
+                            {
+                                vacations.map((vacation) => (
+                                    <div key={vacation.id}>
+                                        <div className='card border-secondary text-center p-3 m-2'>
+                                            <h3>{vacation.vacationTitle}</h3>
+                                            <div>
+                                                <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            }
                         </div>
                         <div>
                             {friends}
