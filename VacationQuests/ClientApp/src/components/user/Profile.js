@@ -61,6 +61,7 @@ const Profile = () => {
                         </div>
                         <div className='d-flex flex-row'>
                             {
+                                vacations ?
                                 vacations.map((vacation) => (
                                     <div key={vacation.id}>
                                         <div className='card border-secondary text-center p-3 m-2'>
@@ -72,6 +73,8 @@ const Profile = () => {
                                         </div>
                                     </div>
                                 ))
+                                    :
+                                    <></>
                             }
                         </div>
                         <div>
