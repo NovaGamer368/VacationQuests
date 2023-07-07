@@ -1,24 +1,101 @@
 ﻿import React from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
-const GoogleLoginButton = () => {
-    const responseGoogle = (response) => {
-        // Handle the login response here
-        console.log(response);
-    };
+function GoogleLoginButton({ email, googleLogin, login, create }) {
+    const session = useSession(); //tokens
+    const supabase = useSupabaseClient(); // talk to supabase
+
+    async function googleSignIn() {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options:
+            {
+                scopes: 'https://www.googleapis.com/auth/calendar'
+            }
+        })
+        if (error) {
+            alert("error logging in")
+            console.log(error)
+        }
+        //Setting variables
+        email(session.user.email)
+        googleLogin(true)
+
+        if (login) {
+            login() 
+        }
+        if (create) {
+            create()
+        }
+    }
 
     return (
-        <GoogleLogin
-            clientId={"120216709000-rcuk4c94lnuqgb0tivg9qa08tp2itloe.apps.googleusercontent.com"}
-            buttonText="Login with Google"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-        />
+        <>
+            <button onClick={() => googleSignIn()}>Google Login</button>
+        </>
     );
-};
+}
 
-export default GoogleLoginButton;
+export default GoogleLoginButton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import React from 'react';
+//import { GoogleLogin } from 'react-google-login';
+
+//const GoogleLoginButton = () => {
+//    const responseGoogle = (response) => {
+//        // Handle the login response here
+//        console.log(response);
+//    };
+
+//    return (
+//        <GoogleLogin
+//            clientId={"120216709000-rcuk4c94lnuqgb0tivg9qa08tp2itloe.apps.googleusercontent.com"}
+//            buttonText="Login with Google"
+//            onSuccess={responseGoogle}
+//            onFailure={responseGoogle}
+//            cookiePolicy={'single_host_origin'}
+//        />
+//    );
+//};
+
+//export default GoogleLoginButton;
 
 //import React, { useEffect } from 'react';
 

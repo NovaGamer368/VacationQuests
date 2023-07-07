@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
+import GoogleCalendar from '../GoogleCalendar.js'
 
 const EditVacation = () => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -21,7 +22,7 @@ const EditVacation = () => {
 
     return (
         <>
-            
+            <GoogleCalendar />
         </>
     );
 };

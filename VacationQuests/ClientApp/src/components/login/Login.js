@@ -9,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [users, setUsers] = useState();
+    const [googleLogin, setGoogleLogin] = useState(false);
 
     useEffect(() => {
         fetch(`https://localhost:7259/api/users`)
@@ -19,17 +20,27 @@ const Login = () => {
             .catch(e => console.log(e))
     }, [])
 
+
     const loginUser = () => {
         for (var i = 0; i < users.length; i++) {
             if (users[i].email.toLowerCase() === email.toLowerCase()) {
                 setMessage('')
-                if (password === users[i].password) {
+                if (!googleLogin) {
+
+                    if (password === users[i].password) {
+                        setMessage('')
+                        Cookies.set('UserId', users[i].id, { expires: 7 })
+                        window.location.href = '/'
+                    }
+                    else {
+                        setMessage('Invalid Password')
+                    }
+                }
+                else {
+                    console.log('working')
                     setMessage('')
                     Cookies.set('UserId', users[i].id, { expires: 7 })
                     window.location.href = '/'
-                }
-                else {
-                    setMessage('Invalid Password')
                 }
                 break
             }
@@ -60,7 +71,7 @@ const Login = () => {
                 <NavLink tag={Link} className="text-info my-3" to="/Register"><u>New User?</u></NavLink>
 
                 {/*DOES'T WORK YET!!!*/}
-                <GoogleLoginButton className="mt-3" />
+                <GoogleLoginButton className="mt-3" email={setEmail} googleLogin={setGoogleLogin} login={loginUser} />
             </div>
         </>
     );

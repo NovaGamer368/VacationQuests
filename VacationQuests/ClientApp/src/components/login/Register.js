@@ -1,11 +1,14 @@
 ﻿import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import GoogleLoginButton from './GoogleLoginButton';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [googleLogin, setGoogleLogin] = useState(false);
+
     const [message, setMessage] = useState('')
 
     const navigate = useNavigate();
@@ -13,9 +16,34 @@ const Register = () => {
     const createUser = () => {
         if (emailCheck) {
             console.log('Email passed!')
-            if (passwordCheck()) {
-                console.log("Creating New User")
+            if (!googleLogin) {
 
+                if (passwordCheck()) {
+                    console.log("Creating New User")
+
+                    const requestOptions = {
+                        mode: 'cors',
+                        method: 'Post',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email: email, password: password }),
+                        origin: "https://localhost:44455"
+                    };
+
+                    fetch("https://localhost:7259/api/users", requestOptions)
+                        .then(resp => resp.json())
+                        .then(data => {
+                            console.log("Data from fetch:  ", data.id)
+                            Cookies.set('UserId', data.id, { expires: 7 });
+                            navigate(`/Register/User-Info`)
+                        })
+                        .catch(e => console.log(e))
+                }
+            }
+            else {
+                console.log('creating user through google')
                 const requestOptions = {
                     mode: 'cors',
                     method: 'Post',
@@ -23,7 +51,7 @@ const Register = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email: email, password: password }),
+                    body: JSON.stringify({ email: email }),
                     origin: "https://localhost:44455"
                 };
 
@@ -104,6 +132,7 @@ const Register = () => {
                     <div className="text-danger">{message}</div>
                     <button className="btn btn-primary w-100 mt-3" onClick={createUser}>Create User</button>
                 </div>
+                <GoogleLoginButton className='mt-3' email={setEmail} googleLogin={setGoogleLogin} create={createUser} />
             </div>
         </>
     );
