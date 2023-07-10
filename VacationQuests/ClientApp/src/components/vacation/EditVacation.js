@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import moment from 'moment'
-
 
 const EditVacation = () => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -8,6 +8,8 @@ const EditVacation = () => {
     const [startDate, setStartDate] = useState()
     const [endDate, setEndDate] = useState()
     const [dates, setDates] = useState([]);
+
+    const navigate = useNavigate();
 
     //On start
     useEffect(() => {
@@ -76,28 +78,31 @@ const EditVacation = () => {
 
     //Object rendering on the fron end
     if (vacation) {
-        return (
-            <div className='text-center' >
-                <h1>Dates of Vacation</h1>
-                <br/><hr/>
-                <div className='d-flex'>
-                    {
-                        dates.map((date) => (
-                            <div className='card border-secondary m-3'>
-                                <h2>{moment(date).format('MMMM Do YYYY')}</h2>
-                                <hr />
-                                <h4>Events</h4>
+            return (
+                <div className='text-center' >
+                    <h1>Dates of Vacation</h1>
+                    <br /><hr />
+                    <div className='d-flex'>
+                        {
+                            dates.map((date) => (
+                                <div className='card border-secondary m-3'>
+                                    <h2>{moment(date).format('MMMM Do YYYY')}</h2>
+                                    <hr />
+                                    <h4>Events</h4>
+                                    {/*Iterate through all events that happen on this day*/}
+                                    <hr />
+                                    <p>Add a new Event?</p>
+                                    <button className="btn btn-secondary mx-1 mb-2" onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+                                </div>
+                            ))
 
-                        </div>
-                        ))  
-                            
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
-        );
+            );
     }
     else {
-        return (<div>Loading Vacation   </div>)
+        return (<div>Loading Vacation</div>)
     }
 };
 

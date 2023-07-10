@@ -62,17 +62,17 @@ const Profile = () => {
                         <div className='d-flex flex-row'>
                             {
                                 vacations ?
-                                vacations.map((vacation) => (
-                                    <div key={vacation.id}>
-                                        <div className='card border-secondary text-center p-3 m-2'>
-                                            <h3>{vacation.vacationTitle}</h3>
-                                            <div>
-                                                <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                                <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                    vacations.map((vacation) => (
+                                        <div key={vacation.id}>
+                                            <div className='card border-secondary text-center p-3 m-2'>
+                                                <h3>{vacation.vacationTitle}</h3>
+                                                <div>
+                                                    <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                    <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))
+                                    ))
                                     :
                                     <></>
                             }
@@ -89,7 +89,6 @@ const Profile = () => {
     else {
         return (
             <>
-
                 <Edit user={user} stopEdit={setEditMode} />
             </>
         );

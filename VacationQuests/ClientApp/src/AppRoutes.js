@@ -4,6 +4,7 @@ import Login from './components/login/Login';
 import Register from './components/login/Register';
 import UserInfo from './components/login/UserInfo';
 import Profile from './components/user/Profile';
+import CreateEvent from './components/vacation/CreateEvent';
 import CreateVacation from './components/vacation/CreateVacation';
 import EditVacation from './components/vacation/EditVacation';
 
@@ -35,7 +36,11 @@ const AppRoutes = [
     {
         path: '/EditVacation',
         element: <EditVacation />
-        }
+    },
+    {
+        path: 'CreateEvent',
+        element: <CreateEvent />
+    },
 
     //...ApiAuthorzationRoutes
 ];
