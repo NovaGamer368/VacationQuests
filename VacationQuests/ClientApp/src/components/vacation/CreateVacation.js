@@ -50,7 +50,7 @@ const CreateVacation = () => {
         }
     }
     const updateUser = (data) => {
-        let tempArr
+        let tempArr = new Array()
         if (currentUser.Vacations != null) {
             tempArr = new Array(currentUser.Vacations)
         }

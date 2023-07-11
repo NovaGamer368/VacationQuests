@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
+import EventsDisplay from './EventsDisplay';
 
 const EditVacation = () => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -44,17 +45,7 @@ const EditVacation = () => {
     }
     //Matching events for this vacation
     const getEvents = () => {
-        fetch(`https://localhost:7259/api/events`)
-            .then(resp => resp.json())
-            .then(data => {
-                data.forEach((event) => {
-                    console.log('vacation event id', vacation.event.id)
-                    if (vacation.event.id.includes(event.id)) {
-                        console.log('FOUND EVENT')
-                    }
-                })
-            })
-            .catch(e => console.log(e))
+        
     }
 
     //Sets the dates according to how many days the vacation has been planned for
@@ -82,14 +73,15 @@ const EditVacation = () => {
                 <div className='text-center' >
                     <h1>Dates of Vacation</h1>
                     <br /><hr />
-                    <div className='d-flex'>
+                    <div className='d-flex justify-content-center flex-wrap'>
                         {
                             dates.map((date) => (
-                                <div className='card border-secondary m-3'>
+                                <div className='card border-secondary m-3 p-2'>
                                     <h2>{moment(date).format('MMMM Do YYYY')}</h2>
                                     <hr />
                                     <h4>Events</h4>
                                     {/*Iterate through all events that happen on this day*/}
+                                    <EventsDisplay date={date} events={ vacation.events } />
                                     <hr />
                                     <p>Add a new Event?</p>
                                     <button className="btn btn-secondary mx-1 mb-2" onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>

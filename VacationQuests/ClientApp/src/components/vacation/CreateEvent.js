@@ -16,7 +16,10 @@ const CreateEvent = () => {
     const [time, setTime] = useState()
     const [startTime, setStartTime] = useState(new Date())
     const [endTime, setEndTime] = useState(new Date())
-    const [description, setDescription] = useState()
+    const [description, setDescription] = useState('')
+
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     //Start
     useEffect(() => {
@@ -55,7 +58,7 @@ const CreateEvent = () => {
             }
             if (key == 'd') {
                 setSelectedDate(new Date(value))
-                
+
             }
         }
 
@@ -64,15 +67,76 @@ const CreateEvent = () => {
         setTime(time);
     };
 
+    const createEvent = () => {
+        if (eventName != '' && location != '' && startTime != selectedDate && endTime != selectedDate) {
+            setError('Success')
+
+            const requestOptions = {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    EventName: eventName,
+                    Location: location,
+                    StartTime: startTime,
+                    EndTime: endTime,
+                    Description: description,
+                    ConnectedVacation: vacation,
+                    SelectedDate: selectedDate
+                }),
+                origin: "https://localhost:44455"
+            };
+            console.log(startTime.toISOString())
+
+            fetch(`https://localhost:7259/api/events`, requestOptions)
+                .then(resp => resp.json())
+                .then(data => {
+                    console.log('Inputting data to vacation: ', data)
+                    updateVacation(data)
+                })
+                .catch(e => console.log(e))
+        }
+        else {
+            setError('Required Fields need to be filled')
+        }            
+    }
+    const updateVacation = (data) => {
+        let tempArr = new Array()
+        if (vacation.events != null) {
+            tempArr = vacation.events   
+        }
+        tempArr.push(data)
+        console.log(tempArr)
+        const requestOptions = {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ VacationTitle: vacation.vacationTitle, StartDate: vacation.startDate, EndDate: vacation.endDate, planners: vacation.planners, events: tempArr }),
+            origin: "https://localhost:44455"
+        };
+
+        fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+            .then(resp => resp.json())
+            .then(navigate(`/EditVacation?v=${vacation.id}`))
+            .catch(e => console.log(e))
+    }
+
     if (vacation && selectedDate) {
         return (
             <div className='text-center'>
                 <h1>Creating Event on {moment(selectedDate).format('MMMM Do YYYY')}</h1>
+                <h3 className='text-warning'>{error}</h3>
                 <div class="form-group mb-5">
                     <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
                     <input class="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
                 </div>
-                <div class="card m-3 border-warning p-5">
+                <div class="card m-3 border-danger p-5">
                     <fieldset>
                         <label class="form-label" for="location">Where is the event happening?</label>
                         <input class="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
@@ -90,13 +154,9 @@ const CreateEvent = () => {
                         </div>
                     </fieldset>
                     <div>
+                        <button className='btn btn-primary border-danger mt-3' onClick={() => { createEvent() } }>Create Event</button>
                     </div>
                 </div>
-                <p>{eventName}</p>
-                <p>{location}</p>
-                <p>{description} </p>
-                
-
             </div>
         );
     }
