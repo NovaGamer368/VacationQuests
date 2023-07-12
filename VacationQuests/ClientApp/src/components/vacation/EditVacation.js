@@ -81,7 +81,7 @@ const EditVacation = () => {
                                     <hr />
                                     <h4>Events</h4>
                                     {/*Iterate through all events that happen on this day*/}
-                                    <EventsDisplay date={date} events={ vacation.events } />
+                                    <EventsDisplay date={ date } events={ vacation.events } />
                                     <hr />
                                     <p>Add a new Event?</p>
                                     <button className="btn btn-secondary mx-1 mb-2" onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>

@@ -51,8 +51,8 @@ const CreateVacation = () => {
     }
     const updateUser = (data) => {
         let tempArr = new Array()
-        if (currentUser.Vacations != null) {
-            tempArr = new Array(currentUser.Vacations)
+        if (currentUser.vacations != null) {
+            tempArr = currentUser.vacations
         }
         tempArr.push(data)
         const requestOptions = {
@@ -65,7 +65,6 @@ const CreateVacation = () => {
             body: JSON.stringify({ email: currentUser.email, password: currentUser.password, icon: currentUser.icon, bio: currentUser.bio, Vacations: tempArr }),
             origin: "https://localhost:44455"
         };
-
         fetch(`https://localhost:7259/api/users/${Cookies.get('UserId')}`, requestOptions)
             .then(resp => resp.json())
             .then(window.location.href = '/')
