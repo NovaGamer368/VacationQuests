@@ -17,6 +17,8 @@ code {
     max-width: 1fr;
 }
 
+.set-height-200{height:200px}
+
 .avatar {
     vertical-align: middle;
     width: 25px;

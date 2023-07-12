@@ -24,8 +24,9 @@ const Home = () => {
     return (
         <>
             <div className='d-flex flex-column mt-5'>
-                <div className='container mb-5 card border-primary p-5'>
+                <div className='container mb-5 card border-primary p-5 text-center'>
                     <h1> Your Vacations </h1>
+                    <hr/>
                     <VacationList />
                 </div>
                 <div className='container mt-5 card border-secondary p-5'>

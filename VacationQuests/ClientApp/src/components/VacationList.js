@@ -7,7 +7,7 @@ const VacationList = () => {
     const [userVacations, setUserVacations] = useState(null)
     const [vacationList, setVacationList] = useState([])
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch("https://localhost:7259/api/vacations")
@@ -43,15 +43,16 @@ const VacationList = () => {
     else {
         return (
             <>
-                <div className='d-flex flex-row'>
+                <div className='d-flex flex-row flex-wrap'>
                     {
                         userVacations.map((vacation) => (
-                            <div key={vacation.id}>
-                                <div className='card border-secondary text-center p-3 m-2' onClick={() => { editVacation(vacation) } }>
+                            <div key={vacation.id} className='col-md-4 mb-2'>
+                                <div className='card btn border-secondary text-center p-3 m-1 h-100' onClick={() => { editVacation(vacation) }}>
                                     <h3>{vacation.vacationTitle}</h3>
+                                    <hr />
                                     <div>
-                                        <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                        <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                        <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                        <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
                                     </div>
                                 </div>
                             </div>

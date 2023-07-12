@@ -58,21 +58,27 @@ const Profile = () => {
                         <div className="card border-secondary mb-3 p-5">
                             <u><b>Bio</b></u>
                             {bio}
-                        </div>
-                        <div className='d-flex flex-row'>
+                        </div>                        
+                        <div className='d-flex flex-column flex-wrap'>
+                            <h3>Vacation History</h3>
                             {
                                 vacations ?
-                                    vacations.map((vacation) => (
-                                        <div key={vacation.id}>
-                                            <div className='card border-secondary text-center p-3 m-2'>
-                                                <h3>{vacation.vacationTitle}</h3>
-                                                <div>
-                                                    <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                                    <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                    <div className='d-flex'>
+                                    {
+                                        vacations.map((vacation) => (
+                                            <div key={vacation.id} className='col-md-4 '>
+                                                <div className='card border-secondary text-center p-3 m-2 h-100'>
+                                                    <h3>{vacation.vacationTitle}</h3>
+                                                    <hr/>
+                                                    <div>
+                                                        <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                        <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        ))
+                                    }
+                                    </div>
                                     :
                                     <></>
                             }
