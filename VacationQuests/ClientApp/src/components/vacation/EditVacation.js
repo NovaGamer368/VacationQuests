@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
+import Accordion from 'react-bootstrap/Accordion';
 
 const EditVacation = () => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -19,7 +20,6 @@ const EditVacation = () => {
 
     //Vacation Changes
     useEffect(() => {
-        console.log('vacation ', vacation)
         if (vacation) {
             initDates()
             if (vacation.events) {
@@ -41,11 +41,11 @@ const EditVacation = () => {
                     })
                     .catch(e => console.log(e))
             }
-        }       
+        }
     }
     //Matching events for this vacation
     const getEvents = () => {
-        
+
     }
 
     //Sets the dates according to how many days the vacation has been planned for
@@ -61,37 +61,45 @@ const EditVacation = () => {
             }
             dateList.push(date)
             date = new Date(date.getTime() + 1 * 24 * 60 * 60 * 1000);
-            
+
         }
-        console.log('date list data: ', dateList)
         setDates(dateList)
     }
 
     //Object rendering on the fron end
     if (vacation) {
-            return (
-                <div className='text-center' >
-                    <h1>Dates of Vacation</h1>
-                    <br /><hr />
-                    <div className='d-flex justify-content-center flex-wrap'>
-                        {
-                            dates.map((date) => (
-                                <div className='card border-secondary m-3 p-2'>
-                                    <h2>{moment(date).format('MMMM Do YYYY')}</h2>
-                                    <hr />
-                                    <h4>Events</h4>
-                                    {/*Iterate through all events that happen on this day*/}
-                                    <EventsDisplay date={ date } events={ vacation.events } />
-                                    <hr />
-                                    <p>Add a new Event?</p>
-                                    <button className="btn btn-secondary mx-1 mb-2" onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+        return (
+            <div className='container text-center mt-5' >
+                <h1>Plans of { vacation.vacationTitle }</h1>
+                <hr />
+                <div className='d-flex justify-content-center flex-wrap'>
+                    {
+                        dates.map((date) => (
+                            <div className='card col-3 m-1 p-2'>
+                                    <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
+                                <div className='card-body d-flex flex-column border-secondary '>                                    
+                                    <Accordion className='mb-3' defaultActiveKey="0">
+                                        <Accordion.Item eventKey="1">
+                                            <Accordion.Header>Events</Accordion.Header>
+                                            <Accordion.Body>
+                                                <EventsDisplay date={date} events={vacation.events} />
+                                                <div className='card p-1 border border-light mt-auto'>
+                                                    <p>Add a new Event?</p>
+                                                    <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+                                                </div>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>                                    
                                 </div>
-                            ))
+                            </div>
+                        ))
 
-                        }
-                    </div>
+                    }
                 </div>
-            );
+                
+
+            </div>
+        );
     }
     else {
         return (<div>Loading Vacation</div>)

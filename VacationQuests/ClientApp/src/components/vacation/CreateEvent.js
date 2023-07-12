@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
-
 import { TimePicker } from 'antd';
 
 
@@ -84,7 +83,6 @@ const CreateEvent = () => {
                     StartTime: startTime,
                     EndTime: endTime,
                     Description: description,
-                    ConnectedVacation: vacation,
                     SelectedDate: selectedDate
                 }),
                 origin: "https://localhost:44455"
@@ -122,8 +120,9 @@ const CreateEvent = () => {
         };
 
         fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
-            .then(resp => resp.json())
-            .then(navigate(`/EditVacation?v=${vacation.id}`))
+            //.then(resp => resp.json())
+            .then(resp => console.log(resp))
+            //.then(navigate(`/EditVacation?v=${vacation.id}`))
             .catch(e => console.log(e))
     }
 
@@ -132,22 +131,22 @@ const CreateEvent = () => {
             <div className='text-center'>
                 <h1>Creating Event on {moment(selectedDate).format('MMMM Do YYYY')}</h1>
                 <h3 className='text-warning'>{error}</h3>
-                <div class="form-group mb-5">
-                    <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
-                    <input class="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
+                <div className="form-group mb-5">
+                    <label className="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
+                    <input className="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
                 </div>
-                <div class="card m-3 border-danger p-5">
+                <div className="card m-3 border-danger p-5">
                     <fieldset>
-                        <label class="form-label" for="location">Where is the event happening?</label>
-                        <input class="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
+                        <label className="form-label" for="location">Where is the event happening?</label>
+                        <input className="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
                     </fieldset>
                     <fieldset>
-                        <label class="form-label mt-4" for="description">Description of Event</label>
-                        <input class="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
+                        <label className="form-label mt-4" for="description">Description of Event</label>
+                        <input className="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
                     </fieldset>
                     <fieldset>
                         <div className='m-2'>
-                            <label class="form-label mt-4">Times</label>
+                            <label className="form-label mt-4">Times</label>
                             <div>
                                 <TimePicker.RangePicker className='text-primary' muse12Hours hourStep={1} minuteStep={15} format="h:mm a" placeHolder='Select a Start Time' onChange={onChange} />
                             </div>

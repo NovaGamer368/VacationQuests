@@ -16,7 +16,6 @@ namespace VacationQuestsAPI.Model
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string? Description { get; set; }
-        public VacationModel ConnectedVacation { get; set; }
         public DateTime SelectedDate { get; set; }
     }
 }

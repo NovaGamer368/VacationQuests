@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const VacationList = () => {
     const [userVacations, setUserVacations] = useState(null)
     const [vacationList, setVacationList] = useState([])
+    const [loading, setLoading] = useState(true)
+    const userId = Cookies.get('UserId')
 
     const navigate = useNavigate();
 
@@ -13,6 +15,7 @@ const VacationList = () => {
         fetch("https://localhost:7259/api/vacations")
             .then(resp => resp.json())
             .then(data => {
+                console.log('Data Came back from vacations')
                 setVacationList(data)
             })
             .catch(e => console.log(e))
@@ -22,45 +25,51 @@ const VacationList = () => {
         console.log(vacationList)
         vacationList.forEach((vacation) => {
             vacation.planners.forEach((planner) => {
-                if (planner.id === Cookies.get('UserId')) {
+                if (planner.id === userId) {
                     tempArr.push(vacation)
                 }
             })
         })
         setUserVacations(tempArr)
+        setLoading(false)
     }, [vacationList])
     const editVacation = (vacation) => {
         navigate(`/EditVacation?v=${vacation.id}`)
     }
 
-    if (userVacations == null) {
-        return (
-            <>
-                <p>No Vacations Made</p>
-            </>
-        );
+    if (loading) {
+        return (<><h1>Loading vacations</h1></>)
     }
     else {
-        return (
-            <>
-                <div className='d-flex flex-row flex-wrap'>
-                    {
-                        userVacations.map((vacation) => (
-                            <div key={vacation.id} className='col-md-4 mb-2'>
-                                <div className='card btn border-secondary text-center p-3 m-1 h-100' onClick={() => { editVacation(vacation) }}>
-                                    <h3>{vacation.vacationTitle}</h3>
-                                    <hr />
-                                    <div>
-                                        <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                        <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+        if (userVacations == null) {
+            return (
+                <>
+                    <p>No Vacations Made</p>
+                </>
+            );
+        }
+        else {
+
+            return (
+                <>
+                    <div className='d-flex justify-content-center flex-row flex-wrap'>
+                        {
+                            userVacations.map((vacation) => (
+                                <div key={vacation.id} className='card btn m-2 col-3 '>
+                                    <div className='text-center h-100' onClick={() => { editVacation(vacation) }}>
+                                        <h3 className='card-header'>{vacation.vacationTitle}</h3>
+                                        <div className='card-body d-flex flex-column'>
+                                            <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                            <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
-                    }
-                </div>
-            </>
-        )
+                            ))
+                        }
+                    </div>
+                </>
+            )
+        }
     }
 };
 
