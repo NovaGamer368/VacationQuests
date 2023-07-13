@@ -25,7 +25,7 @@ const Home = () => {
         <>
             <div className='d-flex flex-column w-100 mt-5'>
                 <div className='container  mb-5 card border-primary p-5 text-center'>
-                    <h1 className='card-header'> Your Vacations </h1>
+                    <h1 className='card-header text-light'> Your Vacations </h1>
                     <hr />
                     <div className='card-body'>
                         <VacationList />

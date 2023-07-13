@@ -25,3 +25,7 @@ code {
     height: 25px;
     border-radius: 50%;
 }
+.d-flex-align{
+    display:flex;
+    align-items: center;
+}

@@ -34,21 +34,19 @@ const LocationSelector = ({ location, locationFound }) => {
         <>
             <div className='d-flex flex-column justify-content-center align-items-center'>
                 <h3 className='text-danger'>{ error }</h3>
-                <div className='mt-5'>
+                <div className='mt-5 w-100'>
                     <Dropdown>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                        <Dropdown.Toggle className='col-4' variant="secondary" id="dropdown-basic">
                             { selected }
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {
+                        <Dropdown.Menu>                            {
                                 countries.map((country) => (
                                     <Dropdown.Item onClick={() => { setSelected(country.name.common)}}> {country.name.common}</Dropdown.Item>
-                                ))
-                            }
+                                ))                            }
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
-                <div className='btn btn-primary mt-5' onClick={() => { selectCountry(); } }> Select Country</div>
+                <div className='btn btn-primary mt-5 col-4' onClick={() => { selectCountry(); } }> Select Country</div>
             </div>
         </>
     );

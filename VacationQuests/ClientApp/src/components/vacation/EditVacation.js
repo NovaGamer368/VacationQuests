@@ -3,6 +3,8 @@ import { useNavigate} from "react-router-dom";
 import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
 import Accordion from 'react-bootstrap/Accordion';
+import VacationChangeOptions from './VacationChangeOptions';
+
 
 const EditVacation = () => {
     const queryParams = new URLSearchParams(window.location.search)
@@ -70,37 +72,41 @@ const EditVacation = () => {
     if (vacation) {
         return (
             <div className='container text-center mt-5' >
-                <div className='d-flex justify-content-center'>
+                <div className='d-flex-align justify-content-center'>
                     <button className='btn btn-secondary col-1 me-auto' onClick={() => { navigate(-1) }}>
                         <i class="bi bi-arrow-90deg-left"></i>
                     </button>
-                    <h1 className='text-center col-12 me-auto'>Plans of {vacation.vacationTitle}</h1>
-                    <div className='col-1'></div>
+                    <h1 className='text-center col-12 me-auto'>{vacation.vacationTitle} Plans</h1>
+                    <div className='col-1 me-auto'>
+                        <VacationChangeOptions />
+                    </div>
                 </div>
                 <hr />
-                <div className='d-flex justify-content-center flex-wrap'>
-                    {
-                        dates.map((date) => (
-                            <div className='card col-3 m-1 p-2'>
-                                    <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
-                                <div className='card-body d-flex flex-column border-secondary '>                                    
-                                    <Accordion className='mb-3' defaultActiveKey="0">
-                                        <Accordion.Item eventKey="1">
-                                            <Accordion.Header>Events</Accordion.Header>
-                                            <Accordion.Body>
-                                                <EventsDisplay date={date} events={vacation.events} />
-                                                <div className='card p-1 border border-light mt-auto'>
-                                                    <p>Add a new Event?</p>
-                                                    <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
-                                                </div>
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    </Accordion>                                    
+                <div className='row'>
+                    <div className='d-lg-flex justify-content-center flex-wrap mt-3'>
+                        {
+                            dates.map((date) => (
+                                <div className='card col-3 m-1 p-2'>
+                                        <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
+                                    <div className='card-body d-flex flex-column border-secondary '>                                    
+                                        <Accordion className='mb-3' defaultActiveKey="0">
+                                            <Accordion.Item eventKey="1">
+                                                <Accordion.Header>Events</Accordion.Header>
+                                                <Accordion.Body>
+                                                    <EventsDisplay date={date} events={vacation.events} />
+                                                    <div className='card p-1 border border-light mt-auto'>
+                                                        <p>Add a new Event?</p>
+                                                        <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+                                                    </div>
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        </Accordion>                                    
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
 
-                    }
+                        }
+                    </div>
                 </div>
                 
 

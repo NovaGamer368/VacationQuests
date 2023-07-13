@@ -82,7 +82,7 @@ const CreateVacation = () => {
     else {
         return (
             <>
-                <div className='text-center'>
+                <div className='container text-center'>
                     <h1>Creating Vacation</h1>
                     <LocationSelector location={setLocation} locationFound={setLocationFound} />
                 </div>

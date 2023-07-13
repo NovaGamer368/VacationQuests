@@ -57,7 +57,6 @@ const CreateEvent = () => {
             }
             if (key == 'd') {
                 setSelectedDate(new Date(value))
-
             }
         }
 

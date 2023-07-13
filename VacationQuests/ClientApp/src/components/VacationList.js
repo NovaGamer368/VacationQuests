@@ -41,9 +41,6 @@ const VacationList = () => {
         }
     },[userVacations])
 
-    const editVacation = (vacation) => {
-        navigate(`/EditVacation?v=${vacation.id}`)
-    }
     if (!loading) {
         if (userVacations.length === 0) {
             return (
@@ -55,12 +52,12 @@ const VacationList = () => {
         else {
 
             return (
-                <>
+                <div>
                     <div className='d-flex justify-content-center flex-row flex-wrap'>
                         {
                             userVacations.map((vacation) => (
-                                <div key={vacation.id} className='card btn m-2 col-3 '>
-                                    <div className='text-center h-100' onClick={() => { editVacation(vacation) }}>
+                                <div key={vacation.id} className='card btn btn-primary border-0 m-2 col-3 '>
+                                    <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
                                         <h3 className='card-header'>{vacation.vacationTitle}</h3>
                                         <div className='card-body d-flex flex-column'>
                                             <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
@@ -71,7 +68,7 @@ const VacationList = () => {
                             ))
                         }
                     </div>
-                </>
+                </div>
             )
         }
     }
