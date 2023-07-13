@@ -87,16 +87,15 @@ const Profile = () => {
                                 <h3>Vacation History</h3>
                                 {
                                     vacations ?
-                                        <div className='d-flex'>
+                                        <div className='d-flex justify-content-center flex-row flex-wrap'>
                                             {
                                                 vacations.map((vacation) => (
-                                                    <div key={vacation.id} className='col-md-4 '>
-                                                        <div className='card border-secondary text-center p-3 m-2'>
-                                                            <h3>{vacation.vacationTitle}</h3>
-                                                            <hr />
-                                                            <div>
-                                                                <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                                                <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                    <div key={vacation.id} className='card btn m-2 col-3 '>
+                                                        <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                            <h3 className='card-header'>{vacation.vacationTitle}</h3>
+                                                            <div className='card-body d-flex flex-column'>
+                                                                <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                                <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
                                                             </div>
                                                         </div>
                                                     </div>

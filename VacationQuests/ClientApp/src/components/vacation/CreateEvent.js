@@ -128,8 +128,14 @@ const CreateEvent = () => {
 
     if (vacation && selectedDate) {
         return (
-            <div className='text-center'>
-                <h1>Creating Event on {moment(selectedDate).format('MMMM Do YYYY')}</h1>
+            <div className='container text-center'>
+                <div className='d-flex justify-content-center w-100'>
+                    <button className='btn btn-secondary col-1 me-auto my-auto' onClick={() => { navigate(-1) }}>
+                        <i class="bi bi-arrow-90deg-left"></i>
+                    </button>
+                    <h1 className='col-12 text-center me-auto'>Creating Event on {moment(selectedDate).format('MMMM Do YYYY')}</h1>
+                    <div className='col-1'></div>
+                </div>
                 <h3 className='text-warning'>{error}</h3>
                 <div className="form-group mb-5">
                     <label className="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
@@ -142,7 +148,7 @@ const CreateEvent = () => {
                     </fieldset>
                     <fieldset>
                         <label className="form-label mt-4" for="description">Description of Event</label>
-                        <input className="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
+                        <textarea className="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
                     </fieldset>
                     <fieldset>
                         <div className='m-2'>

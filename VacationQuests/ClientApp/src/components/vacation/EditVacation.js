@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
 import Accordion from 'react-bootstrap/Accordion';
@@ -70,7 +70,13 @@ const EditVacation = () => {
     if (vacation) {
         return (
             <div className='container text-center mt-5' >
-                <h1>Plans of { vacation.vacationTitle }</h1>
+                <div className='d-flex justify-content-center'>
+                    <button className='btn btn-secondary col-1 me-auto' onClick={() => { navigate(-1) }}>
+                        <i class="bi bi-arrow-90deg-left"></i>
+                    </button>
+                    <h1 className='text-center col-12 me-auto'>Plans of {vacation.vacationTitle}</h1>
+                    <div className='col-1'></div>
+                </div>
                 <hr />
                 <div className='d-flex justify-content-center flex-wrap'>
                     {
