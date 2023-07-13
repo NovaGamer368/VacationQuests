@@ -39,7 +39,8 @@ const EventsDisplay = ({ date, events }) => {
                             <div><b>Location: </b>
                                 {event.location}
                             </div>
-                            <div><div><b>Starting time: </b>{moment(event.startTime).format('hh:mm a')}</div> <div><b>Ending at: </b>{moment(event.endTime).format('hh:mm a')}</div></div>
+                            <div><div><b>Starting time: </b>{moment(event.startTime).format('hh:mm a')}</div>
+                                <div><b>Ending at: </b>{moment(event.endTime).format('hh:mm a')}</div></div>
                         </div>
                     ))}
                 </div>

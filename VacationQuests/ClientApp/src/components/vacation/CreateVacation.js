@@ -54,7 +54,7 @@ const CreateVacation = () => {
         if (currentUser.vacations != null) {
             tempArr = currentUser.vacations
         }
-        tempArr.push(data)
+        tempArr.push(data.id)
         const requestOptions = {
             mode: 'cors',
             method: 'PUT',

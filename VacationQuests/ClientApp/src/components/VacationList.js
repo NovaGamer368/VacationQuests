@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const VacationList = () => {
     const [userVacations, setUserVacations] = useState(null)
-    const [vacationList, setVacationList] = useState([])
+    const [vacationList, setVacationList] = useState(null)
     const [loading, setLoading] = useState(true)
     const userId = Cookies.get('UserId')
 
@@ -21,30 +21,34 @@ const VacationList = () => {
             .catch(e => console.log(e))
     }, [])
     useEffect(() => {
-        let tempArr = []
-        console.log(vacationList)
-        vacationList.forEach((vacation) => {
-            vacation.planners.forEach((planner) => {
-                if (planner.id === userId) {
-                    tempArr.push(vacation)
-                }
+        if (vacationList != null) {
+            let tempArr = []
+            console.log(vacationList)
+            vacationList.forEach((vacation) => {
+                vacation.planners.forEach((planner) => {
+                    if (planner.id === userId) {
+                        tempArr.push(vacation)
+                    }
+                })
             })
-        })
-        setUserVacations(tempArr)
-        setLoading(false)
+            setUserVacations(tempArr)
+        }
     }, [vacationList])
+
+    useEffect(() => {
+        if (userVacations != null) {
+            setLoading(false) 
+        }
+    },[userVacations])
+
     const editVacation = (vacation) => {
         navigate(`/EditVacation?v=${vacation.id}`)
     }
-
-    if (loading) {
-        return (<><h1>Loading vacations</h1></>)
-    }
-    else {
-        if (userVacations == null) {
+    if (!loading) {
+        if (userVacations.length === 0) {
             return (
                 <>
-                    <p>No Vacations Made</p>
+                    <h3>No Vacations Made</h3>
                 </>
             );
         }
@@ -71,6 +75,12 @@ const VacationList = () => {
             )
         }
     }
+    else {
+        return (
+            <h3>LOADING</h3>
+            )
+    }
+    
 };
 
 export default VacationList; 

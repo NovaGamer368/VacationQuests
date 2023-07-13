@@ -23,11 +23,13 @@ const Home = () => {
 
     return (
         <>
-            <div className='d-flex flex-column mt-5'>
-                <div className='container mb-5 card border-primary p-5 text-center'>
-                    <h1> Your Vacations </h1>
-                    <hr/>
-                    <VacationList />
+            <div className='d-flex flex-column w-100 mt-5'>
+                <div className='container  mb-5 card border-primary p-5 text-center'>
+                    <h1 className='card-header'> Your Vacations </h1>
+                    <hr />
+                    <div className='card-body'>
+                        <VacationList />
+                    </div>
                 </div>
                 <div className='container mt-5 card border-secondary p-5'>
                     <h3>Our Purpose</h3>

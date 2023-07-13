@@ -121,8 +121,8 @@ const CreateEvent = () => {
 
         fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
             //.then(resp => resp.json())
-            .then(resp => console.log(resp))
-            //.then(navigate(`/EditVacation?v=${vacation.id}`))
+            //.then(resp => console.log(resp))
+            .then(navigate(`/EditVacation?v=${vacation.id}`))
             .catch(e => console.log(e))
     }
 

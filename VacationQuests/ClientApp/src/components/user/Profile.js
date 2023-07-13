@@ -1,5 +1,5 @@
 ﻿import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import Edit from './Edit';
@@ -12,6 +12,8 @@ const Profile = () => {
     const [friends, setFriends] = useState([])
     const [editMode, setEditMode] = useState(false)
     const [user, setUser] = useState(null)
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+
 
     const navigate = useNavigate();
 
@@ -23,12 +25,33 @@ const Profile = () => {
                 setEmail(data.email)
                 setIcon(data.icon)
                 setBio(data.bio)
-                setVacations(data.vacations)
                 setFriends(data.friends)
                 setUser(data)
             })
             .catch(e => console.log(e))
     }, [])
+
+    useEffect(() => {
+        let tempArr = []
+        if (user !== null) {
+            console.log("user.vacations to check :", user.vacations)
+            user.vacations.forEach((vacationId) => {
+                if (vacations.length !== 0) {
+                    tempArr = vacations
+                }
+                fetch(`https://localhost:7259/api/vacations/${vacationId}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        tempArr.push(data)
+                        setVacations(tempArr)
+                        console.log(vacations)
+                        forceUpdate()
+                    })
+                    .catch(e => console.log(e))
+            })
+        }
+
+    }, [user])
 
     const logout = () => {
         Cookies.remove('UserId')
@@ -38,11 +61,11 @@ const Profile = () => {
     if (!editMode) {
         return (
             <>
-                <div className='d-flex flex-column'>
+                <div className='d-flex w-100 flex-column'>
 
                     <div className="container mt-5 text-center">
                         <div className='d-flex float-lg-end mx-5'>
-                            <button className='btn btn-secondary float-right' onClick={() => setEditMode(true)} ><i class="bi bi-pen"></i></button>
+                            <button className='btn btn-secondary float-right' onClick={() => setEditMode(true)} ><i className="bi bi-pen"></i></button>
                         </div>
                     </div>
                     <div className="container mt-5 text-center">
@@ -58,35 +81,37 @@ const Profile = () => {
                         <div className="card border-secondary mb-3 p-5">
                             <u><b>Bio</b></u>
                             {bio}
-                        </div>                        
+                        </div>
                         <div className='d-flex flex-column flex-wrap'>
-                            <h3>Vacation History</h3>
-                            {
-                                vacations ?
-                                    <div className='d-flex'>
-                                    {
-                                        vacations.map((vacation) => (
-                                            <div key={vacation.id} className='col-md-4 '>
-                                                <div className='card border-secondary text-center p-3 m-2 h-100'>
-                                                    <h3>{vacation.vacationTitle}</h3>
-                                                    <hr/>
-                                                    <div>
-                                                        <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                                        <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                            <div>
+                                <h3>Vacation History</h3>
+                                {
+                                    vacations ?
+                                        <div className='d-flex'>
+                                            {
+                                                vacations.map((vacation) => (
+                                                    <div key={vacation.id} className='col-md-4 '>
+                                                        <div className='card border-secondary text-center p-3 m-2'>
+                                                            <h3>{vacation.vacationTitle}</h3>
+                                                            <hr />
+                                                            <div>
+                                                                <p>{moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                                <p>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-                                    </div>
-                                    :
-                                    <></>
-                            }
+                                                ))
+                                            }
+                                        </div>
+                                        :
+                                        <></>
+                                }
+                            </div>
                         </div>
                         <div>
                             {friends}
                         </div>
-                        <button className="btn btn-warning m-3" onClick={logout}>Log Out</button>
+                        <button className="btn btn-warning m-3 w-75" onClick={logout}>Log Out</button>
                     </div>
                 </div>
             </>
