@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
 import Accordion from 'react-bootstrap/Accordion';
@@ -71,24 +71,26 @@ const EditVacation = () => {
     //Object rendering on the fron end
     if (vacation) {
         return (
-            <div className='container text-center mt-5' >
-                <div className='d-flex-align justify-content-center'>
-                    <button className='btn btn-secondary col-1 me-auto' onClick={() => { navigate(-1) }}>
-                        <i class="bi bi-arrow-90deg-left"></i>
-                    </button>
-                    <h1 className='text-center col-12 me-auto'>{vacation.vacationTitle} Plans</h1>
-                    <div className='col-1 me-auto'>
-                        <VacationChangeOptions />
+            <div className='card-primary w-100'>
+                <div className='container text-center mt-5' >
+                    <div className='d-flex-align justify-content-center'>
+                        <button className='btn btn-secondary col-1 me-auto' onClick={() => { navigate(-1) }}>
+                            <i class="bi bi-arrow-90deg-left"></i>
+                        </button>
+                        <h1 className='text-center col-12 me-auto'>{vacation.vacationTitle} Plans</h1>
+                        <div className='col-1 me-auto'>
+                            <VacationChangeOptions />
+                        </div>
                     </div>
+                    <hr />
                 </div>
-                <hr />
-                <div className='row'>
-                    <div className='d-lg-flex justify-content-center flex-wrap mt-3'>
+                <div>
+                    <div className='d-flex justify-content-center flex-wrap mt-3 col-12'>
                         {
                             dates.map((date) => (
-                                <div className='card col-3 m-1 p-2'>
-                                        <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
-                                    <div className='card-body d-flex flex-column border-secondary '>                                    
+                                <div className='card col-md-2 me-1 mb-1 text-center'>
+                                    <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
+                                    <div className='card-body d-flex flex-column border-secondary '>
                                         <Accordion className='mb-3' defaultActiveKey="0">
                                             <Accordion.Item eventKey="1">
                                                 <Accordion.Header>Events</Accordion.Header>
@@ -100,7 +102,7 @@ const EditVacation = () => {
                                                     </div>
                                                 </Accordion.Body>
                                             </Accordion.Item>
-                                        </Accordion>                                    
+                                        </Accordion>
                                     </div>
                                 </div>
                             ))
@@ -108,8 +110,6 @@ const EditVacation = () => {
                         }
                     </div>
                 </div>
-                
-
             </div>
         );
     }

@@ -9,9 +9,9 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
-        <Container className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
           {this.props.children}
-        </Container>
+        </div>
       </div>
     );
   }
