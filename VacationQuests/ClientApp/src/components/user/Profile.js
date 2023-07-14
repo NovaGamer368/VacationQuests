@@ -64,7 +64,7 @@ const Profile = () => {
 
                     <div className="container mt-5 text-center">
                         <div className='d-flex float-lg-end mx-5'>
-                            <button className='btn btn-secondary float-right' onClick={() => setEditMode(true)} ><i className="bi bi-pen"></i></button>
+                            <button className='btn btn-secondary float-right' onClick={() => setEditMode(true)} ><i class="bi bi-pencil fs-1"></i></button>
                         </div>
                     </div>
                     <div className="container mt-5 text-center">

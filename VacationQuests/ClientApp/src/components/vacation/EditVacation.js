@@ -79,7 +79,7 @@ const EditVacation = () => {
                         </button>
                         <h1 className='text-center col-12 me-auto'>{vacation.vacationTitle} Plans</h1>
                         <div className='col-1 me-auto'>
-                            <VacationChangeOptions />
+                            <VacationChangeOptions vacation= {vacation}/>
                         </div>
                     </div>
                     <hr />
