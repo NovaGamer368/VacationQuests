@@ -32,7 +32,7 @@ const Edit = ({ user, stopEdit }) => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email: email, password: newPassword, icon: icon, bio: bio }),
+                    body: JSON.stringify({ email: email, password: newPassword, icon: icon, bio: bio, vacations: user.vacations, friends: user.friends }),
                     origin: "https://localhost:44455"
                 };
 
