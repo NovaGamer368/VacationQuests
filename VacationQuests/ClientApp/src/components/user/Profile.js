@@ -8,7 +8,7 @@ const Profile = () => {
     const [email, setEmail] = useState('')
     const [icon, setIcon] = useState('')
     const [bio, setBio] = useState('')
-    const [vacations, setVacations] = useState([])
+    const [vacations, setVacations] = useState()
     const [friends, setFriends] = useState([])
     const [editMode, setEditMode] = useState(false)
     const [user, setUser] = useState(null)
@@ -35,20 +35,19 @@ const Profile = () => {
         let tempArr = []
         if (user !== null) {
             console.log("user.vacations to check :", user.vacations)
-            user.vacations.forEach((vacationId) => {
-                if (vacations.length !== 0) {
-                    tempArr = vacations
-                }
-                fetch(`https://localhost:7259/api/vacations/${vacationId}`)
-                    .then(resp => resp.json())
-                    .then(data => {
-                        tempArr.push(data)
-                        setVacations(tempArr)
-                        console.log(vacations)
-                        forceUpdate()
-                    })
-                    .catch(e => console.log(e))
-            })
+            if (user.vacations !== null) {
+                user.vacations.forEach((vacationId) => {                    
+                    fetch(`https://localhost:7259/api/vacations/${vacationId}`)
+                        .then(resp => resp.json())
+                        .then(data => {
+                            tempArr.push(data)
+                            setVacations(tempArr)
+                            console.log(vacations)
+                            forceUpdate()
+                        })
+                        .catch(e => console.log(e))
+                })
+            }
         }
 
     }, [user])
@@ -103,7 +102,7 @@ const Profile = () => {
                                             }
                                         </div>
                                         :
-                                        <></>
+                                        <>No Vacations Found</>
                                 }
                             </div>
                         </div>

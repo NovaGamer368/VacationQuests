@@ -36,6 +36,8 @@ const Edit = ({ user, stopEdit }) => {
                     origin: "https://localhost:44455"
                 };
 
+                console.log(user)
+
                 fetch(`https://localhost:7259/api/users/${user.id}`, requestOptions)
                     .then(window.location.href = "/Profile")
                     .catch(e => console.log(e))
@@ -49,7 +51,7 @@ const Edit = ({ user, stopEdit }) => {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: email, password: user.password, icon: icon, bio: bio }),
+                body: JSON.stringify({ email: email, password: user.password, icon: icon, bio: bio, vacations: user.vacations, friends: user.friends }),
                 origin: "https://localhost:44455"
             };
 
