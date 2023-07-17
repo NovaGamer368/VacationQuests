@@ -10,18 +10,18 @@ const EventsDisplay = ({ date, events }) => {
     const [eventsArr, setEventsArr] = useState(events)
     const [displayArr, setDisplayArr] = useState([]);
     const [noEvents, setNoEvents] = useState(true)
-
+    
     useEffect(() => {
         let tempArray = []
         if (eventsArr != null) {
             eventsArr.forEach((event) => {
                 if (moment(date).format('MMMM Do YYYY') == moment(event.selectedDate).format('MMMM Do YYYY')) {
-                    console.log('true')
+                    //console.log('true')
                     setNoEvents(false)
                     tempArray.push(event)
                 }
                 else {
-                    console.log('false', event)
+                    //console.log('false', event)
                 }
             })
         }
@@ -34,7 +34,7 @@ const EventsDisplay = ({ date, events }) => {
             <>
                 <div className='text-center'>
                     {displayArr.map((event) => (
-                        <div className='card border-light p-3 mb-3'>
+                        <div key={ event.id } className='card border-light p-3 mb-3'>
                             <div>{event.eventName}</div>
                             <div><b>Location: </b>
                                 {event.location}

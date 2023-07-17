@@ -79,8 +79,8 @@ const CreateEvent = () => {
                 body: JSON.stringify({
                     EventName: eventName,
                     Location: location,
-                    StartTime: startTime,
-                    EndTime: endTime,
+                    StartTime: startTime.toISOString(),
+                    EndTime: endTime.toISOString(),
                     Description: description,
                     SelectedDate: selectedDate
                 }),

@@ -75,7 +75,7 @@ const EditVacation = () => {
                 <div className='container text-center mt-5' >
                     <div className='d-flex-align justify-content-center'>
                         <button className='btn btn-secondary col-1 me-auto' onClick={() => { navigate(-1) }}>
-                            <i class="bi bi-arrow-90deg-left"></i>
+                            <i className="bi bi-arrow-90deg-left"></i>
                         </button>
                         <h1 className='text-center col-12 me-auto'>{vacation.vacationTitle} Plans</h1>
                         <div className='col-1 me-auto'>
