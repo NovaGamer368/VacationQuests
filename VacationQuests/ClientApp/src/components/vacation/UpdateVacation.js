@@ -6,11 +6,24 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
     const [title, setTitle] = useState(vacation.vacationTitle)
     const [startDate, setStartDate] = useState(vacation.startDate)
     const [endDate, setEndDate] = useState(vacation.endDate)
-    const [events, setEvents] = useState(vacation.events)
+    const [events, setEvents] = useState([])
+    const [eventsId, setEventsId]= useState(vacation.events)
     const [errorMessage, setErrorMessage] = useState('')
     const [numberOfDays, setNumberOfDays] = useState()
 
     useEffect(() => {
+        let tempArray = []
+        if (eventsId) {
+            eventsId.forEach((eventId) => {
+                fetch(`https://localhost:7259/api/events/${eventId}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                            tempArray.push(data)
+                            setEvents(tempArray)
+                    })
+                    .catch(e => console.log(e))
+            })
+        }
     }, [])
 
     useEffect(() => {
@@ -32,9 +45,8 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
     //UPDATE
     const updateVacation = () => {
         //Validation that fields are filled
-        //console.log('title check: ', title !== vacation.vacationTitle)
-        //console.log('startDate check: ', moment(startDate)._i !== moment(vacation.startDate)._i)
-        //console.log('endDate check: ', moment(endDate).format('MMMM Do YYYY') !== moment(vacation.endDate).format('MMMM Do YYYY'))
+        console.log('startDate check: ', moment(startDate)._i !== moment(vacation.startDate)._i)
+        console.log('endDate check: ', moment(endDate).format('MMMM Do YYYY') !== moment(vacation.endDate).format('MMMM Do YYYY'))
         
         if (moment(startDate)._i !== moment(vacation.startDate)._i
             && moment(endDate).format('MMMM Do YYYY') !== moment(vacation.endDate).format('MMMM Do YYYY')) {
@@ -45,15 +57,43 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
             const a = moment(startDate)
             const b = moment(vacation.startDate);
             console.log(a.diff(b, 'days'))
-            events.forEach((event) => {
-                event.selectedDate = moment(newDate(event.selectedDate, a.diff(b, 'days')))._i
-                event.startTime = moment(newDate(event.startTime, a.diff(b, 'days')))._d
-                event.endTime = moment(newDate(event.endTime, a.diff(b, 'days')))._d
-            })
-            console.log("events after changes:", events)
+            if (events) {
 
-            events.forEach((event) => {
-                const requestOptions = {
+                events.forEach((event) => {
+                    event.selectedDate = moment(newDate(event.selectedDate, a.diff(b, 'days')))._i
+                    event.startTime = moment(newDate(event.startTime, a.diff(b, 'days')))._d
+                    event.endTime = moment(newDate(event.endTime, a.diff(b, 'days')))._d
+                })
+                console.log("events after changes:", events)
+
+                events.forEach((event) => {
+                    const requestOptions = {
+                        mode: 'cors',
+                        method: 'PUT',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            EventName: event.eventName,
+                            Location: event.location,
+                            description: event.description, 
+                            selectedDate: event.selectedDate,
+                            startTime: event.startTime,
+                            endTime: event.endTime
+                        }),
+                        origin: "https://localhost:44455"
+                    };
+                    fetch(`https://localhost:7259/api/events/${event.id}`, requestOptions)
+                    ////fetch(`https://localhost:7259/api/events/64b5c435e13549fada8286d9`, requestOptions)
+                        .then(console.log('Updated: ', event.id))
+                        .catch(e => console.log(e))                
+                })
+            }
+
+            let requestOptions;
+            if (eventsId) {
+                 requestOptions = {
                     mode: 'cors',
                     method: 'PUT',
                     headers: {
@@ -61,38 +101,34 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        EventName: event.eventName,
-                        Location: event.location,
-                        description: event.description,
-                        selectedDate: event.selectedDate,
-                        startTime: event.startTime,
-                        endTime: event.endTime
+                        VacationTitle: title,
+                        events: eventsId,
+                        planners: vacation.planners,
+                        startDate: startDate,
+                        endDate: endDate
                     }),
                     origin: "https://localhost:44455"
                 };
-                fetch(`https://localhost:7259/api/events/${event.id}`, requestOptions)
-                ////fetch(`https://localhost:7259/api/events/64b5c435e13549fada8286d9`, requestOptions)
-                //    .then(console.log('Updated: ', event.id))
-                    .catch(e => console.log(e))                
-            })
-
+            }
+            else {
+                 requestOptions = {
+                    mode: 'cors',
+                    method: 'PUT',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        VacationTitle: title,
+                        events: [],
+                        planners: vacation.planners,
+                        startDate: startDate,
+                        endDate: endDate
+                    }),
+                    origin: "https://localhost:44455"
+                };
+            }
             //Update the vacation object
-            const requestOptions = {
-                mode: 'cors',
-                method: 'PUT',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    VacationTitle: title, 
-                    events: events,
-                    planners: vacation.planners,
-                    startDate: startDate,
-                    endDate: endDate
-                }),
-                origin: "https://localhost:44455"
-            };
             fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
                 .then(window.location.reload())
                 .catch(e => console.log(e))   

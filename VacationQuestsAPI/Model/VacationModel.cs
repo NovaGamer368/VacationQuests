@@ -8,8 +8,8 @@ namespace VacationQuestsAPI.Model
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
         public string VacationTitle { get; set; }
-        public IEnumerable<EventModel>? Events { get; set; }    
-        public IEnumerable<UserModel>? Planners { get; set; }
+        public IEnumerable<string>? Events { get; set; }    
+        public IEnumerable<string>? Planners { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

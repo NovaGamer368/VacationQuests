@@ -33,7 +33,7 @@ const CreateVacation = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ VacationTitle: location + ' Vacation', StartDate: startDate, EndDate: endDate, planners: [currentUser] }),
+                    body: JSON.stringify({ VacationTitle: location + ' Vacation', StartDate: startDate, EndDate: endDate, planners: [Cookies.get('UserId')] }),
                     origin: "https://localhost:44455"
                 };
 

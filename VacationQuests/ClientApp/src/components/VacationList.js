@@ -26,7 +26,7 @@ const VacationList = () => {
             console.log(vacationList)
             vacationList.forEach((vacation) => {
                 vacation.planners.forEach((planner) => {
-                    if (planner.id === userId) {
+                    if (planner === userId) {
                         tempArr.push(vacation)
                     }
                 })

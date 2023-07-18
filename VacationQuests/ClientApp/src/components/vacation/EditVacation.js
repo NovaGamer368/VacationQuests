@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState, useReducer } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
@@ -12,6 +12,7 @@ const EditVacation = () => {
     const [startDate, setStartDate] = useState()
     const [endDate, setEndDate] = useState()
     const [dates, setDates] = useState([]);
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const navigate = useNavigate();
 
@@ -40,6 +41,7 @@ const EditVacation = () => {
                         setVacation(data)
                         setStartDate(data.startDate)
                         setEndDate(data.endDate)
+                        forceUpdate()
                     })
                     .catch(e => console.log(e))
             }
@@ -95,7 +97,7 @@ const EditVacation = () => {
                                             <Accordion.Item eventKey="1">
                                                 <Accordion.Header>Events</Accordion.Header>
                                                 <Accordion.Body>
-                                                    <EventsDisplay date={date} events={vacation.events} />
+                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate } />
                                                     <div className='card p-1 border border-light mt-auto'>
                                                         <p>Add a new Event?</p>
                                                         <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>

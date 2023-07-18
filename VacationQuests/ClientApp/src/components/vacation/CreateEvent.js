@@ -79,8 +79,8 @@ const CreateEvent = () => {
                 body: JSON.stringify({
                     EventName: eventName,
                     Location: location,
-                    StartTime: startTime.toISOString(),
-                    EndTime: endTime.toISOString(),
+                    StartTime: startTime,
+                    EndTime: endTime,
                     Description: description,
                     SelectedDate: selectedDate
                 }),
@@ -92,7 +92,7 @@ const CreateEvent = () => {
                 .then(resp => resp.json())
                 .then(data => {
                     console.log('Inputting data to vacation: ', data)
-                    updateVacation(data)
+                    updateVacation(data.id)
                 })
                 .catch(e => console.log(e))
         }
@@ -114,9 +114,17 @@ const CreateEvent = () => {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ VacationTitle: vacation.vacationTitle, StartDate: vacation.startDate, EndDate: vacation.endDate, planners: vacation.planners, events: tempArr }),
+            body: JSON.stringify({
+                VacationTitle: vacation.vacationTitle,
+                StartDate: vacation.startDate,
+                EndDate: vacation.endDate,
+                planners: vacation.planners,
+                events: tempArr
+            }),
             origin: "https://localhost:44455"
         };
+
+        
 
         fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
             //.then(resp => resp.json())
