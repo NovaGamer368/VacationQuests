@@ -10,6 +10,7 @@ const EventsDisplay = ({ date, events, update }) => {
     const [eventsArr, setEventsArr] = useState(events)
     const [displayArr, setDisplayArr] = useState();
     const [noEvents, setNoEvents] = useState(true)
+    const [loading, setLoading] = useState(true)
     
     useEffect(() => {
        getEvents()
@@ -37,32 +38,40 @@ const EventsDisplay = ({ date, events, update }) => {
                     })
                     .catch(e => console.log(e))
             })
+            setLoading(false)
         }
     }
 
     if (noEvents !== true) {
-        return (
-            <>
-                <div className='text-center'>
-                    {
-                        displayArr.map((event) => (
-                        <div key={ event.id } className='card border-light p-3 mb-3'>
-                            <div>{event.eventName}</div>
-                            <div><b>Location: </b>
-                                {event.location}
-                            </div>
-                            <div><div><b>Starting time: </b>{moment(event.startTime).format('hh:mm a')}</div>
-                            <div><b>Ending at: </b>{moment(event.endTime).format('hh:mm a')}</div></div>
-                        </div>
-                    ))}
-                </div>
-            </>
-        )
+        if (!loading) {
+            return (
+                <>
+                    <div className='text-center'>
+                        {
+                            displayArr.map((event) => (
+                                <div key={event.id} className='card border-light p-3 mb-3'>
+                                    <div>{event.eventName}</div>
+                                    <div><b>Location: </b>
+                                        {event.location}
+                                    </div>
+                                    <div><div><b>Starting time: </b>{moment(event.startTime).format('hh:mm a')}</div>
+                                        <div><b>Ending at: </b>{moment(event.endTime).format('hh:mm a')}</div></div>
+                                </div>
+                            ))}
+                    </div>
+                </>
+            )
+        }
+        else {
+            return (
+                <><p className='mb-3'>LOADING</p></>
+            )
+        }
     }
     else {
         return (
             <><p className='mb-3'>No Events found</p></>
-            )
+        )
     }
 };
 

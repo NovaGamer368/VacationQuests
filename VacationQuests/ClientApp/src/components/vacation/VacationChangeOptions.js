@@ -27,49 +27,63 @@ const VacationChangeOptions = ({ vacation }) => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                    }),
                     origin: "https://localhost:44455"
                 };
-                fetch(`https://localhost:7259/api/events/${event.id}`, requestOptions)
+                fetch(`https://localhost:7259/api/events/${event}`, requestOptions)
                     .catch(e => console.log(e))
             })
         }
         //Delete Vacation ID from profile          
         vacation.planners.forEach((planner) => {
-            let fillArray = planner.vacations
-            console.log(fillArray)
-            if (fillArray) {
-                for (let i = 0; i < fillArray.length; i++) {
-                    if (fillArray[i] === vacation.id) {
-                        console.log('Vacation ID found')
+            fetch(`https://localhost:7259/api/users/${planner}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    let fillArray = data.vacations
+                    if (fillArray) {
+                        for (let i = 0; i < fillArray.length; i++) {
+                            if (fillArray[i] === vacation.id) {
+                                fillArray.splice(i, 1)
+                            }
+                        }
+                        //Updating with different list
+                        const requestOptions = {
+                            mode: 'cors',
+                            method: 'PUT',
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: data.email,
+                                password: data.password,
+                                icon: data.icon,
+                                bio: data.bio,
+                                vacations: fillArray,
+                                friends: data.friends
+                            }),
+                            origin: "https://localhost:44455"
+                        };
+
+                        fetch(`https://localhost:7259/api/users/${planner}`, requestOptions)
+                            .then(resp => {
+                                const requestOptions = {
+                                    mode: 'cors',
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Access-Control-Allow-Origin': '*',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    origin: "https://localhost:44455"
+                                };
+                                fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+                                    .then(window.location.href = '/').catch(e => console.log(e))
+                            })
+                            .catch(e => console.log(e))
                     }
-                }
-
-            }
-
-
-            //const requestOptions = {
-            //    mode: 'cors',
-            //    method: 'PUT',
-            //    headers: {
-            //        'Access-Control-Allow-Origin': '*',
-            //        'Content-Type': 'application/json'
-            //    },
-            //    body: JSON.stringify({
-            //        email: planner.email,
-            //        password: planner.password,
-            //        icon: planner.icon,
-            //        bio: planner.bio,
-            //        vacations: planner.vacations,
-            //        friends: planner.friends
-            //    }),
-            //    origin: "https://localhost:44455"
-            //};
-            //fetch(`https://localhost:7259/api/users/${planner.id}`, requestOptions)
-            //    .catch(e => console.log(e))
+                })
+                .catch(e => console.log(e))
         })
-        //Delete vacation itself
+
     }
 
     return (

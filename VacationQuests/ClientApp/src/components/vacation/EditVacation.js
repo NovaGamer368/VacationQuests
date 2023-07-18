@@ -25,9 +25,6 @@ const EditVacation = () => {
     useEffect(() => {
         if (vacation) {
             initDates()
-            if (vacation.events) {
-                getEvents();
-            }
         }
     }, [vacation])
 
@@ -46,10 +43,6 @@ const EditVacation = () => {
                     .catch(e => console.log(e))
             }
         }
-    }
-    //Matching events for this vacation
-    const getEvents = () => {
-
     }
 
     //Sets the dates according to how many days the vacation has been planned for
@@ -97,7 +90,7 @@ const EditVacation = () => {
                                             <Accordion.Item eventKey="1">
                                                 <Accordion.Header>Events</Accordion.Header>
                                                 <Accordion.Body>
-                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate } />
+                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate} />
                                                     <div className='card p-1 border border-light mt-auto'>
                                                         <p>Add a new Event?</p>
                                                         <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
