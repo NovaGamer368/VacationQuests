@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import Avatar from '@mui/material/Avatar';
 
 const NavIcon = () => {
     const [icon, setIcon] = useState('https://i.pinimg.com/736x/dd/f0/11/ddf0110aa19f445687b737679eec9cb2.jpg');
@@ -18,7 +19,7 @@ const NavIcon = () => {
 
     return (
         <>
-            <img className='avatar' src={ icon } />
+            <Avatar alt="" src={icon} />
         </>
     );
 };

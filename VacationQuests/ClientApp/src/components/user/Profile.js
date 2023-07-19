@@ -109,7 +109,6 @@ const Profile = () => {
                         <div>
                             {friends}
                         </div>
-                        <button className="btn btn-warning m-3 w-75" onClick={logout}>Log Out</button>
                     </div>
                 </div>
             </>
