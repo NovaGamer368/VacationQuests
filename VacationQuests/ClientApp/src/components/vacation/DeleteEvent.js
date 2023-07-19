@@ -1,9 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
-import UpdateVacation from './UpdateVacation';
 
 
 const DeleteEvent = ({ selectedEvent, vacation }) => {

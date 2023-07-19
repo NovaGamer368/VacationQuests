@@ -2,10 +2,8 @@
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import EditEvent from './EditEvent';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import DeleteEvent from './DeleteEvent';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AdvancedEventView = () => {    
     const queryParams = new URLSearchParams(window.location.search)
@@ -37,9 +35,6 @@ const AdvancedEventView = () => {
             }
         }
     }, [])
-    useEffect(() => {
-        console.log('vacation usestate: ', vacation)
-    }, [vacation])
 
     if (!loading) {
         if (!editMode) {
@@ -56,7 +51,7 @@ const AdvancedEventView = () => {
                     <div className='col-6 '>
                         <div className='row'>
                             <h2 className='col-10  d-flex flex-wrap text-center'>{selectedEvent.eventName}</h2>
-                            <button className='btn btn-secondary col-2' onClick={() => { setEditMode(true) }}><i class="bi bi-pencil"></i></button>
+                            <button className='btn btn-secondary col-2' onClick={() => { setEditMode(true) }}><i className="bi bi-pencil"></i></button>
                         </div>
                         <div className='col-10'>
                             <p><b>Description: </b>{selectedEvent.description}</p>
@@ -75,13 +70,19 @@ const AdvancedEventView = () => {
         else {
             return(
                 <>
-                    <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode}/> 
+                    <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode} vacation={vacation} /> 
                 </>
                 )
         }
     }
     else {
-       return(<h1>LOADING EVENT</h1>)
+        return (
+            <div>
+                <h1>LOADING EVENT</h1>
+                <CircularProgress />
+            </div>
+
+        )
     }
 };
 

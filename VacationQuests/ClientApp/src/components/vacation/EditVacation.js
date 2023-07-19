@@ -4,6 +4,8 @@ import moment from 'moment'
 import EventsDisplay from './EventsDisplay';
 import Accordion from 'react-bootstrap/Accordion';
 import VacationChangeOptions from './VacationChangeOptions';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 const EditVacation = () => {
@@ -109,7 +111,12 @@ const EditVacation = () => {
         );
     }
     else {
-        return (<div>Loading Vacation</div>)
+        return (
+            <>
+                <div>Loading Vacation</div>
+                <CircularProgress />
+            </>
+        )
     }
 };
 

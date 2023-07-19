@@ -2,6 +2,8 @@
 import Cookies from 'js-cookie';
 import moment from 'moment'
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const VacationList = () => {
     const [userVacations, setUserVacations] = useState(null)
@@ -37,9 +39,9 @@ const VacationList = () => {
 
     useEffect(() => {
         if (userVacations != null) {
-            setLoading(false) 
+            setLoading(false)
         }
-    },[userVacations])
+    }, [userVacations])
 
     if (!loading) {
         if (userVacations.length === 0) {
@@ -74,10 +76,13 @@ const VacationList = () => {
     }
     else {
         return (
-            <h3>LOADING</h3>
-            )
+            <>
+                <h3>LOADING</h3>
+                <CircularProgress />
+            </>
+        )
     }
-    
+
 };
 
 export default VacationList; 
