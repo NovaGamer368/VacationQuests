@@ -1,11 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import LocationSelector from './LocationSelector';
-import { Form } from 'react-bootstrap';
 import moment from 'moment'
-import DateSelection from './DateSelection';
 
-const EventsDisplay = ({ date, events, update }) => {
+const EventsDisplay = ({ date, events, update, vacation }) => {
 
     const [eventsArr, setEventsArr] = useState(events)
     const [displayArr, setDisplayArr] = useState();
@@ -49,7 +45,7 @@ const EventsDisplay = ({ date, events, update }) => {
                     <div className='text-center'>
                         {
                             displayArr.map((event) => (
-                                <div key={event.id} className='card border-light p-3 mb-3'>
+                                <div key={event.id} className='card border-light p-3 mb-3' onClick={ () => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}` }>
                                     <div>{event.eventName}</div>
                                     <div><b>Location: </b>
                                         {event.location}

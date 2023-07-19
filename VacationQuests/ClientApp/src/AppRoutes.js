@@ -4,6 +4,7 @@ import Login from './components/login/Login';
 import Register from './components/login/Register';
 import UserInfo from './components/login/UserInfo';
 import Profile from './components/user/Profile';
+import AdvancedEventView from './components/vacation/AdvancedEventView';
 import CreateEvent from './components/vacation/CreateEvent';
 import CreateVacation from './components/vacation/CreateVacation';
 import EditVacation from './components/vacation/EditVacation';
@@ -38,10 +39,13 @@ const AppRoutes = [
         element: <EditVacation />
     },
     {
-        path: 'CreateEvent',
+        path: '/CreateEvent',
         element: <CreateEvent />
     },
-
+    {
+        path: '/EventView',
+        element: <AdvancedEventView />
+    }
     //...ApiAuthorzationRoutes
 ];
 

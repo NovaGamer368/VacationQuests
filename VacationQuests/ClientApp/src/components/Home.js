@@ -13,31 +13,42 @@ const Home = () => {
 
 
     useEffect(() => {
-        getSessionFromSupaBase()        
-    },[])
+        getSessionFromSupaBase()
+    }, [])
 
     const getSessionFromSupaBase = async () => {
         const { error } = await supabase.auth.getSession()
         console.log(session)
     }
-
-    return (
-        <>
-            <div className='d-flex flex-column w-100 mt-5'>
-                <div className='container  mb-5 card border-primary p-5 text-center'>
-                    <h1 className='card-header text-light'> Your Vacations </h1>
-                    <hr />
-                    <div className='card-body'>
-                        <VacationList />
+    if (Cookies.get("UserId")) {
+        return (
+            <>
+                <div className='d-flex flex-column w-100 mt-5'>
+                    <div className='container  mb-5 card border-primary p-5 text-center'>
+                        <h1 className='card-header text-light'> Your Vacations </h1>
+                        <hr />
+                        <div className='card-body'>
+                            <VacationList />
+                        </div>
+                    </div>
+                    <div className='container mt-5 card border-secondary p-5'>
+                        <h3>Our Purpose</h3>
+                        <Link className='btn btn-info' to="/Create">Create your vacation now!</Link>
                     </div>
                 </div>
-                <div className='container mt-5 card border-secondary p-5'>
-                    <h3>Our Purpose</h3>
-                    <Link className='btn btn-info' to="/Create">Create your vacation now!</Link>
+            </>
+        );
+    }
+    else {
+        return (
+            <div className='container'>
+                <div className='d-flex h-100 justify-content-center align-selft-center text-center'>
+                    <h1>WELCOME TO VACATION QUESTS! Start making your vacations today!</h1>
                 </div>
             </div>
-        </>
-    );
+
+        )
+    }
 };
 
 export default Home; 
