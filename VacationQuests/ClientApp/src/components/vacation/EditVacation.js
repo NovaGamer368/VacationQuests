@@ -90,7 +90,7 @@ const EditVacation = () => {
                                             <Accordion.Item eventKey="1">
                                                 <Accordion.Header>Events</Accordion.Header>
                                                 <Accordion.Body>
-                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate} vacation={vacation } />
+                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate} vacation={ vacation } />
                                                     <div className='card p-1 border border-light mt-auto'>
                                                         <p>Add a new Event?</p>
                                                         <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>

@@ -9,14 +9,14 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
     const [loading, setLoading] = useState(true)
     
     useEffect(() => {
-       getEvents()
+        getEvents()
+        update()
     }, [])
 
     useEffect(() => {
         //console.log("display Array:", displayArr)
         if (displayArr) {
             setNoEvents(false)
-            update()
         }
     }, [displayArr])
 
@@ -30,6 +30,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                         if (moment(date).format('MMMM Do YYYY') == moment(data.selectedDate).format('MMMM Do YYYY')) {
                             tempArray.push(data)
                             setDisplayArr(tempArray)
+                            update()
                         }
                     })
                     .catch(e => console.log(e))
