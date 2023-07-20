@@ -29,3 +29,23 @@ code {
     display:flex;
     align-items: center;
 }
+
+.wrapper {
+    position: relative;
+}
+.icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: 4px;
+    position: absolute;
+    box-sizing: border-box;
+    top: 40%;
+    right: 5px;
+    transform: translateY(-50%);
+}
+
+.input {
+    height: 50px;
+    box-sizing: border-box;
+    padding-left: 1.5rem;
+}
