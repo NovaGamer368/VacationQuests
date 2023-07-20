@@ -1,5 +1,12 @@
 ﻿import React, { useEffect, useState } from 'react';
 
+import TextField from '@mui/material/TextField';
+import StaticDateRangePicker from '@mui/lab/StaticDateRangePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Box from '@mui/material/Box';
+import MaterialUIPickers from './MaterialUIPickers';
+
 const DateSelection = ({ location, clearLocationFound, createVacation }) => {
     const [numberOfDays, setNumberOfDays] = useState(0)
     const [daysSet, setDaysSet] = useState(false)
@@ -8,6 +15,7 @@ const DateSelection = ({ location, clearLocationFound, createVacation }) => {
     const [endDate, setEndDate] = useState(null)
 
     const [errorMsg, setErrorMsg] = useState('')
+    const [value, setValue] = React.useState([null, null]);
 
     useEffect(() => {
         calculateNewDate()
@@ -89,6 +97,8 @@ const DateSelection = ({ location, clearLocationFound, createVacation }) => {
                             <button class="btn btn-primary col-2" onClick={() => { submitDays(); }}>Submit</button>
                         </div>
                     </div>
+                    <h3 className='mt-5'>TESTING DATERANGE PICKER</h3>
+                    <MaterialUIPickers />
                 </div>
             </>
         );
