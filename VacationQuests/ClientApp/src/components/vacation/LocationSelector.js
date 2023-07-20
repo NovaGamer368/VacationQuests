@@ -81,40 +81,43 @@ const LocationSelector = ({ location, locationFound }) => {
                     {/*        }*/}
                     {/*    </DropdownButton>*/}
                     {/*</Dropdown>*/}
-
-                    <Autocomplete
-                        className='text-light p-3'
-                        id="country-select-demo"
-                        sx={{ width: 300 }}
-                        options={countries}
-                        onInputChange={(event, newInputValue) => {
-                            setSelected(newInputValue);
-                        }}
-                        autoHighlight
-                        getOptionLabel={(option) => option.name.common}
-                        renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                <img
-                                    loading="lazy"
-                                    width="20"
-                                    src={`https://flagcdn.com/w20/${option.cca2.toLowerCase()}.png`}
-                                    srcSet={`https://flagcdn.com/w40/${option.cca2.toLowerCase()}.png 2x`}
-                                    alt=""
-                                />
-                                {option.name.common}
-                            </Box>
-                        )}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="Choose a country"
-                                inputProps={{
-                                    ...params.inputProps,
-                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                    <div className='card bg-light'>
+                        <div className="card-header"> Select a desired country</div>
+                        <div className="card-body">
+                            <Autocomplete
+                                id="country-select-demo"
+                                sx={{ width: 300 }}
+                                options={countries}
+                                onInputChange={(event, newInputValue) => {
+                                    setSelected(newInputValue);
                                 }}
+                                autoHighlight
+                                getOptionLabel={(option) => option.name.common}
+                                renderOption={(props, option) => (
+                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                        <img
+                                            loading="lazy"
+                                            width="20"
+                                            src={`https://flagcdn.com/w20/${option.cca2.toLowerCase()}.png`}
+                                            srcSet={`https://flagcdn.com/w40/${option.cca2.toLowerCase()}.png 2x`}
+                                            alt=""
+                                        />
+                                        {option.name.common}
+                                    </Box>
+                                )}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Choose a country"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                        }}
+                                    />
+                                )}
                             />
-                        )}
-                    />
+                        </div>
+                    </div>
                 </div>
                 <div className='btn btn-primary mt-5 col-4' onClick={() => { selectCountry(); }}> Select Country</div>
             </div>
