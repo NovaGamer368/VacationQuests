@@ -24,6 +24,7 @@ export default function TimePicker({time, setTime}) {
                     setValue(newValue);
                 }}
                 renderInput={(params) => <TextField {...params} />}
+                componentsProps={{ actionBar: { actions: [] } }}
             />
         </LocalizationProvider>
     );

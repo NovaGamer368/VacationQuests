@@ -134,7 +134,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                         <label className="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
                         <input className="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" value={eventName} onChange={(e) => setEventName(e.target.value)} />
                     </div>
-                    <div className="card m-3 border-success p-5">
+                    <div className="card m-3 border-info p-5">
+                        <label className='mb-2'>Date of the event {moment(selectedDate).format('MMMM Do YYYY')}</label>
                         <Button className='btn btn-secondary w-50 mb-4 m-auto' variant="primary" onClick={handleShow}>
                             Change Date of event
                         </Button>
@@ -164,7 +165,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                             </div>
                         </fieldset>
                         <div>
-                            <button className='btn btn-primary border-success mt-3' onClick={() => { updateEvent() }}>Update Event</button>
+                            <button className='btn btn-primary border-info mt-3' onClick={() => { updateEvent() }}>Update Event</button>
                         </div>
                     </div>
                 </div>

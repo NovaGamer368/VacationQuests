@@ -2,6 +2,8 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import GoogleLoginButton from './GoogleLoginButton';
+import { NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -129,8 +131,10 @@ const Register = () => {
                             <label for="floatingPassword" className='text-dark'>Confirm Password</label>
                         </div>
                     </div>
+
                     <div className="text-danger">{message}</div>
-                    <button className="btn btn-primary w-100 mt-3" onClick={createUser}>Create User</button>
+                    <button className="btn btn-primary w-100 my-3" onClick={createUser}>Create User</button>
+                    <NavLink tag={Link} className="text-info mb-3" to="/Login"><u>Already got an account?</u></NavLink>
                 </div>
                 <GoogleLoginButton className='mt-3' email={setEmail} googleLogin={setGoogleLogin} create={createUser} />
             </div>

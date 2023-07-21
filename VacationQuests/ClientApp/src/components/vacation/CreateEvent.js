@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
-import { TimePicker } from 'antd';
+//import { TimePicker } from 'antd';
+import TimePicker from './TimePicker';
+
 
 
 const CreateEvent = () => {
@@ -12,7 +14,7 @@ const CreateEvent = () => {
 
     const [eventName, setEventName] = useState()
     const [location, setLocation] = useState()
-    const [time, setTime] = useState()
+    //const [time, setTime] = useState()
     const [startTime, setStartTime] = useState(new Date())
     const [endTime, setEndTime] = useState(new Date())
     const [description, setDescription] = useState('')
@@ -25,19 +27,19 @@ const CreateEvent = () => {
         init()
     }, [])
     //Time Change
-    useEffect(() => {
-        if (time) {
-            let start = new Date(startTime)
-            start.setHours(time[0].$H)
-            start.setMinutes(time[0].$m)
-            setStartTime(start)
+    //useEffect(() => {
+    //    if (time) {
+    //        let start = new Date(startTime)
+    //        start.setHours(time[0].$H)
+    //        start.setMinutes(time[0].$m)
+    //        setStartTime(start)
 
-            let end = new Date(endTime)
-            end.setHours(time[1].$H)
-            end.setMinutes(time[1].$m)
-            setEndTime(end)
-        }
-    }, [time])
+    //        let end = new Date(endTime)
+    //        end.setHours(time[1].$H)
+    //        end.setMinutes(time[1].$m)
+    //        setEndTime(end)
+    //    }
+    //}, [time])
     //Selected Date Change
     useEffect(() => {
         setStartTime(selectedDate)
@@ -61,9 +63,9 @@ const CreateEvent = () => {
         }
 
     }
-    const onChange = (time) => {
-        setTime(time);
-    };
+    //const onChange = (time) => {
+    //    setTime(time);
+    //};
 
     const createEvent = () => {
         if (eventName != '' && location != '' && startTime != selectedDate && endTime != selectedDate) {
@@ -135,33 +137,41 @@ const CreateEvent = () => {
 
     if (vacation && selectedDate) {
         return (
-            <div className='container text-center'>
+            <div className='container text-center mt-5'>
                 <div className='d-flex justify-content-center w-100'>
                     <button className='btn btn-secondary col-1 me-auto my-auto' onClick={() => { navigate(-1) }}>
-                        <i class="bi bi-arrow-90deg-left"></i>
+                        <i className="bi bi-arrow-90deg-left"></i>
                     </button>
                     <h1 className='col-12 text-center me-auto'>Creating Event on {moment(selectedDate).format('MMMM Do YYYY')}</h1>
                     <div className='col-1'></div>
                 </div>
                 <h3 className='text-warning'>{error}</h3>
                 <div className="form-group mb-5">
-                    <label className="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
+                    <label className="col-form-label col-form-label-lg mt-4" htmlFor="inputLarge">Event Title</label>
                     <input className="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
                 </div>
                 <div className="card m-3 border-danger p-5">
                     <fieldset>
-                        <label className="form-label" for="location">Where is the event happening?</label>
+                        <label className="form-label" htmlFor="location">Where is the event happening?</label>
                         <input className="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
                     </fieldset>
                     <fieldset>
-                        <label className="form-label mt-4" for="description">Description of Event</label>
+                        <label className="form-label mt-4" htmlFor="description">Description of Event</label>
                         <textarea className="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
                     </fieldset>
                     <fieldset>
                         <div className='m-2'>
                             <label className="form-label mt-4">Times</label>
-                            <div>
-                                <TimePicker.RangePicker className='text-primary' muse12Hours hourStep={1} minuteStep={15} format="h:mm a" placeHolder='Select a Start Time' onChange={onChange} />
+                            <div className='row'>
+                                {/*<TimePicker.RangePicker className='text-primary' muse12Hours hourStep={1} minuteStep={15} format="h:mm a" placeHolder='Select a Start Time' onChange={onChange} />*/}
+                                <div className='col-6'>
+                                    <h3>Start Time</h3>
+                                    <TimePicker time={startTime} setTime={setStartTime} />
+                                </div>
+                                <div className='col-6'>
+                                    <h3>End Time</h3>
+                                    <TimePicker time={endTime} setTime={setEndTime} />
+                                </div>
                             </div>
                         </div>
                     </fieldset>

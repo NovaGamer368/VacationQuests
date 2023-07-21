@@ -81,41 +81,71 @@ const EditVacation = () => {
                     </div>
                     <hr />
                 </div>
-                <div>
-                    <div className='d-flex justify-content-center flex-wrap mt-3 col-12'>
-                        {
-                            dates.map((date) => (
-                                <div className='card col-md-2 me-1 mb-1 text-center'>
-                                    <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
-                                    <div className='card-body d-flex flex-column border-secondary '>
-                                        <Accordion className='mb-3' defaultActiveKey="0">
-                                            <Accordion.Item eventKey="1">
-                                                <Accordion.Header>Events</Accordion.Header>
-                                                <Accordion.Body>
-                                                    <EventsDisplay date={date} events={vacation.events} update={forceUpdate} vacation={ vacation } />
-                                                    <div className='card p-1 border border-light mt-auto'>
-                                                        <p>Add a new Event?</p>
-                                                        <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
-                                                    </div>
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                        </Accordion>
-                                    </div>
-                                </div>
-                            ))
+                {
+                    dates.length > 4 ? 
+                        <div className='pb-5 container overflow-x-scroll'>
+                            <div className='d-flex mx-2'>
+                                {
+                                    dates.map((date) => (
+                                        <div className='card col-md-3 me-1 mb-1 text-center'>
+                                            <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
+                                            <div className='card-body d-flex flex-column border-secondary '>
+                                                <Accordion className='mb-3' defaultActiveKey="1">
+                                                    <Accordion.Item eventKey="1">
+                                                        <Accordion.Header>Events</Accordion.Header>
+                                                        <Accordion.Body>
+                                                            <EventsDisplay date={date} events={vacation.events} update={forceUpdate} vacation={vacation} />
+                                                            <div className='card p-1 border border-light mt-auto'>
+                                                                <p>Add a new Event?</p>
+                                                                <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+                                                            </div>
+                                                        </Accordion.Body>
+                                                    </Accordion.Item>
+                                                </Accordion>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>                        
+                        :
+                        <div className='pb-5 container'>
+                            <div className='d-flex justify-content-center mx-2'>
+                                {
+                                    dates.map((date) => (
+                                        <div className='card col-md-3 me-1 mb-1 text-center'>
+                                            <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
+                                            <div className='card-body d-flex flex-column border-secondary '>
+                                                <Accordion className='mb-3' defaultActiveKey="1">
+                                                    <Accordion.Item eventKey="1">
+                                                        <Accordion.Header>Events</Accordion.Header>
+                                                        <Accordion.Body>
+                                                            <EventsDisplay date={date} events={vacation.events} update={forceUpdate} vacation={vacation} />
+                                                            <div className='card p-1 border border-light mt-auto'>
+                                                                <p>Add a new Event?</p>
+                                                                <button type='button' className='align-self-end  btn btn-lg btn-secondary w-100' onClick={() => navigate(`/CreateEvent?v=${vacation.id}&d=${moment(date)}`)}><i className="bi bi-plus-lg"></i></button>
+                                                            </div>
+                                                        </Accordion.Body>
+                                                    </Accordion.Item>
+                                                </Accordion>
+                                            </div>
+                                        </div>
+                                    ))
 
-                        }
-                    </div>
-                </div>
+                                }
+                            </div>
+                        </div>
+                }
+                <hr className='container'/>
             </div>
         );
     }
     else {
         return (
-            <>
-                <div>Loading Vacation</div>
+            <div className='d-flex flex-row'>
+                <h1>Loading Vacation </h1>
                 <CircularProgress />
-            </>
+            </div>
         )
     }
 };
