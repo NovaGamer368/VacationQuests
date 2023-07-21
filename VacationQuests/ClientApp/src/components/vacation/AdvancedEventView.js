@@ -4,6 +4,7 @@ import moment from 'moment'
 import EditEvent from './EditEvent';
 import DeleteEvent from './DeleteEvent';
 import CircularProgress from '@mui/material/CircularProgress';
+import GoogleMaps from './GoogleMaps';
 
 const AdvancedEventView = () => {    
     const queryParams = new URLSearchParams(window.location.search)
@@ -64,6 +65,7 @@ const AdvancedEventView = () => {
                     </div>
                     <div className='text-center col-6 h-100'>
                         <h1>MAP OF GOOGLE GOING TO LOCATION</h1>
+                        <GoogleMaps />
                     </div>                    
                 </div>
             );
@@ -71,7 +73,7 @@ const AdvancedEventView = () => {
         else {
             return(
                 <>
-                    <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode} vacation={vacation} /> 
+                    <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode} vacation={vacation} />                    
                 </>
                 )
         }
