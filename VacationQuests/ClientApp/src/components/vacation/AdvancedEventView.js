@@ -34,6 +34,7 @@ const AdvancedEventView = () => {
                     .catch(e => console.log(e))
             }
         }
+
     }, [])
 
     if (!loading) {
