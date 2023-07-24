@@ -4,7 +4,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
 import UpdateVacation from './UpdateVacation';
 import Avatar from '@mui/material/Avatar';
-
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const VacationChangeOptions = ({ vacation }) => {
     const [planners, setPlanners] = useState()
@@ -176,17 +176,17 @@ const VacationChangeOptions = ({ vacation }) => {
                 showUserManagement ? 
                     <>
                         <Modal
-                            size='lg'
+                            fullscreen
                             centered show={show} onHide={handleCloseManagement}>
                             <Modal.Header className='justify-content-center'>
                                 <h3 className='text-center'>User Management</h3>
                                 <hr></hr>
                             </Modal.Header>
                             <Modal.Body>
-                                <div className='row d-flex justify-content-center'>
+                                <div className='row d-flex justify-content-center col-12 text-center'>
                                     {
                                         planners.map((planner) => (
-                                            <div className='card bg-secondary col-1 text-dark p-3 d-flex flex-column justify-content-center w-auto' key={planner.id}>
+                                            <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id}>
                                                 <Avatar
                                                     className='mx-auto'
                                                     src={ planner.icon }
@@ -197,11 +197,19 @@ const VacationChangeOptions = ({ vacation }) => {
                                             </div>
                                         ))
                                     }
+                                    <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center'>
+                                        <PersonAddIcon
+                                            className='mx-auto'
+                                            sx={{ width: 100, height: 100 }}
+                                            />
+                                        Add another?
+
+                                    </div>
                                 </div>
                             </Modal.Body>
                             <Modal.Footer>
-                                <div className='d-flex'>                                    
-                                    <Button className='m-1' variant="secondary" onClick={handleCloseManagement}>
+                                <div className='d-flex w-100'>                                    
+                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseManagement}>
                                         Cancel
                                     </Button>
                                 </div>

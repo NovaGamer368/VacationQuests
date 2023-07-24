@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import VacationList from './VacationList'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import OthersVacationList from './OthersVacationList';
 
 
 
@@ -34,6 +35,7 @@ const Home = () => {
                     <div className='container p-5 card text-center'>
                         <h1 className='card-header text-light'>Shared Vacations</h1>
                         <div className='card-body'>
+                            <OthersVacationList />
                         </div>
                     </div>
                     <div className='container mt-5  card border-secondary p-5'>
