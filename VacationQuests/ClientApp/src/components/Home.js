@@ -31,7 +31,12 @@ const Home = () => {
                             <VacationList />
                         </div>
                     </div>
-                    <div className='container mt-5 card border-secondary p-5'>
+                    <div className='container p-5 card text-center'>
+                        <h1 className='card-header text-light'>Shared Vacations</h1>
+                        <div className='card-body'>
+                        </div>
+                    </div>
+                    <div className='container mt-5  card border-secondary p-5'>
                         <h3>Our Purpose</h3>
                         <Link className='btn btn-info' to="/Create">Create your vacation now!</Link>
                     </div>

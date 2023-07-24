@@ -55,7 +55,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
 
             //Get the new number of days they want to plan the trip for
             const a = moment(startDate)
-            const b = moment(vacation.startDate);
+            const b = moment(vacation.endDate);
             console.log(a.diff(b, 'days'))
             if (events) {
 
@@ -103,6 +103,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
                     body: JSON.stringify({
                         VacationTitle: title,
                         events: eventsId,
+                        owner: vacation.owner,
                         planners: vacation.planners,
                         startDate: startDate,
                         endDate: endDate
@@ -121,6 +122,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
                     body: JSON.stringify({
                         VacationTitle: title,
                         events: [],
+                        owner: vacation.owner,
                         planners: vacation.planners,
                         startDate: startDate,
                         endDate: endDate

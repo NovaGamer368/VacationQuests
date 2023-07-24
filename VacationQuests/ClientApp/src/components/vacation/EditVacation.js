@@ -21,6 +21,7 @@ const EditVacation = () => {
     //On start
     useEffect(() => {
         getVacation();
+
     }, [])
 
     //Vacation Changes

@@ -32,7 +32,7 @@ const Edit = ({ user, stopEdit }) => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email: email, password: newPassword, icon: icon, bio: bio, vacations: user.vacations, friends: user.friends }),
+                    body: JSON.stringify({ email: email, password: newPassword, icon: icon, bio: bio, vacations: user.vacations, othersvacations: user.othersvacations, friends: user.friends }),
                     origin: "https://localhost:44455"
                 };
 
@@ -51,7 +51,7 @@ const Edit = ({ user, stopEdit }) => {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: email, password: user.password, icon: icon, bio: bio, vacations: user.vacations, friends: user.friends }),
+                body: JSON.stringify({ email: email, password: user.password, icon: icon, bio: bio, vacations: user.vacations, othersvacations: user.othersvacations,  friends: user.friends }),
                 origin: "https://localhost:44455"
             };
 

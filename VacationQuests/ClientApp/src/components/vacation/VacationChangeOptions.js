@@ -3,18 +3,29 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
 import UpdateVacation from './UpdateVacation';
+import Avatar from '@mui/material/Avatar';
 
 
 const VacationChangeOptions = ({ vacation }) => {
+    const [planners, setPlanners] = useState()
+
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false)
     const [showUpdate, setShowUpdate] = useState(false)
+    const [showUserManagement, setShowUserManagement] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleCloseDelete = () => setShowDelete(false);
     const handleShowDelete = () => setShowDelete(true)
+
+    const handleCloseManagement = () => setShowUserManagement(false);
+    const handleShowManagement = () => setShowUserManagement(true)
+
+    useEffect(() => {
+        getPlanners()
+    }, [])
 
     const deleteVacation = () => {
         //Delete all events in the vacation
@@ -59,6 +70,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                 icon: data.icon,
                                 bio: data.bio,
                                 vacations: fillArray,
+                                othersVacations: data.othersVacations,
                                 friends: data.friends
                             }),
                             origin: "https://localhost:44455"
@@ -83,9 +95,22 @@ const VacationChangeOptions = ({ vacation }) => {
                 })
                 .catch(e => console.log(e))
         })
-
     }
 
+    const getPlanners = () => {
+        let tempArr = []
+        vacation.planners.forEach((planner) => {
+            fetch(`https://localhost:7259/api/users/${planner}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    console.log(data)
+                    tempArr.push(data)
+                })
+                .catch(e => console.log(e))
+        })
+        setPlanners(tempArr)
+
+    }
     return (
         <>
             <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
@@ -98,6 +123,9 @@ const VacationChangeOptions = ({ vacation }) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <div className='d-flex justify-content-center flex-column'>
+                        <div>
+                            <button className='btn btn-primary w-100 mt-auto mb-2' onClick={handleShowManagement}>Manage Users</button>
+                        </div>
                         <div>
                             <button className='btn btn-info w-100 mb-2' onClick={() => setShowUpdate(true)}>Update Vacation</button>
                         </div>
@@ -115,6 +143,7 @@ const VacationChangeOptions = ({ vacation }) => {
                     }
                 </Offcanvas.Body>
             </Offcanvas>
+            {/*Delete Vacation Modal*/ }
             {
                 showDelete ?
                     <>
@@ -142,6 +171,46 @@ const VacationChangeOptions = ({ vacation }) => {
                     :
                     <></>
             }
+            {/*Manage Users Modal*/}
+            {
+                showUserManagement ? 
+                    <>
+                        <Modal
+                            size='lg'
+                            centered show={show} onHide={handleCloseManagement}>
+                            <Modal.Header className='justify-content-center'>
+                                <h3 className='text-center'>User Management</h3>
+                                <hr></hr>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <div className='row d-flex justify-content-center'>
+                                    {
+                                        planners.map((planner) => (
+                                            <div className='card bg-secondary col-1 text-dark p-3 d-flex flex-column justify-content-center w-auto' key={planner.id}>
+                                                <Avatar
+                                                    className='mx-auto'
+                                                    src={ planner.icon }
+                                                    sx={{ width: 100, height: 100 }}
+                                                />
+                                                {planner.email}
+
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <div className='d-flex'>                                    
+                                    <Button className='m-1' variant="secondary" onClick={handleCloseManagement}>
+                                        Cancel
+                                    </Button>
+                                </div>
+                            </Modal.Footer>
+                        </Modal>
+                    </> : <>
+                        </>
+            }
+
         </>
     );
 };

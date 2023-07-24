@@ -15,6 +15,7 @@ namespace VacationQuestsAPI.Model
         public string? Icon { get; set; }
         public string? Bio { get; set; }
         public IEnumerable<string>? Vacations { get; set; }
+        public IEnumerable<string>? OthersVacations { get; set; }
         public IEnumerable<string>? Friends { get; set; }
     }
 }

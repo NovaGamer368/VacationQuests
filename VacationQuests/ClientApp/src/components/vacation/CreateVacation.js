@@ -1,7 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import LocationSelector from './LocationSelector';
-import { Form } from 'react-bootstrap';
 import DateSelection from './DateSelection';
 
 const CreateVacation = () => {
@@ -33,7 +32,7 @@ const CreateVacation = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ VacationTitle: location + ' Vacation', StartDate: startDate, EndDate: endDate, planners: [Cookies.get('UserId')] }),
+                    body: JSON.stringify({ VacationTitle: location + ' Vacation', Owner: currentUser.id, StartDate: startDate, EndDate: endDate, planners: [currentUser.id] }),
                     origin: "https://localhost:44455"
                 };
 
@@ -62,7 +61,7 @@ const CreateVacation = () => {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: currentUser.email, password: currentUser.password, icon: currentUser.icon, bio: currentUser.bio, Vacations: tempArr }),
+            body: JSON.stringify({ email: currentUser.email, password: currentUser.password, icon: currentUser.icon, bio: currentUser.bio, Vacations: tempArr, othersvacations: currentUser.othersvacations }),
             origin: "https://localhost:44455"
         };
         fetch(`https://localhost:7259/api/users/${Cookies.get('UserId')}`, requestOptions)
