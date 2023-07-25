@@ -12,6 +12,7 @@ export class Layout extends Component {
                 <div className="d-flex justify-content-center">
                     {this.props.children}
                 </div>
+                <footer className='mt-5'></footer>
             </div>
         );
     }
