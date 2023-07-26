@@ -27,6 +27,9 @@ const VacationChangeOptions = ({ vacation }) => {
     const [showUserManagement, setShowUserManagement] = useState(false)
     const [showAnotherUserSearch, setAnotherUserSearch] = useState(false)
 
+    const [showAdvancedUser, setShowAdvancedUser] = useState(false)
+    const [selectedAdvanced, setSelectedAdvanced] = useState(null)
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -38,6 +41,15 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const handleCloseUserSearch = () => setAnotherUserSearch(false);
     const handleShowUserSearch = () => setAnotherUserSearch(true)
+
+    const handleCloseAdvancedUser = () => {
+        setShowAdvancedUser(false)
+        setSelectedAdvanced(null)
+    };
+    const handleShowAdvancedUser = (user) => {
+        setShowAdvancedUser(true)
+        setSelectedAdvanced(user)
+    }
 
     const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -135,7 +147,6 @@ const VacationChangeOptions = ({ vacation }) => {
         
     }
 
-
     const addUser = () => {
         let tempArr = []
         let userTemp = []
@@ -219,6 +230,69 @@ const VacationChangeOptions = ({ vacation }) => {
         }
     }
 
+    const kickUser = () => {
+        let fillArray = selectedAdvanced.othersVacations
+        if (fillArray) {
+            for (let i = 0; i < fillArray.length; i++) {
+                if (fillArray[i] === vacation.id) {
+                    fillArray.splice(i, 1)
+                }
+            }
+        }
+        let plannerArr = vacation.planners
+        if (plannerArr) {
+            for (let i = 0; i < plannerArr.length; i++) {
+                if (plannerArr[i] === selectedAdvanced.id) {
+                    plannerArr.splice(i, 1)
+                }
+            }
+        }
+
+        const requestOptions = {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({  
+                email: selectedAdvanced.email,
+                password: selectedAdvanced.password,
+                icon: selectedAdvanced.icon,
+                bio: selectedAdvanced.bio,
+                vacations: selectedAdvanced.vacations,
+                othersVacations: fillArray,
+                friends: selectedAdvanced.friends
+            }),
+            origin: "https://localhost:44455"
+        };
+
+        fetch(`https://localhost:7259/api/users/${selectedAdvanced.id}`, requestOptions)
+            .then(resp => {
+                const requestOptions = {
+                    mode: 'cors',
+                    method: 'PUT',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        VacationTitle: vacation.vacationTitle,
+                        events: vacation.events,
+                        owner: vacation.owner,
+                        planners: plannerArr,
+                        startDate: vacation.startDate,
+                        endDate: vacation.endDate
+                    }),
+                    origin: "https://localhost:44455"
+                };
+
+                fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+                    .then(resp => { window.location.reload() })
+                    .catch(e => console.log(e)) })
+            .catch(e => console.log(e))
+    }
+
     const getPlanners = () => {
         let tempArr = []
         vacation.planners.forEach((planner) => {
@@ -231,7 +305,6 @@ const VacationChangeOptions = ({ vacation }) => {
         })
         setPlanners(tempArr)
     }
-
     const getUsers = () => {
         let tempArr = []
         fetch(`https://localhost:7259/api/users`)
@@ -244,7 +317,6 @@ const VacationChangeOptions = ({ vacation }) => {
             .catch(e => console.log(e))
         setUsers(tempArr)
     }
-
     const getCurrentUser = () => {
         fetch(`https://localhost:7259/api/users/${Cookies.get("UserId")}`)
             .then(resp => resp.json())
@@ -253,6 +325,7 @@ const VacationChangeOptions = ({ vacation }) => {
             })
             .catch(e => console.log(e))
     }
+
     return (
         <>
             <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
@@ -317,8 +390,10 @@ const VacationChangeOptions = ({ vacation }) => {
             {
                 showUserManagement ?
                     <>
+                            {/*size='lg'*/}
                         <Modal
                             fullscreen
+                            animation={false}
                             centered show={show} onHide={handleCloseManagement}>
                             <Modal.Header className='justify-content-center'>
                                 <h3 className='text-center'>User Management</h3>
@@ -328,7 +403,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                 <div className='row d-flex justify-content-center col-12 text-center'>
                                     {
                                         planners.map((planner) => (
-                                            <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id}>
+                                            <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={()=>handleShowAdvancedUser(planner)}>
                                                 <Avatar
                                                     className='mx-auto'
                                                     src={planner.icon}
@@ -365,6 +440,7 @@ const VacationChangeOptions = ({ vacation }) => {
                 showAnotherUserSearch ?
                     <>
                         <Modal
+                            animation={false}
                             backdrop='static'
                             size='lg'
                             centered show={show} onHide={handleCloseUserSearch}>
@@ -410,6 +486,48 @@ const VacationChangeOptions = ({ vacation }) => {
                                         Add
                                     </Button>
                                     <Button className='m-1 w-50' variant="secondary" onClick={handleCloseUserSearch}>
+                                        Cancel
+                                    </Button>
+                                </div>
+                            </Modal.Footer>
+                        </Modal>
+                    </> : <>
+                    </>
+            }
+            {/*Advanced User*/}
+            {
+                showAdvancedUser ?
+                    <>
+                        <Modal
+                            animation={false}
+                            backdrop='static'
+                            size='lg'
+                            centered show={show} onHide={handleCloseAdvancedUser}>             
+                            <Modal.Header className='border border-secondary text-center'>
+                                <h1 className='mx-auto'>{selectedAdvanced.email}</h1>
+                            </Modal.Header>
+                            <Modal.Body className='border border-secondary'>
+                                <div className='row mb-3'>
+                                    <div className='col-6'>
+                                        <img src={selectedAdvanced.icon} />                                        
+                                    </div>
+                                    <div className='col-6 d-flex align-items-center h-auto'>
+                                        <p>{ selectedAdvanced.bio }</p>
+                                    </div>                                    
+                                </div>
+                                <div className='row'>
+
+                                    <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
+                                        Make User Owner?
+                                    </Button>
+                                    <Button className='col-6' variant="danger" onClick={() => { kickUser() } }>
+                                        Kick from Vacation
+                                    </Button>
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer className='border border-secondary'>
+                                <div className='d-flex w-100'>                                    
+                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseAdvancedUser}>
                                         Cancel
                                     </Button>
                                 </div>
