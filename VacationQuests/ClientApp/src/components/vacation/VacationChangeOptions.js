@@ -11,9 +11,6 @@ import Cookies from 'js-cookie';
 import { useReducer } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
-
-
-
 const VacationChangeOptions = ({ vacation }) => {
     const [planners, setPlanners] = useState(null)
     const [users, setUsers] = useState(null)
@@ -28,6 +25,7 @@ const VacationChangeOptions = ({ vacation }) => {
     const [showUpdate, setShowUpdate] = useState(false)
     const [showUserManagement, setShowUserManagement] = useState(false)
     const [showAnotherUserSearch, setAnotherUserSearch] = useState(false)
+    const [showOtherUsers, setShowOtherUsers] = useState(false)
 
     const [showAdvancedUser, setShowAdvancedUser] = useState(false)
     const [selectedAdvanced, setSelectedAdvanced] = useState(null)
@@ -43,6 +41,9 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const handleCloseUserSearch = () => setAnotherUserSearch(false);
     const handleShowUserSearch = () => setAnotherUserSearch(true)
+
+    const handleCloseOtherUsers = () => setShowOtherUsers(false);
+    const handleShowOtherUsers = () => setShowOtherUsers(true)
 
     const handleCloseAdvancedUser = () => {
         setShowAdvancedUser(false)
@@ -414,8 +415,13 @@ const VacationChangeOptions = ({ vacation }) => {
                                                             src={planner.icon}
                                                             sx={{ width: 100, height: 100 }}
                                                         />
-                                                        {planner.email}
-
+                                                        <div>
+                                                            {
+                                                                planner.id === vacation.owner ?
+                                                                    <span className='text-info'>(Owner) </span> : <></>
+                                                            }
+                                                            {planner.email}
+                                                        </div>
                                                     </div>
                                                 ))
                                             }
@@ -560,7 +566,7 @@ const VacationChangeOptions = ({ vacation }) => {
                         <Offcanvas.Body>
                             <div className='d-flex justify-content-center flex-column'>
                                 <div>
-                                    <button className='btn btn-secondary mb-3 w-100 mt-auto flex-end' onClick={handleShowDelete}>Others in Vacation</button>
+                                    <button className='btn btn-secondary mb-3 w-100 mt-auto flex-end' onClick={handleShowOtherUsers}>Others in Vacation</button>
                                 </div>
                                 <div>
                                     <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowDelete}>Leave Vacation</button>
@@ -568,6 +574,56 @@ const VacationChangeOptions = ({ vacation }) => {
                             </div>
                         </Offcanvas.Body>
                     </Offcanvas>
+                    {
+
+                        showOtherUsers ?
+                            <>
+                                <Modal
+                                    fullscreen
+                                    animation={false}
+                                    centered show={show} onHide={handleCloseOtherUsers}>
+                                    <Modal.Header className='justify-content-center'>
+                                        <h3 className='text-center'>User Management</h3>
+                                        <hr></hr>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <div className='row d-flex justify-content-center col-12 text-center'>
+                                            {
+                                                planners.map((planner) => (
+                                                    <>
+                                                       
+                                                        <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id}>
+                                                            
+                                                            <Avatar
+                                                                className='mx-auto'
+                                                                src={planner.icon}
+                                                                sx={{ width: 100, height: 100 }}
+                                                            />
+                                                            <div>
+                                                                {
+                                                                    planner.id === vacation.owner ?
+                                                                        <span className='text-info'>(Owner) </span> : <></>
+                                                                }
+                                                                {planner.email}
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </>
+                                                ))
+                                            }
+                                        </div>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-100' variant="secondary" onClick={handleCloseOtherUsers}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </> : <>
+                            </>
+                    }
                 </>
             )
         }
