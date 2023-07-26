@@ -120,6 +120,7 @@ const CreateEvent = () => {
                 VacationTitle: vacation.vacationTitle,
                 StartDate: vacation.startDate,
                 EndDate: vacation.endDate,
+                owner: vacation.owner,
                 planners: vacation.planners,
                 events: tempArr
             }),

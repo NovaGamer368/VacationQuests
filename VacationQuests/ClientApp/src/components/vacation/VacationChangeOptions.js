@@ -75,52 +75,64 @@ const VacationChangeOptions = ({ vacation }) => {
             fetch(`https://localhost:7259/api/users/${planner}`)
                 .then(resp => resp.json())
                 .then(data => {
+                    console.log(data)
                     let fillArray = data.vacations
+                    let othersArray = data.othersVacations
                     if (fillArray) {
                         for (let i = 0; i < fillArray.length; i++) {
                             if (fillArray[i] === vacation.id) {
                                 fillArray.splice(i, 1)
                             }
-                        }
-                        //Updating with different list
-                        const requestOptions = {
-                            mode: 'cors',
-                            method: 'PUT',
-                            headers: {
-                                'Access-Control-Allow-Origin': '*',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                email: data.email,
-                                password: data.password,
-                                icon: data.icon,
-                                bio: data.bio,
-                                vacations: fillArray,
-                                othersVacations: data.othersVacations,
-                                friends: data.friends
-                            }),
-                            origin: "https://localhost:44455"
-                        };
-
-                        fetch(`https://localhost:7259/api/users/${planner}`, requestOptions)
-                            .then(resp => {
-                                const requestOptions = {
-                                    mode: 'cors',
-                                    method: 'DELETE',
-                                    headers: {
-                                        'Access-Control-Allow-Origin': '*',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    origin: "https://localhost:44455"
-                                };
-                                fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
-                                    .then(window.location.href = '/').catch(e => console.log(e))
-                            })
-                            .catch(e => console.log(e))
+                        }                        
                     }
+                    console.log(othersArray)
+                    if (othersArray) {
+                        for (let i = 0; i < othersArray.length; i++) {
+                            if (othersArray[i] === vacation.id) {
+                                othersArray.splice(i, 1)
+                            }
+                        }
+                    }
+                    //Updating with different list
+                    const requestOptions = {
+                        mode: 'cors',
+                        method: 'PUT',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: data.email,
+                            password: data.password,
+                            icon: data.icon,
+                            bio: data.bio,
+                            vacations: fillArray,
+                            othersVacations: othersArray,
+                            friends: data.friends
+                        }),
+                        origin: "https://localhost:44455"
+                    };
+
+                    fetch(`https://localhost:7259/api/users/${planner}`, requestOptions) 
+                        .then(resp => {
+                            const requestOptions = {
+                                mode: 'cors',
+                                method: 'DELETE',
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Content-Type': 'application/json'
+                                },
+                                origin: "https://localhost:44455"
+                            };
+                            fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+                                .then(window.location.href = '/')
+                                .catch(e => console.log(e))
+                        })
+                        .catch(e => console.log(e))
                 })
                 .catch(e => console.log(e))
         })
+        
     }
 
 
@@ -128,7 +140,7 @@ const VacationChangeOptions = ({ vacation }) => {
         let tempArr = []
         let userTemp = []
         if (userEmail) {
-            setAddError(userEmail)
+            setAddError('Please enter a valid email')
             //Search for users email in users useState
             //If found add the found users ID to vacation planners and update their "othersVacations" array with the current vacations ID
             users.forEach((user) => {
