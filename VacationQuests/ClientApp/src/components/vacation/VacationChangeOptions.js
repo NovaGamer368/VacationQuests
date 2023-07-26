@@ -9,13 +9,15 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete'
 import Cookies from 'js-cookie';
 import { useReducer } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
 const VacationChangeOptions = ({ vacation }) => {
-    const [planners, setPlanners] = useState()
-    const [users, setUsers] = useState()
-    const [currentUser, setCurrentUser] = useState()
+    const [planners, setPlanners] = useState(null)
+    const [users, setUsers] = useState(null)
+    const [currentUser, setCurrentUser] = useState(null)
 
     const [userEmail, setUserEmail] = useState("")
     const [addError, setAddError] = useState("")
@@ -95,7 +97,7 @@ const VacationChangeOptions = ({ vacation }) => {
                             if (fillArray[i] === vacation.id) {
                                 fillArray.splice(i, 1)
                             }
-                        }                        
+                        }
                     }
                     console.log(othersArray)
                     if (othersArray) {
@@ -125,7 +127,7 @@ const VacationChangeOptions = ({ vacation }) => {
                         origin: "https://localhost:44455"
                     };
 
-                    fetch(`https://localhost:7259/api/users/${planner}`, requestOptions) 
+                    fetch(`https://localhost:7259/api/users/${planner}`, requestOptions)
                         .then(resp => {
                             const requestOptions = {
                                 mode: 'cors',
@@ -144,7 +146,7 @@ const VacationChangeOptions = ({ vacation }) => {
                 })
                 .catch(e => console.log(e))
         })
-        
+
     }
 
     const addUser = () => {
@@ -255,7 +257,7 @@ const VacationChangeOptions = ({ vacation }) => {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({  
+            body: JSON.stringify({
                 email: selectedAdvanced.email,
                 password: selectedAdvanced.password,
                 icon: selectedAdvanced.icon,
@@ -289,7 +291,8 @@ const VacationChangeOptions = ({ vacation }) => {
 
                 fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
                     .then(resp => { window.location.reload() })
-                    .catch(e => console.log(e)) })
+                    .catch(e => console.log(e))
+            })
             .catch(e => console.log(e))
     }
 
@@ -322,223 +325,275 @@ const VacationChangeOptions = ({ vacation }) => {
             .then(resp => resp.json())
             .then(data => {
                 setCurrentUser(data)
+                console.log(data)
             })
             .catch(e => console.log(e))
     }
+    if (currentUser) {
+        if (currentUser.id === vacation.owner) {
+            return (
+                <>
+                    <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
+                        <i className="bi bi-list"></i>
+                    </Button>
 
-    return (
-        <>
-            <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
-                <i className="bi bi-list"></i>
-            </Button>
-
-            <Offcanvas placement={'end'} show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title className="text-center">Edit {vacation.vacationTitle} Options</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <div className='d-flex justify-content-center flex-column'>
-                        <div>
-                            <button className='btn btn-primary w-100 mt-auto mb-2' onClick={handleShowManagement}>Manage Users</button>
-                        </div>
-                        <div>
-                            <button className='btn btn-info w-100 mb-2' onClick={() => setShowUpdate(true)}>Update Vacation</button>
-                        </div>
-                        <div>
-                            <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowDelete}>Delete</button>
-                        </div>
-                    </div>
-                    {
-                        showUpdate ?
-                            <div className='flex-end mt-5'>
-                                <UpdateVacation vacation={vacation} closeUpdate={setShowUpdate} />
+                    <Offcanvas placement={'end'} show={show} onHide={handleClose}>
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title className="text-center">Edit {vacation.vacationTitle} Options</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <div className='d-flex justify-content-center flex-column'>
+                                <div>
+                                    <button className='btn btn-primary w-100 mt-auto mb-2' onClick={handleShowManagement}>Manage Users</button>
+                                </div>
+                                <div>
+                                    <button className='btn btn-info w-100 mb-2' onClick={() => setShowUpdate(true)}>Update Vacation</button>
+                                </div>
+                                <div>
+                                    <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowDelete}>Delete</button>
+                                </div>
                             </div>
+                            {
+                                showUpdate ?
+                                    <div className='flex-end mt-5'>
+                                        <UpdateVacation vacation={vacation} closeUpdate={setShowUpdate} />
+                                    </div>
+                                    :
+                                    <></>
+                            }
+                        </Offcanvas.Body>
+                    </Offcanvas>
+                    {/*Delete Vacation Modal*/}
+                    {
+                        showDelete ?
+                            <>
+                                <Modal
+                                    size="lg"
+                                    centered show={show} onHide={handleCloseDelete}>
+                                    <Modal.Header className='justify-content-center'>
+                                        <h3 className='text-center'>DELETING <b className='text-danger'>{vacation.vacationTitle}</b></h3>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        This vacation will be lost <b className='text-danger'>forever </b>with the events included are you sure you want to <b className='text-danger'>delete the vacation?</b>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-50' variant="danger" onClick={deleteVacation}>
+                                                Confirm Delete
+                                            </Button>
+                                            <Button className='m-1 w-50' variant="secondary" onClick={handleCloseDelete}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </>
                             :
                             <></>
                     }
-                </Offcanvas.Body>
-            </Offcanvas>
-            {/*Delete Vacation Modal*/}
-            {
-                showDelete ?
-                    <>
-                        <Modal
-                            size="lg"
-                            centered show={show} onHide={handleCloseDelete}>
-                            <Modal.Header className='justify-content-center'>
-                                <h3 className='text-center'>DELETING <b className='text-danger'>{vacation.vacationTitle}</b></h3>
-                            </Modal.Header>
-                            <Modal.Body>
-                                This vacation will be lost <b className='text-danger'>forever </b>with the events included are you sure you want to <b className='text-danger'>delete the vacation?</b>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <div className='d-flex w-100'>
-                                    <Button className='m-1 w-50' variant="danger" onClick={deleteVacation}>
-                                        Confirm Delete
-                                    </Button>
-                                    <Button className='m-1 w-50' variant="secondary" onClick={handleCloseDelete}>
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </Modal.Footer>
-                        </Modal>
-                    </>
-                    :
-                    <></>
-            }
-            {/*Manage Users Modal*/}
-            {
-                showUserManagement ?
-                    <>
-                            {/*size='lg'*/}
-                        <Modal
-                            fullscreen
-                            animation={false}
-                            centered show={show} onHide={handleCloseManagement}>
-                            <Modal.Header className='justify-content-center'>
-                                <h3 className='text-center'>User Management</h3>
-                                <hr></hr>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <div className='row d-flex justify-content-center col-12 text-center'>
-                                    {
-                                        planners.map((planner) => (
-                                            <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={()=>handleShowAdvancedUser(planner)}>
-                                                <Avatar
+                    {/*Manage Users Modal*/}
+                    {
+                        showUserManagement ?
+                            <>
+                                {/*size='lg'*/}
+                                <Modal
+                                    fullscreen
+                                    animation={false}
+                                    centered show={show} onHide={handleCloseManagement}>
+                                    <Modal.Header className='justify-content-center'>
+                                        <h3 className='text-center'>User Management</h3>
+                                        <hr></hr>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <div className='row d-flex justify-content-center col-12 text-center'>
+                                            {
+                                                planners.map((planner) => (
+                                                    <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={() => handleShowAdvancedUser(planner)}>
+                                                        <Avatar
+                                                            className='mx-auto'
+                                                            src={planner.icon}
+                                                            sx={{ width: 100, height: 100 }}
+                                                        />
+                                                        {planner.email}
+
+                                                    </div>
+                                                ))
+                                            }
+                                            <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' onClick={handleShowUserSearch}>
+                                                <PersonAddIcon
                                                     className='mx-auto'
-                                                    src={planner.icon}
                                                     sx={{ width: 100, height: 100 }}
                                                 />
-                                                {planner.email}
+                                                Add another?
 
                                             </div>
-                                        ))
-                                    }
-                                    <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' onClick={handleShowUserSearch}>
-                                        <PersonAddIcon
-                                            className='mx-auto'
-                                            sx={{ width: 100, height: 100 }}
-                                        />
-                                        Add another?
-
-                                    </div>
-                                </div>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <div className='d-flex w-100'>
-                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseManagement}>
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </Modal.Footer>
-                        </Modal>
-                    </> : <>
-                    </>
-            }
-            {/*Another User Search*/}
-            {
-                showAnotherUserSearch ?
-                    <>
-                        <Modal
-                            animation={false}
-                            backdrop='static'
-                            size='lg'
-                            centered show={show} onHide={handleCloseUserSearch}>
-                            <Modal.Header className='border border-secondary justify-content-center'>
-                                <h3 className='text-center'>Add another</h3>
-                                <hr></hr>
-                            </Modal.Header>
-                            <Modal.Body className='bg-primary'>
-                                <div className='text-danger text-center'>{addError}</div>
-                                <div className='row'>
-                                    <Autocomplete
-                                        id="free-solo-demo"
-                                        freeSolo
-                                        inputValue={userEmail}
-                                        onInputChange={(event, newInputValue) => {
-                                            setUserEmail(newInputValue);
-                                        }}
-                                        options={users.map((user) => user.email)}
-                                        renderInput={(params) => <TextField {...params} label="Search for Another user" />}
-                                    />
-                                </div>
-                                <div className='row text-light text-center p-2'>
-                                    {
-                                        currentUser.friends ?
-                                            <>
-                                                {
-                                                    currentUser.friends.map((friend) => (
-                                                        <div>
-                                                            {friend}
-                                                        </div>
-                                                    ))
-                                                }
-                                            </> :
-                                            <h4>YOU HAVE NO FRIENDS</h4>
-                                    }
-                                </div>
+                                        </div>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-100' variant="secondary" onClick={handleCloseManagement}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </> : <>
+                            </>
+                    }
+                    {/*Another User Search*/}
+                    {
+                        showAnotherUserSearch ?
+                            <>
+                                <Modal
+                                    animation={false}
+                                    backdrop='static'
+                                    size='lg'
+                                    centered show={show} onHide={handleCloseUserSearch}>
+                                    <Modal.Header className='border border-secondary justify-content-center'>
+                                        <h3 className='text-center'>Add another</h3>
+                                        <hr></hr>
+                                    </Modal.Header>
+                                    <Modal.Body className='bg-primary'>
+                                        <div className='text-danger text-center'>{addError}</div>
+                                        <div className='row'>
+                                            <Autocomplete
+                                                id="free-solo-demo"
+                                                freeSolo
+                                                inputValue={userEmail}
+                                                onInputChange={(event, newInputValue) => {
+                                                    setUserEmail(newInputValue);
+                                                }}
+                                                options={users.map((user) => user.email)}
+                                                renderInput={(params) => <TextField {...params} label="Search for Another user" />}
+                                            />
+                                        </div>
+                                        <div className='row text-light text-center p-2'>
+                                            {
+                                                currentUser.friends ?
+                                                    <>
+                                                        {
+                                                            currentUser.friends.map((friend) => (
+                                                                <div>
+                                                                    {friend}
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </> :
+                                                    <h4>YOU HAVE NO FRIENDS</h4>
+                                            }
+                                        </div>
 
 
-                            </Modal.Body>
-                            <Modal.Footer className='border border-secondary'>
-                                <div className='d-flex w-100'>
-                                    <Button className='m-1 w-50' variant="primary" onClick={addUser}>
-                                        Add
-                                    </Button>
-                                    <Button className='m-1 w-50' variant="secondary" onClick={handleCloseUserSearch}>
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </Modal.Footer>
-                        </Modal>
-                    </> : <>
-                    </>
-            }
-            {/*Advanced User*/}
-            {
-                showAdvancedUser ?
-                    <>
-                        <Modal
-                            animation={false}
-                            backdrop='static'
-                            size='lg'
-                            centered show={show} onHide={handleCloseAdvancedUser}>             
-                            <Modal.Header className='border border-secondary text-center'>
-                                <h1 className='mx-auto'>{selectedAdvanced.email}</h1>
-                            </Modal.Header>
-                            <Modal.Body className='border border-secondary'>
-                                <div className='row mb-3'>
-                                    <div className='col-6'>
-                                        <img src={selectedAdvanced.icon} />                                        
-                                    </div>
-                                    <div className='col-6 d-flex align-items-center h-auto'>
-                                        <p>{ selectedAdvanced.bio }</p>
-                                    </div>                                    
-                                </div>
-                                <div className='row'>
+                                    </Modal.Body>
+                                    <Modal.Footer className='border border-secondary'>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-50' variant="primary" onClick={addUser}>
+                                                Add
+                                            </Button>
+                                            <Button className='m-1 w-50' variant="secondary" onClick={handleCloseUserSearch}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </> : <>
+                            </>
+                    }
+                    {/*Advanced User*/}
+                    {
+                        showAdvancedUser ?
+                            <>
+                                <Modal
+                                    animation={false}
+                                    backdrop='static'
+                                    size='lg'
+                                    centered show={show} onHide={handleCloseAdvancedUser}>
+                                    <Modal.Header className='border border-secondary text-center'>
+                                        <h1 className='mx-auto'>{selectedAdvanced.email}</h1>
+                                    </Modal.Header>
+                                    <Modal.Body className='border border-secondary'>
+                                        <div className='row mb-3'>
+                                            <div className='col-6'>
+                                                <img src={selectedAdvanced.icon} />
+                                            </div>
+                                            <div className='col-6 d-flex align-items-center h-auto'>
+                                                <p>{selectedAdvanced.bio}</p>
+                                            </div>
+                                        </div>
+                                        <div className='row'>
 
-                                    <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
-                                        Make User Owner?
-                                    </Button>
-                                    <Button className='col-6' variant="danger" onClick={() => { kickUser() } }>
-                                        Kick from Vacation
-                                    </Button>
-                                </div>
-                            </Modal.Body>
-                            <Modal.Footer className='border border-secondary'>
-                                <div className='d-flex w-100'>                                    
-                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseAdvancedUser}>
-                                        Cancel
-                                    </Button>
-                                </div>
-                            </Modal.Footer>
-                        </Modal>
-                    </> : <>
-                    </>
-            }
+                                            <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
+                                                Make User Owner?
+                                            </Button>
+                                            <Button className='col-6' variant="danger" onClick={() => { kickUser() }}>
+                                                Kick from Vacation
+                                            </Button>
+                                        </div>
+                                    </Modal.Body>
+                                    <Modal.Footer className='border border-secondary'>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-100' variant="secondary" onClick={handleCloseAdvancedUser}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </> : <>
+                            </>
+                    }
 
-        </>
-    );
+                </>
+            );
+        }
+        else {
+
+            return (
+                <>
+                    <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
+                        <i className="bi bi-list"></i>
+                    </Button>
+
+                    <Offcanvas placement={'end'} show={show} onHide={handleClose}>
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title className="text-center">{vacation.vacationTitle} Options</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <div className='d-flex justify-content-center flex-column'>
+                                <div>
+                                    <button className='btn btn-secondary mb-3 w-100 mt-auto flex-end' onClick={handleShowDelete}>Others in Vacation</button>
+                                </div>
+                                <div>
+                                    <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowDelete}>Leave Vacation</button>
+                                </div>
+                            </div>
+                        </Offcanvas.Body>
+                    </Offcanvas>
+                </>
+            )
+        }
+    }
+    else {
+        return (
+            <>
+                <Button className='w-100 h-100' variant="secondary" onClick={handleShow}>
+                    <i className="bi bi-list"></i>
+                </Button>
+
+                <Offcanvas placement={'end'} show={show} onHide={handleClose}>
+                    <Offcanvas.Header closeButton>
+                        <Offcanvas.Title className="text-center">{vacation.vacationTitle} Options</Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                        <div className='d-flex align-self-center h-100'>
+                            <h3>LOADING</h3>
+                            <CircularProgress />
+                        </div>
+                    </Offcanvas.Body>
+                </Offcanvas>
+            </>)
+    }
+
+
 };
 
 export default VacationChangeOptions; 
