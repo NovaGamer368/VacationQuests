@@ -33,6 +33,7 @@ const DeleteEvent = ({ selectedEvent, vacation }) => {
                 vacationTitle: vacation.vacationTitle,
                 events: fillArray,
                 planners: vacation.planners,
+                owner: vacation.owner,
                 startDate: vacation.startDate,
                 endDate: vacation.endDate,
             }),

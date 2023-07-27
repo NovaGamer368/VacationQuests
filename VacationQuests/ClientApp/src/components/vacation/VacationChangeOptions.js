@@ -35,7 +35,6 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const [showAdvancedUser, setShowAdvancedUser] = useState(false)
     const [selectedAdvanced, setSelectedAdvanced] = useState(null)
-    const [ownerView, setOwnerView] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
