@@ -10,6 +10,10 @@ import Autocomplete from '@mui/material/Autocomplete'
 import Cookies from 'js-cookie';
 import { useReducer } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+
 
 const VacationChangeOptions = ({ vacation }) => {
     const [planners, setPlanners] = useState(null)
@@ -30,6 +34,7 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const [showAdvancedUser, setShowAdvancedUser] = useState(false)
     const [selectedAdvanced, setSelectedAdvanced] = useState(null)
+    const [ownerView, setOwnerView] = useState(false)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -65,7 +70,6 @@ const VacationChangeOptions = ({ vacation }) => {
         getUsers()
         getCurrentUser()
         setAddValid(true)
-
     }, [])
 
     useEffect(() => {
@@ -523,7 +527,15 @@ const VacationChangeOptions = ({ vacation }) => {
                                     size='lg'
                                     centered show={show} onHide={handleCloseAdvancedUser}>
                                     <Modal.Header className='border border-secondary text-center'>
-                                        <h1 className='mx-auto'>{selectedAdvanced.email}</h1>
+                                        <div className='col-1'></div>
+                                        <h1 className='mx-auto col-10'>{selectedAdvanced.email}</h1>                                        
+                                        <div className='col-1'>
+                                            <Tooltip title='Send friend request' arrow>
+                                                <IconButton className='text-light'>
+                                                    <AddBoxIcon fontSize='large' />
+                                                </IconButton>
+                                            </Tooltip>                                            
+                                        </div>
                                     </Modal.Header>
                                     <Modal.Body className='border border-secondary'>
                                         <div className='row mb-3'>
@@ -559,7 +571,6 @@ const VacationChangeOptions = ({ vacation }) => {
                             </> : <>
                             </>
                     }
-
                 </>
             );
         }
@@ -603,7 +614,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                                 planners.map((planner) => (
                                                     <>
                                                        
-                                                        <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id}>
+                                                        <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={()=>handleShowAdvancedUser(planner)}>
                                                             
                                                             <Avatar
                                                                 className='mx-auto'
@@ -661,6 +672,46 @@ const VacationChangeOptions = ({ vacation }) => {
                             </>
                             :
                             <></>
+                    }
+                    {
+                        showAdvancedUser ?
+                            <>
+                                <Modal
+                                    animation={false}
+                                    backdrop='static'
+                                    size='lg'
+                                    centered show={show} onHide={handleCloseAdvancedUser}>
+                                    <Modal.Header className='border border-secondary text-center'>
+                                        <div className='col-1'></div>
+                                        <h1 className='mx-auto col-10'>{selectedAdvanced.email}</h1>
+                                        <div className='col-1'>
+                                            <Tooltip title='Send friend request' arrow>
+                                                <IconButton className='text-light'>
+                                                    <AddBoxIcon fontSize='large' />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </div>
+                                    </Modal.Header>
+                                    <Modal.Body className='border border-secondary'>
+                                        <div className='row mb-3'>
+                                            <div className='col-6'>
+                                                <img src={selectedAdvanced.icon} />
+                                            </div>
+                                            <div className='col-6 d-flex align-items-center h-auto'>
+                                                <p>{selectedAdvanced.bio}</p>
+                                            </div>
+                                        </div>
+                                    </Modal.Body>
+                                    <Modal.Footer className='border border-secondary'>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-100' variant="secondary" onClick={handleCloseAdvancedUser}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </> : <>
+                            </>
                     }
                 </>
             )
