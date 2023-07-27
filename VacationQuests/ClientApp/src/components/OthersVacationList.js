@@ -34,10 +34,12 @@ const OthersVacationList = () => {
             let tempArr = []
             console.log(vacationList)
             vacationList.forEach((vacation) => {
-                //console.log(vacation.id, user.othersVacations.includes(vacation.id))
-                if (user.othersVacations.includes(vacation.id)) {
-                    tempArr.push(vacation)
-                }
+                if (user.othersVacations) {
+                    //console.log(vacation.id, user.othersVacations.includes(vacation.id))
+                    if (user.othersVacations.includes(vacation.id)) {
+                        tempArr.push(vacation)
+                    }
+                }                
             })
             setUserVacations(tempArr)
         }
@@ -50,7 +52,7 @@ const OthersVacationList = () => {
     }, [userVacations])
 
     if (!loading) {
-        if (vacationList.length === 0) {
+        if (userVacations.length === 0 || userVacations === null) {
             return (
                 <>
                     <h3>No vacations shared with you</h3>

@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete'
 import Cookies from 'js-cookie';
 import { useReducer } from 'react';
+import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Tooltip from '@mui/material/Tooltip';
@@ -53,6 +54,8 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const handleCloseLeaveWarning = () => setShowLeaveWarning(false);
     const handleShowLeaveWarning = () => setShowLeaveWarning(true)
+
+    const navigate = useNavigate();
 
     const handleCloseAdvancedUser = () => {
         setShowAdvancedUser(false)
@@ -306,7 +309,67 @@ const VacationChangeOptions = ({ vacation }) => {
     }
 
     const leaveVacation = () => {
-        console.log(currentUser, " is leaving ", vacation)
+        let plannerArr = vacation.planners
+        let otherVaca = currentUser.othersVacations
+        if (plannerArr && otherVaca) {
+            plannerArr.forEach((planner, i) => {
+                if (planner === currentUser.id) {
+                    plannerArr.splice(i, 1)
+                }
+            })
+            otherVaca.forEach((otherVacation, i) => {
+                if (otherVacation === vacation.id) {
+                    otherVaca.splice(i, 1)
+                }
+            })
+
+
+            const requestOptions = {
+                mode: 'cors',
+                method: 'PUT',
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    VacationTitle: vacation.vacationTitle,
+                    events: vacation.events,
+                    owner: vacation.owner,
+                    planners: plannerArr,
+                    startDate: vacation.startDate,
+                    endDate: vacation.endDate
+                }),
+                origin: "https://localhost:44455"
+            };
+
+            fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+                .then(resp => {
+                    const requestOptions = {
+                        mode: 'cors',
+                        method: 'PUT',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: currentUser.email,
+                            password: currentUser.password,
+                            icon: currentUser.icon,
+                            bio: currentUser.bio,
+                            vacations: currentUser.vacations,
+                            othersVacations: otherVaca,
+                            friends: currentUser.friends
+                        }),
+                        origin: "https://localhost:44455"
+                    };
+                    fetch(`https://localhost:7259/api/users/${currentUser.id}`, requestOptions)
+                        .then(resp => {
+                            navigate('/')
+                        })
+                        .catch(e => console.log(e))
+                })
+                .catch(e => console.log(e))
+        }
     }
 
     const getPlanners = () => {
@@ -528,13 +591,13 @@ const VacationChangeOptions = ({ vacation }) => {
                                     centered show={show} onHide={handleCloseAdvancedUser}>
                                     <Modal.Header className='border border-secondary text-center'>
                                         <div className='col-1'></div>
-                                        <h1 className='mx-auto col-10'>{selectedAdvanced.email}</h1>                                        
+                                        <h1 className='mx-auto col-10'>{selectedAdvanced.email}</h1>
                                         <div className='col-1'>
                                             <Tooltip title='Send friend request' arrow>
                                                 <IconButton className='text-light'>
                                                     <AddBoxIcon fontSize='large' />
                                                 </IconButton>
-                                            </Tooltip>                                            
+                                            </Tooltip>
                                         </div>
                                     </Modal.Header>
                                     <Modal.Body className='border border-secondary'>
@@ -558,7 +621,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                                     </Button>
                                                 </div>
                                         }
-                                       
+
                                     </Modal.Body>
                                     <Modal.Footer className='border border-secondary'>
                                         <div className='d-flex w-100'>
@@ -613,9 +676,9 @@ const VacationChangeOptions = ({ vacation }) => {
                                             {
                                                 planners.map((planner) => (
                                                     <>
-                                                       
-                                                        <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={()=>handleShowAdvancedUser(planner)}>
-                                                            
+
+                                                        <div className='card bg-secondary col-md-2 m-1 text-dark p-3 d-flex flex-column justify-content-center' key={planner.id} onClick={() => handleShowAdvancedUser(planner)}>
+
                                                             <Avatar
                                                                 className='mx-auto'
                                                                 src={planner.icon}
@@ -628,7 +691,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                                                 }
                                                                 {planner.email}
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </>
                                                 ))
@@ -660,7 +723,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <div className='d-flex w-100'>
-                                            <Button className='m-1 w-50' variant="danger" onClick={() => { leaveVacation() } }>
+                                            <Button className='m-1 w-50' variant="danger" onClick={() => { leaveVacation() }}>
                                                 Leave
                                             </Button>
                                             <Button className='m-1 w-50' variant="secondary" onClick={handleCloseLeaveWarning}>
