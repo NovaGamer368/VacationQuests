@@ -371,6 +371,115 @@ const VacationChangeOptions = ({ vacation }) => {
         }
     }
 
+    const promoteUser = () => {
+
+        //Array for the new promotee
+        let vacationsArr = []
+        if (selectedAdvanced.vacations) {
+            vacationsArr = selectedAdvanced.vacations
+        }
+        let othervacation = selectedAdvanced.othersVacations
+        if (othervacation) {
+            vacationsArr.push(vacation.id)
+            othervacation.forEach((vaca, i) => {
+                if (vaca === vacation.id) {
+                    othervacation.splice(i, 1)
+                }
+            })
+        }
+
+        //Array for current owner
+        let currentVacationArr = []
+        if (currentUser.vacations) {
+            currentVacationArr = currentUser.vacations
+        }
+        let currentOtherVacationArr = []
+        if (currentUser.othersVacations) {
+            currentOtherVacationArr = currentUser.othersVacations
+        }
+
+        currentVacationArr.forEach((cVacation, i) => {
+            if (cVacation === vacation.id) {
+                currentVacationArr.splice(i, 1)
+            }
+        })
+        currentOtherVacationArr.push(vacation.id)
+
+        //Fetch calls to update everything!
+        const requestOptions = {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                VacationTitle: vacation.vacationTitle,
+                events: vacation.events,
+                owner: selectedAdvanced.id,
+                planners: vacation.planners,
+                startDate: vacation.startDate,
+                endDate: vacation.endDate
+            }),
+            origin: "https://localhost:44455"
+        };
+
+        //Vacation update
+        fetch(`https://localhost:7259/api/vacations/${vacation.id}`, requestOptions)
+            .then(resp => {
+                //Current user update
+                const requestOptions = {
+                    mode: 'cors',
+                    method: 'PUT',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: currentUser.email,
+                        password: currentUser.password,
+                        icon: currentUser.icon,
+                        bio: currentUser.bio,
+                        vacations: currentVacationArr,
+                        othersVacations: currentOtherVacationArr,
+                        friends: currentUser.friends
+                    }),
+                    origin: "https://localhost:44455"
+                };
+                fetch(`https://localhost:7259/api/users/${currentUser.id}`, requestOptions)
+                    .then(resp => {
+                        //New Owner update
+                        const requestOptions = {
+                            mode: 'cors',
+                            method: 'PUT',
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: selectedAdvanced.email,
+                                password: selectedAdvanced.password,
+                                icon: selectedAdvanced.icon,
+                                bio: selectedAdvanced.bio,
+                                vacations: vacationsArr,
+                                othersVacations: othervacation,
+                                friends: selectedAdvanced.friends
+                            }),
+                            origin: "https://localhost:44455"
+                        };
+                        fetch(`https://localhost:7259/api/users/${selectedAdvanced.id}`, requestOptions)
+                            .then(resp => {
+                                window.location.reload()
+                            })
+                            .catch(e => console.log(e))
+                    })
+                    .catch(e => console.log(e))
+            })
+            .catch(e => console.log(e))
+
+
+    }
+
     const getPlanners = () => {
         let tempArr = []
         vacation.planners.forEach((planner) => {
@@ -612,7 +721,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                             selectedAdvanced.id === vacation.owner ?
                                                 <></> :
                                                 <div className='row'>
-                                                    <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
+                                                    <Button className='col-6 w-50' variant="success" onClick={() => promoteUser()}>
                                                         Make User Owner?
                                                     </Button>
                                                     <Button className='col-6' variant="danger" onClick={() => { kickUser() }}>
