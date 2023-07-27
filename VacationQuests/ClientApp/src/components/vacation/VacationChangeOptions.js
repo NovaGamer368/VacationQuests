@@ -26,6 +26,7 @@ const VacationChangeOptions = ({ vacation }) => {
     const [showUserManagement, setShowUserManagement] = useState(false)
     const [showAnotherUserSearch, setAnotherUserSearch] = useState(false)
     const [showOtherUsers, setShowOtherUsers] = useState(false)
+    const [showLeaveWarning, setShowLeaveWarning] = useState(false)
 
     const [showAdvancedUser, setShowAdvancedUser] = useState(false)
     const [selectedAdvanced, setSelectedAdvanced] = useState(null)
@@ -44,6 +45,9 @@ const VacationChangeOptions = ({ vacation }) => {
 
     const handleCloseOtherUsers = () => setShowOtherUsers(false);
     const handleShowOtherUsers = () => setShowOtherUsers(true)
+
+    const handleCloseLeaveWarning = () => setShowLeaveWarning(false);
+    const handleShowLeaveWarning = () => setShowLeaveWarning(true)
 
     const handleCloseAdvancedUser = () => {
         setShowAdvancedUser(false)
@@ -297,6 +301,10 @@ const VacationChangeOptions = ({ vacation }) => {
             .catch(e => console.log(e))
     }
 
+    const leaveVacation = () => {
+        console.log(currentUser, " is leaving ", vacation)
+    }
+
     const getPlanners = () => {
         let tempArr = []
         vacation.planners.forEach((planner) => {
@@ -526,15 +534,19 @@ const VacationChangeOptions = ({ vacation }) => {
                                                 <p>{selectedAdvanced.bio}</p>
                                             </div>
                                         </div>
-                                        <div className='row'>
-
-                                            <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
-                                                Make User Owner?
-                                            </Button>
-                                            <Button className='col-6' variant="danger" onClick={() => { kickUser() }}>
-                                                Kick from Vacation
-                                            </Button>
-                                        </div>
+                                        {
+                                            selectedAdvanced.id === vacation.owner ?
+                                                <></> :
+                                                <div className='row'>
+                                                    <Button className='col-6 w-50' variant="success" onClick={handleCloseAdvancedUser}>
+                                                        Make User Owner?
+                                                    </Button>
+                                                    <Button className='col-6' variant="danger" onClick={() => { kickUser() }}>
+                                                        Kick from Vacation
+                                                    </Button>
+                                                </div>
+                                        }
+                                       
                                     </Modal.Body>
                                     <Modal.Footer className='border border-secondary'>
                                         <div className='d-flex w-100'>
@@ -569,13 +581,12 @@ const VacationChangeOptions = ({ vacation }) => {
                                     <button className='btn btn-secondary mb-3 w-100 mt-auto flex-end' onClick={handleShowOtherUsers}>Others in Vacation</button>
                                 </div>
                                 <div>
-                                    <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowDelete}>Leave Vacation</button>
+                                    <button className='btn btn-danger w-100 mt-auto flex-end' onClick={handleShowLeaveWarning}>Leave Vacation</button>
                                 </div>
                             </div>
                         </Offcanvas.Body>
                     </Offcanvas>
                     {
-
                         showOtherUsers ?
                             <>
                                 <Modal
@@ -624,6 +635,33 @@ const VacationChangeOptions = ({ vacation }) => {
                             </> : <>
                             </>
                     }
+                    {
+                        showLeaveWarning ?
+                            <>
+                                <Modal
+                                    size="lg"
+                                    centered show={show} onHide={handleCloseLeaveWarning}>
+                                    <Modal.Header className='justify-content-center'>
+                                        <h3 className='text-center'>Leaving <b className='text-danger'>{vacation.vacationTitle}</b></h3>
+                                    </Modal.Header>
+                                    <Modal.Body className='text-center'>
+                                        You are leaving <b>{vacation.vacationTitle}</b>, you can get re-invited if you do but you will no longer see this vacation anymore? Are you sure you want to leave?
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <div className='d-flex w-100'>
+                                            <Button className='m-1 w-50' variant="danger" onClick={() => { leaveVacation() } }>
+                                                Leave
+                                            </Button>
+                                            <Button className='m-1 w-50' variant="secondary" onClick={handleCloseLeaveWarning}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Modal.Footer>
+                                </Modal>
+                            </>
+                            :
+                            <></>
+                    }
                 </>
             )
         }
@@ -648,8 +686,6 @@ const VacationChangeOptions = ({ vacation }) => {
                 </Offcanvas>
             </>)
     }
-
-
 };
 
 export default VacationChangeOptions; 
