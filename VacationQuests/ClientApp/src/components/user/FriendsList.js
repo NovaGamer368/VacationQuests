@@ -8,8 +8,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 const FriendsList = () => {
     const [user, setUser] = useState()
     const [allUsers, setAllUsers] = useState()
+    const [filteredAllUsers, setFilteredAllUser] = useState()
+    const [validFriend, setValidFriend] = useState(true)
+    const [filter, setFilter] = useState()
     const [friends, setFriends] = useState()
-    const [searchKeyWord, setSearchKeyword] = useState('')
 
     const [loading, setLoading] = useState(true)
 
@@ -56,11 +58,38 @@ const FriendsList = () => {
 
     const onInputChange = (e, value) => {
         console.log(value)
+        setFilter(value)
+        if (friends) {
+            let tempFriendFilter = []
+            friends.forEach((friend) => {
+                if (friend.email.contains(value)) {
+                    tempFriendFilter.push(friend)
+                    console.log('pushing ', friend)
+                }
+            })
+        }
     }
 
 
     const addFriend = () => {
-        console.log('adding friend')
+        setValidFriend(true)
+        allUsers.forEach((fUser) => {
+            if (fUser.email === filter) {
+                console.log('adding friend', fUser)
+                //Check if friend is already in friends list
+                if (user.friends) {
+                    user.friends.forEach((friendId) => {
+                        if (fUser.id === friendId) {
+                            setValidFriend(false)
+                        }
+                    })
+                }               
+                //Add friend to both users
+                if (validFriend) {
+                    console.log('Valid Friend')
+                }
+            }
+        })
     }
 
     //    onInputChange = {(event, newInputValue) => {
@@ -89,7 +118,7 @@ const FriendsList = () => {
                                         type: 'search',
                                     }}
                                 />
-                                <div className='btn btn-success m-auto w-100' onClick={() => { }}>
+                                <div className='btn btn-success m-auto w-100' onClick={() => { addFriend() }}>
                                     Add friend
                                 </div>
                             </>
@@ -103,9 +132,9 @@ const FriendsList = () => {
                             <>
                             </>
                             :
-                            <div>
+                            <h3>
                                 Oh nobody was found! Would you like to find someone?
-                            </div>
+                            </h3>
                     }
                 </div>
 
