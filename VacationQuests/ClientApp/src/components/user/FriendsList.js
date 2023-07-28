@@ -75,7 +75,6 @@ const FriendsList = () => {
         setValidFriend(true)
         allUsers.forEach((fUser) => {
             if (fUser.email === filter) {
-                console.log('adding friend', fUser)
                 //Check if friend is already in friends list
                 if (user.friends) {
                     user.friends.forEach((friendId) => {
@@ -86,7 +85,66 @@ const FriendsList = () => {
                 }               
                 //Add friend to both users
                 if (validFriend) {
+                    console.log('adding friend', fUser)
+                    console.log('friend added', user)
                     console.log('Valid Friend')
+
+                    let friendsList = []
+                    if (user.friends) {
+                        friendsList = user.friends
+                    }
+                    friendsList.push(fUser.id)
+
+                    let addedTooList = []
+                    if (fUser.friends) {
+                        addedTooList = fUser.friends
+                    }
+                    addedTooList.push(user.id)
+
+                    const requestOptions = {
+                        mode: 'cors',
+                        method: 'PUT',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: user.email,
+                            password: user.password,
+                            icon: user.icon,
+                            bio: user.bio,
+                            vacations: user.vacations,
+                            othersVacations: user.othersVacations,
+                            friends: friendsList
+                        }),
+                        origin: "https://localhost:44455"
+                    };
+                    fetch(`https://localhost:7259/api/users/${user.id}`, requestOptions)
+                        .then(resp => {
+                            const requestOptions = {
+                                mode: 'cors',
+                                method: 'PUT',
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: fUser.email,
+                                    password: fUser.password,
+                                    icon: fUser.icon,
+                                    bio: fUser.bio,
+                                    vacations: fUser.vacations,
+                                    othersVacations: fUser.othersVacations,
+                                    friends: addedTooList
+                                }),
+                                origin: "https://localhost:44455"
+                            };
+                            fetch(`https://localhost:7259/api/users/${fUser.id}`, requestOptions)
+                                .then(resp => { window.location.reload() })
+                                .catch((e) => console.log(e))
+
+                        })
+                    .catch((e) => console.log(e))
                 }
             }
         })
