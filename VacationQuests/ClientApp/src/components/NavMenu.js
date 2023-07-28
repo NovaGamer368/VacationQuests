@@ -105,10 +105,16 @@ const NavMenu = () => {
                                     </div>
                                 </NavLink>
                             </MenuItem>
+                            <MenuItem>
+                                <NavLink tag={Link} className="nav-item " to="/Friends">
+                                    <div className='d-flex flex-row align-items-center'>
+                                        <i className="bi bi-people-fill h5 px-2 mr-3"></i><span> Friends</span> 
+                                    </div>
+                                </NavLink>
+                            </MenuItem>
                             <Divider />
                             <MenuItem>
                                 <NavLink tag={Link} className="nav-item" to="/Profile">
-
                                     <ListItemIcon>
                                         <Settings fontSize="small" />
                                     </ListItemIcon>

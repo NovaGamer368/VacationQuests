@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Login from './components/login/Login';
 import Register from './components/login/Register';
 import UserInfo from './components/login/UserInfo';
+import FriendsList from './components/user/FriendsList';
 import Profile from './components/user/Profile';
 import AdvancedEventView from './components/vacation/AdvancedEventView';
 import CreateEvent from './components/vacation/CreateEvent';
@@ -45,6 +46,10 @@ const AppRoutes = [
     {
         path: '/EventView',
         element: <AdvancedEventView />
+    },
+    {
+        path: '/Friends',
+        element: <FriendsList />
     }
     //...ApiAuthorzationRoutes
 ];
