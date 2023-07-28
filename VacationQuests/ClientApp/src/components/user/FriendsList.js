@@ -188,6 +188,12 @@ const FriendsList = () => {
                     {
                         user.friends ?
                             <>
+                                <h3>Number of Friends is: {user.friends.length}</h3>
+                                {
+                                    friends.map((friend) => (
+                                        <div key={friend.id }>{friend.email}</div>
+                                    ))
+                                }
                             </>
                             :
                             <h3>
