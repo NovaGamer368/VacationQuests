@@ -35,27 +35,9 @@ const FriendsList = () => {
     }, [])
 
     useEffect(() => {
-        //if (user) {
-        //    if (user.friends) {
-        //        let tempFriends = []
-        //        user.friends.forEach((friend) => {
-        //            fetch(`https://localhost:7259/api/users/${friend}`)
-        //                .then(resp => resp.json())
-        //                .then(data => {
-        //                    tempFriends.push(data)
-        //                    forceUpdate()
-        //                })
-        //                .catch(e => console.log(e))
-        //        })
-        //        setFriends(tempFriends)
-        //    }
-        //}
-    }, [user])
-
-    useEffect(() => {
         if (user && allUsers) {
             let tempFriends = []
-            allUsers.forEach((aUser) => {
+            allUsers.forEach((aUser, index) => {
                 user.friends.forEach((friend) => {
                     if (aUser.id === friend) {
                         tempFriends.push(aUser)
@@ -68,8 +50,22 @@ const FriendsList = () => {
     }, [user, allUsers])
     useEffect(() => {
         if (friends) {
-            console.log(friends)
-            forceUpdate()
+            let allUsersTempArr = allUsers
+            let indexLoop = 0
+            allUsers.forEach((aUser, index) => {
+                if (user.id === aUser) {
+                    allUsersTempArr.splice(index, 1)
+                }
+                user.friends.forEach((friend) => {
+                    if (aUser.id === friend) {
+                        allUsersTempArr.splice(index,1)
+                    }                    
+                })
+                indexLoop = index
+            })
+            if (indexLoop === allUsers.length) {
+                setAllUsers(allUsersTempArr)
+            }
         }
     }, [friends])
 
