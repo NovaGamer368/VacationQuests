@@ -2,6 +2,7 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Cookies from 'js-cookie';
 import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -34,25 +35,34 @@ const FriendsList = () => {
     }, [])
 
     useEffect(() => {
-        if (user) {
-            if (user.friends) {
-                let tempFriends = []
-                user.friends.forEach((friend) => {
-                    fetch(`https://localhost:7259/api/users/${friend}`)
-                        .then(resp => resp.json())
-                        .then(data => {
-                            tempFriends.push(data)
-                            forceUpdate()
-                        })
-                        .catch(e => console.log(e))
-                })
-                setFriends(tempFriends)
-            }
-        }
+        //if (user) {
+        //    if (user.friends) {
+        //        let tempFriends = []
+        //        user.friends.forEach((friend) => {
+        //            fetch(`https://localhost:7259/api/users/${friend}`)
+        //                .then(resp => resp.json())
+        //                .then(data => {
+        //                    tempFriends.push(data)
+        //                    forceUpdate()
+        //                })
+        //                .catch(e => console.log(e))
+        //        })
+        //        setFriends(tempFriends)
+        //    }
+        //}
     }, [user])
 
     useEffect(() => {
         if (user && allUsers) {
+            let tempFriends = []
+            allUsers.forEach((aUser) => {
+                user.friends.forEach((friend) => {
+                    if (aUser.id === friend) {
+                        tempFriends.push(aUser)
+                    }
+                })
+            })
+            setFriends(tempFriends)
             setLoading(false)
         }
     }, [user, allUsers])
@@ -89,7 +99,7 @@ const FriendsList = () => {
                             setValidFriend(false)
                         }
                     })
-                }               
+                }
                 //Add friend to both users
                 if (validFriend) {
                     console.log('adding friend', fUser)
@@ -151,10 +161,13 @@ const FriendsList = () => {
                                 .catch((e) => console.log(e))
 
                         })
-                    .catch((e) => console.log(e))
+                        .catch((e) => console.log(e))
                 }
             }
         })
+    }
+    const deleteFriend = () => {
+
     }
 
     //    onInputChange = {(event, newInputValue) => {
@@ -191,17 +204,42 @@ const FriendsList = () => {
                     />
 
                 </div>
-                <div className='row'>
+                <div className='row w-100'>
                     {
                         user.friends ?
-                            <>
-                                <h3>Number of Friends is: {user.friends.length}</h3>
-                                {
-                                    friends.map((friend) => (
-                                        <div key={friend.id }>{friend.email}</div>
-                                    ))
-                                }
-                            </>
+                            <div className='d-flex flex-column'>
+                                <h3 className='text-center'>Number of Friends is: {user.friends.length}</h3>
+                                <div className='row'>
+                                    {
+                                        friends.map((friend) => (
+                                            <div key={friend.id} className='col-4 card p-3 m-1'>
+                                                <div className='card-header'>
+                                                    <h4>{friend.email}</h4>
+                                                </div>
+                                                <div className='card-body d-flex justify-content-center align-self-center'>
+                                                    <div>
+                                                        <Avatar
+                                                            className='p-2'
+                                                            src={friend.icon}
+                                                            sx={{ width: 100, height: 100 }}
+                                                        />
+                                                    </div>
+                                                    <div className='d-flex align-self-center p-3 text-center'>
+                                                        {friend.bio}
+                                                    </div>
+                                                </div>
+                                                <div className='card-footer'>
+                                                    <div className='d-flex justify-content-center w-100'>
+                                                        <div className='btn btn-danger w-auto'>
+                                                            Remove Friend
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
                             :
                             <h3>
                                 Oh nobody was found! Would you like to find someone?
