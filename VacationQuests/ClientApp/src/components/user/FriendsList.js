@@ -162,8 +162,67 @@ const FriendsList = () => {
             }
         })
     }
-    const deleteFriend = () => {
+    const deleteFriend = (friend) => {
+        console.log('removing friend', friend)
 
+        const tempFriendList = friend.friends
+        tempFriendList.forEach((friendID, index) => {
+            if (friendID === user.id) {
+                tempFriendList.splice(index,1)
+            }
+        })
+
+        //console.log(user.email)
+
+        const requestOptions = {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: friend.email,
+                password: friend.password,
+                icon: friend.icon,
+                bio: friend.bio,
+                vacations: friend.vacations,
+                othersVacations: friend.othersVacations,
+                friends: tempFriendList
+            }),
+            origin: "https://localhost:44455"
+        };
+        fetch(`https://localhost:7259/api/users/${friend.id}`, requestOptions)
+            .then(resp => {
+                const tempFriendList = user.friends
+                tempFriendList.forEach((friendID, index) => {
+                    if (friendID === friend.id) {
+                        tempFriendList.splice(index, 1)
+                    }
+                })
+                const requestOptions = {
+                    mode: 'cors',
+                    method: 'PUT',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: user.email,
+                        password: user.password,
+                        icon: user.icon,
+                        bio: user.bio,
+                        vacations: user.vacations,
+                        othersVacations: user.othersVacations,
+                        friends: tempFriendList
+                    }),
+                    origin: "https://localhost:44455"
+                };
+                fetch(`https://localhost:7259/api/users/${user.id}`, requestOptions)
+                    .then(window.location.reload())
+                    .catch((e) => console.log(e))
+            })
+            .catch((e) => console.log(e))
     }
 
     //    onInputChange = {(event, newInputValue) => {
@@ -174,7 +233,6 @@ const FriendsList = () => {
             <div className='container d-flex justify-content-center align-items-center flex-wrap flex-column'>
                 <h1>{user.email} friends lists</h1>
                 <div className='row bg-secondary p-3'>
-
                     <Autocomplete
                         sx={{ width: 600 }}
                         filterSelectedOptions
@@ -198,7 +256,6 @@ const FriendsList = () => {
                             </>
                         )}
                     />
-
                 </div>
                 <div className='row w-100'>
                     {
@@ -226,7 +283,7 @@ const FriendsList = () => {
                                                 </div>
                                                 <div className='card-footer'>
                                                     <div className='d-flex justify-content-center w-100'>
-                                                        <div className='btn btn-danger w-auto'>
+                                                        <div className='btn btn-danger w-auto' onClick={() => { deleteFriend(friend) } }>
                                                             Remove Friend
                                                         </div>
                                                     </div>
@@ -242,7 +299,6 @@ const FriendsList = () => {
                             </h3>
                     }
                 </div>
-
             </div>
         );
     }
