@@ -106,9 +106,6 @@ const Profile = () => {
                                 }
                             </div>
                         </div>
-                        <div>
-                            {friends}
-                        </div>
                     </div>
                 </div>
             </>

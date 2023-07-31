@@ -14,6 +14,8 @@ const FriendsList = () => {
     const [filter, setFilter] = useState()
     const [friends, setFriends] = useState()
 
+    const [userEmail, setUserEmail] = useState()
+
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [loading, setLoading] = useState(true)
 
@@ -52,19 +54,26 @@ const FriendsList = () => {
         if (friends) {
             let allUsersTempArr = allUsers
             let indexLoop = 0
+            let removeArr = []
             allUsers.forEach((aUser, index) => {
-                if (user.id === aUser) {
-                    allUsersTempArr.splice(index, 1)
+                if (user.id === aUser.id) {
+                    removeArr.push(index - removeArr.length)
+
                 }
-                user.friends.forEach((friend) => {
-                    if (aUser.id === friend) {
-                        allUsersTempArr.splice(index,1)
+                user.friends.forEach((friendID) => {
+                    if (aUser.id === friendID) {
+                        removeArr.push(index - removeArr.length)
+                        console.log('auser:', aUser)
                     }                    
                 })
                 indexLoop = index
             })
+            removeArr.forEach((index) => {
+                allUsers.splice(index,1)        
+            })
             if (indexLoop === allUsers.length) {
                 setAllUsers(allUsersTempArr)
+                forceUpdate()
             }
         }
     }, [friends])
@@ -235,8 +244,7 @@ const FriendsList = () => {
                 <div className='row bg-secondary p-3'>
                     <Autocomplete
                         sx={{ width: 600 }}
-                        filterSelectedOptions
-                        disableClearable
+                        freeSolo
                         options={allUsers}
                         getOptionLabel={option => option.email}
                         onInputChange={(e, value) => { onInputChange(e, value) }}
@@ -244,7 +252,7 @@ const FriendsList = () => {
                             <>
                                 <TextField
                                     {...params}
-                                    label="Search input"
+                                    label="Search For a new Friend"
                                     InputProps={{
                                         ...params.InputProps,
                                         type: 'search',
@@ -255,6 +263,8 @@ const FriendsList = () => {
                                 </div>
                             </>
                         )}
+                    
+
                     />
                 </div>
                 <div className='row w-100'>
@@ -265,7 +275,7 @@ const FriendsList = () => {
                                 <div className='row'>
                                     {
                                         friends.map((friend) => (
-                                            <div key={friend.id} className='col-4 card p-3 m-1'>
+                                            <div key={friend.id} className='col-4 card p-3'>
                                                 <div className='card-header'>
                                                     <h4>{friend.email}</h4>
                                                 </div>
