@@ -247,7 +247,17 @@ const FriendsList = () => {
                         freeSolo
                         options={allUsers}
                         getOptionLabel={option => option.email}
-                        onInputChange={(e, value) => { onInputChange(e, value) }}
+                        renderOption={(props, option) => (
+                            <Box component="li" {...props}>
+                                <Avatar
+                                    className='mx-2'
+                                    src={option.icon}
+                                    sx={{ width: 50, height: 50 }}
+                                />
+                                {option.email}
+                            </Box>
+                        )}
+                        onInputChange={(e, value) => { onInputChange(e, value) }}                        
                         renderInput={(params) => (
                             <>
                                 <TextField

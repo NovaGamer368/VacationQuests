@@ -18,8 +18,9 @@ import IconButton from '@mui/material/IconButton';
 
 const VacationChangeOptions = ({ vacation }) => {
     const [planners, setPlanners] = useState(null)
-    const [users, setUsers] = useState(null)
+    const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState(null)
+    const [friends, setFriends] = useState()
 
     const [userEmail, setUserEmail] = useState("")
     const [addError, setAddError] = useState("")
@@ -70,13 +71,21 @@ const VacationChangeOptions = ({ vacation }) => {
     useEffect(() => {
         getPlanners()
         getUsers()
-        getCurrentUser()
+        getCurrentUser() 
         setAddValid(true)
     }, [])
 
     useEffect(() => {
         setAddValid(true)
     }, [userEmail])
+
+    useEffect(() => {
+        console.log('users', users.length) 
+        if (users.length !== 0 && currentUser) {
+            getFriends()
+        }
+        forceUpdate()
+    }, [users, currentUser])
 
     const deleteVacation = () => {
         //Delete all events in the vacation
@@ -499,19 +508,40 @@ const VacationChangeOptions = ({ vacation }) => {
             .then(data => {
                 data.forEach((user) => {
                     tempArr.push(user)
+                    setUsers(tempArr)
+
                 })
             })
             .catch(e => console.log(e))
-        setUsers(tempArr)
     }
     const getCurrentUser = () => {
         fetch(`https://localhost:7259/api/users/${Cookies.get("UserId")}`)
             .then(resp => resp.json())
             .then(data => {
                 setCurrentUser(data)
-                console.log(data)
             })
             .catch(e => console.log(e))
+    }
+    const getFriends = () => {
+        console.log(users.length)
+        console.log(currentUser)
+        let tempFriends = []
+        let loop = 0
+            users.forEach((user, index) => {
+                currentUser.friends.forEach((friendID) => {
+                    if (user.id === friendID) {
+                        tempFriends.push(user)
+                        forceUpdate()
+                    }
+                })
+                loop = index + 1
+                console.log(tempFriends, ' array on loop ', loop)
+            })
+            if (loop === users.length) {
+                setFriends(tempFriends)
+                console.log('friends list', tempFriends)
+            }    
+                  
     }
     if (currentUser) {
         if (currentUser.id === vacation.owner) {
@@ -658,16 +688,21 @@ const VacationChangeOptions = ({ vacation }) => {
                                         </div>
                                         <div className='row text-light text-center p-2'>
                                             {
-                                                currentUser.friends ?
-                                                    <>
+                                                friends ?
+                                                    <div className='row'>
                                                         {
-                                                            currentUser.friends.map((friend) => (
-                                                                <div>
-                                                                    {friend}
+                                                            friends.map((friend) => (
+                                                                <div className='d-flex flex-column col-3' onClick={() => setUserEmail(friend.email) }>
+                                                                    <Avatar
+                                                                        className='w-auto p-2'
+                                                                        src={friend.icon}
+                                                                        sx={{ width: 50, height: 50 }}
+                                                                    />
+                                                                    {friend.email}
                                                                 </div>
                                                             ))
                                                         }
-                                                    </> :
+                                                    </div> :
                                                     <h4>YOU HAVE NO FRIENDS</h4>
                                             }
                                         </div>
