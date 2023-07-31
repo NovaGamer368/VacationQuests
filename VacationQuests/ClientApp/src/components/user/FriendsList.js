@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState, useReducer } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Cookies from 'js-cookie';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ const FriendsList = () => {
     const [filter, setFilter] = useState()
     const [friends, setFriends] = useState()
 
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -41,11 +42,11 @@ const FriendsList = () => {
                         .then(resp => resp.json())
                         .then(data => {
                             tempFriends.push(data)
+                            forceUpdate()
                         })
                         .catch(e => console.log(e))
                 })
                 setFriends(tempFriends)
-                console.log("Friends: ", friends)
             }
         }
     }, [user])
@@ -55,6 +56,12 @@ const FriendsList = () => {
             setLoading(false)
         }
     }, [user, allUsers])
+    useEffect(() => {
+        if (friends) {
+            console.log(friends)
+            forceUpdate()
+        }
+    }, [friends])
 
     const onInputChange = (e, value) => {
         console.log(value)
