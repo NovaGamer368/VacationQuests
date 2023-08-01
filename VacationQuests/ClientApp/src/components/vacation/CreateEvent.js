@@ -46,6 +46,11 @@ const CreateEvent = () => {
         setStartTime(selectedDate)
         setEndTime(selectedDate)
     }, [selectedDate])
+    useEffect(() => {
+        if (location) {
+            console.log(location)
+        }
+    }, [location])
 
     const init = async () => {
         //Getting params
@@ -156,7 +161,7 @@ const CreateEvent = () => {
                     <fieldset>
                         <label className="form-label" htmlFor="location">Where is the event happening?</label>
                         <input className="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
-                        <GoogleAutoComplete locationVar={()=> setLocation()} />
+                        <GoogleAutoComplete locationVar={location} setLocationVar={setLocation} />
                     </fieldset>
                     <fieldset>
                         <label className="form-label mt-4" htmlFor="description">Description of Event</label>
