@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 //import { TimePicker } from 'antd';
 import TimePicker from './TimePicker';
+import GoogleAutoComplete from './GoogleAutoComplete';
 
 
 
@@ -155,6 +156,7 @@ const CreateEvent = () => {
                     <fieldset>
                         <label className="form-label" htmlFor="location">Where is the event happening?</label>
                         <input className="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
+                        <GoogleAutoComplete locationVar={()=> setLocation()} />
                     </fieldset>
                     <fieldset>
                         <label className="form-label mt-4" htmlFor="description">Description of Event</label>
