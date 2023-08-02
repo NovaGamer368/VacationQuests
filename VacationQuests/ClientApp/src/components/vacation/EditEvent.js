@@ -32,6 +32,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
 
     useEffect(() => {
         initDates()
+        
     }, [])
 
     //useEffect(() => {

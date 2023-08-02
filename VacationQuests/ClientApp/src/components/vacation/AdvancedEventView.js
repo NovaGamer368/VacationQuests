@@ -9,6 +9,7 @@ import GoogleMaps from './GoogleMaps';
 const AdvancedEventView = () => {    
     const queryParams = new URLSearchParams(window.location.search)
     const [selectedEvent, setSelectedEvent] = useState()
+    const [placeObject, setPlaceObject] = useState()
     const [vacation, setVacation] = useState()
     const [editMode, setEditMode] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -22,6 +23,7 @@ const AdvancedEventView = () => {
                     .then(resp => resp.json())
                     .then(data => {
                         setSelectedEvent(data)
+                        setPlaceObject(JSON.parse(data.location))
                         setLoading(false)
                     })
                     .catch(e => console.log(e))
@@ -57,7 +59,7 @@ const AdvancedEventView = () => {
                         </div>
                         <div className='col-10'>
                             <p><b>Description: </b>{selectedEvent.description}</p>
-                            <p><b>Location: </b>{selectedEvent.location}</p>
+                            <p><b>Location: </b>{placeObject.name}</p>
                             <p><b>Date of the event: </b>{moment(selectedEvent.selectedDate).format('MMMM Do YYYY')}</p>
                             <p><b>Starts at: </b>{moment(selectedEvent.startTime).format('hh:mm a')}</p>
                             <p><b>Ends at: </b>{moment(selectedEvent.endTime).format('hh:mm a')}</p>

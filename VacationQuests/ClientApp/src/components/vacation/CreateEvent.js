@@ -159,8 +159,6 @@ const CreateEvent = () => {
                 </div>
                 <div className="card m-3 border-danger p-5">
                     <fieldset>
-                        <label className="form-label" htmlFor="location">Where is the event happening?</label>
-                        <input className="form-control" id="location" type="text" placeholder="Location / Address" onChange={(e) => setLocation(e.target.value)} />
                         <GoogleAutoComplete locationVar={location} setLocationVar={setLocation} />
                     </fieldset>
                     <fieldset>
