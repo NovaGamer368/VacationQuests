@@ -5,11 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import TimePicker from './TimePicker';
 import CircularProgress from '@mui/material/CircularProgress';
+import GoogleAutoComplete from './GoogleAutoComplete';
 
 
 const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
     const [eventName, setEventName] = useState(selectedEvent.eventName)
-    const [location, setLocation] = useState(selectedEvent.location)
+    const [location, setLocation] = useState()
     //const [time, setTime] = useState()
     const [startTime, setStartTime] = useState(selectedEvent.startTime)
     const [endTime, setEndTime] = useState(selectedEvent.endTime)
@@ -31,8 +32,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        initDates()
-        
+        initDates()        
     }, [])
 
     //useEffect(() => {
@@ -140,9 +140,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                         <Button className='btn btn-secondary w-50 mb-4 m-auto' variant="primary" onClick={handleShow}>
                             Change Date of event
                         </Button>
-                        <fieldset>
-                            <label className="form-label" for="location">Where is the event happening?</label>
-                            <input className="form-control" id="location" type="text" placeholder="Location / Address" value={location} onChange={(e) => setLocation(e.target.value)} />
+                        <fieldset>                            
+                            <GoogleAutoComplete setLocationVar={setLocation} />
                         </fieldset>
                         <fieldset>
                             <label className="form-label mt-4" for="description">Description of Event</label>

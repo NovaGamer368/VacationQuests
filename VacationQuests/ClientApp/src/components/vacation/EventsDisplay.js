@@ -53,7 +53,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                                 <div key={event.id} className='card border-light p-3 mb-3' onClick={ () => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}` }>
                                     <div>{event.eventName}</div>
                                     <div><b>Location: </b>
-                                        {places[index].name }
+                                        {places[index].name}
                                     </div>
                                     <div><div><b>Starting time: </b>{moment(event.startTime).format('hh:mm a')}</div>
                                         <div><b>Ending at: </b>{moment(event.endTime).format('hh:mm a')}</div></div>

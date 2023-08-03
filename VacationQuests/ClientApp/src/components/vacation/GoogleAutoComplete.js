@@ -1,6 +1,5 @@
-﻿import { useState, useRef, useEffect } from "react";
+﻿import { useState, useReducer, useRef, useEffect } from "react";
 import Rating from '@mui/material/Rating';
-import GoogleMaps from "./GoogleMaps";
 import StarIcon from '@mui/icons-material/Star';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -11,6 +10,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const GoogleAutoComplete = ({ setLocationVar }) => {
     const [place, setPlace] = useState()
     const [locationVar, setThisLocationVar] = useState()
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+
     const autoCompleteRef = useRef();
     const inputRef = useRef();
     const options = {
@@ -25,13 +26,14 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
         autoCompleteRef.current.addListener("place_changed", async function () {
             setPlace(await autoCompleteRef.current.getPlace())
         });
+        forceUpdate()
     }, []);
 
     useEffect(() => {
         if (place) {
             setLocationVar(JSON.stringify(place))
             console.log("string version of place: ", JSON.stringify(place));
-            setThisLocationVar(place)
+            setThisLocationVar(place)            
         }
     }, [place])
 
@@ -40,6 +42,7 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
             console.log("locationVar is :", locationVar);
         }
     }, [locationVar])
+
 
     return (
         <div>

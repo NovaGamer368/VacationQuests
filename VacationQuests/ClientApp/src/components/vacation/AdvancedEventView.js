@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment'
 import EditEvent from './EditEvent';
@@ -13,9 +13,10 @@ const AdvancedEventView = () => {
     const [vacation, setVacation] = useState()
     const [editMode, setEditMode] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [loadmap, setLoadmap] = useState(false)
     const navigate = useNavigate();
 
-
+   
     useEffect(() => {
         for (const [key, value] of queryParams) {
             if (key == 'e') {
@@ -24,7 +25,7 @@ const AdvancedEventView = () => {
                     .then(data => {
                         setSelectedEvent(data)
                         setPlaceObject(JSON.parse(data.location))
-                        setLoading(false)
+                        setLoading(false)                        
                     })
                     .catch(e => console.log(e))
             }
@@ -37,8 +38,20 @@ const AdvancedEventView = () => {
                     .catch(e => console.log(e))
             }
         }
+        
+        //console.log(placeObject.geometry.location.lat)
+
 
     }, [])
+
+    useEffect(() => {
+        if (placeObject) {
+            console.log(placeObject.geometry.location.lat)
+            console.log(placeObject.geometry.location.lng)
+
+            setLoadmap(true)
+        }
+    }, [placeObject])
 
     if (!loading) {
         if (!editMode) {
@@ -67,7 +80,12 @@ const AdvancedEventView = () => {
                     </div>
                     <div className='text-center col-6 h-100'>
                         <h1>MAP OF GOOGLE GOING TO LOCATION</h1>
-                        <GoogleMaps />
+                        {
+                            loadmap === true ? 
+                                <GoogleMaps latVar={placeObject.geometry.location.lat} lngVar={placeObject.geometry.location.lng} />
+                                :
+                                <h2>Loading</h2>
+                        }
                     </div>                    
                 </div>
             );
