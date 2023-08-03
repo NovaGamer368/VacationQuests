@@ -32,7 +32,13 @@ const CreateVacation = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ VacationTitle: location + ' Vacation', Owner: currentUser.id, StartDate: startDate, EndDate: endDate, planners: [currentUser.id] }),
+                    body: JSON.stringify({
+                        VacationTitle: location + ' Vacation',
+                        Owner: currentUser.id,
+                        StartDate: startDate,
+                        EndDate: endDate,
+                        planners: [currentUser.id]
+                    }),
                     origin: "https://localhost:44455"
                 };
 
@@ -61,7 +67,15 @@ const CreateVacation = () => {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: currentUser.email, password: currentUser.password, icon: currentUser.icon, bio: currentUser.bio, Vacations: tempArr, othersvacations: currentUser.othersvacations }),
+            body: JSON.stringify({
+                email: currentUser.email,
+                password: currentUser.password,
+                icon: currentUser.icon,
+                bio: currentUser.bio,
+                Vacations: tempArr,
+                othersVacations: currentUser.othersVacations,
+                friends: currentUser.friends
+            }),
             origin: "https://localhost:44455"
         };
         fetch(`https://localhost:7259/api/users/${Cookies.get('UserId')}`, requestOptions)

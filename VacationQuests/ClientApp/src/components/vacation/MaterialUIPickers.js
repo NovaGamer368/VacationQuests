@@ -21,13 +21,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 
-export default function MaterialUIPickers() {
+export default function MaterialUIPickers({ startDate, endDate }) {
     //const [value, setValue] = React.useState()
     const [value, setValue] = React.useState([moment(), moment()]);
 
     React.useEffect(() => {
-        value.forEach((date) => {
-            console.log(moment(date)._d)
+        value.forEach((date, index) => {
+            if (index === 0) {
+                startDate(date)
+                console.log("days" + index + " :", moment(date)._d)
+            }
+            else {
+                endDate(date)
+                console.log("days" + index + " :", moment(date)._d)
+
+            }
         })
     }, [value])
 
@@ -36,41 +44,7 @@ export default function MaterialUIPickers() {
     };
     return (
         <LocalizationProvider dateAdapter={AdapterMoment}>
-            <div  className='bg-light p-5'        >
-                
-                {/*<DemoItem label="Static variant" component="StaticDateRangePicker">*/}
-                {/*    <StaticDateRangePicker*/}
-                {/*        defaultValue={[moment('2022-04-17'), moment('2022-04-21')]}*/}
-                {/*        sx={{*/}
-                {/*            [`.${pickersLayoutClasses.contentWrapper}`]: {*/}
-                {/*                alignItems: 'center',*/}
-                {/*            },*/}
-                {/*        }}*/}
-                {/*        onChange={(e) => handleChange }*/}
-                {/*    />*/}
-                {/*</DemoItem>*/}
-
-
-                {/*<DatePicker*/}
-                {/*    label="Controlled picker"*/}
-                {/*    value={value}*/}
-                {/*    onChange={(newValue) => handleChange(newValue)}*/}
-                {/*/>*/}
-
-                {/*<DesktopDateRangePicker*/}
-                {/*    startText="Desktop start"*/}
-                {/*    value={value}*/}
-                {/*    onChange={(newValue) => {*/}
-                {/*        setValue(newValue);*/}
-                {/*    }}*/}
-                {/*    renderInput={(startProps, endProps) => (*/}
-                {/*        <React.Fragment>*/}
-                {/*            <TextField {...startProps} />*/}
-                {/*            <Box sx={{ mx: 2 }}> to </Box>*/}
-                {/*            <TextField {...endProps} />*/}
-                {/*        </React.Fragment>*/}
-                {/*    )}*/}
-                {/*/>*/}
+            <div  className='bg-secondary text-light rounded p-5'>           
 
                 <DateRangePicker
                     value={value}

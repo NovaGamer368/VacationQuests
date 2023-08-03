@@ -71,7 +71,7 @@ const VacationChangeOptions = ({ vacation }) => {
     useEffect(() => {
         getPlanners()
         getUsers()
-        getCurrentUser() 
+        getCurrentUser()
         setAddValid(true)
     }, [])
 
@@ -80,8 +80,10 @@ const VacationChangeOptions = ({ vacation }) => {
     }, [userEmail])
 
     useEffect(() => {
-        console.log('users', users.length) 
+        console.log('users', users.length)
         if (users.length !== 0 && currentUser) {
+            console.log("users:", users)
+            console.log(currentUser)
             getFriends()
         }
         forceUpdate()
@@ -527,21 +529,24 @@ const VacationChangeOptions = ({ vacation }) => {
         console.log(currentUser)
         let tempFriends = []
         let loop = 0
-            users.forEach((user, index) => {
+        users.forEach((user, index) => {
+            if (currentUser.friends) {
                 currentUser.friends.forEach((friendID) => {
                     if (user.id === friendID) {
                         tempFriends.push(user)
                         forceUpdate()
                     }
                 })
-                loop = index + 1
-                console.log(tempFriends, ' array on loop ', loop)
-            })
+            }
+            loop = index + 1
+            console.log(tempFriends, ' array on loop ', loop)
+
             if (loop === users.length) {
                 setFriends(tempFriends)
                 console.log('friends list', tempFriends)
-            }    
-                  
+            }
+        })
+
     }
     if (currentUser) {
         if (currentUser.id === vacation.owner) {
@@ -551,7 +556,7 @@ const VacationChangeOptions = ({ vacation }) => {
                         <i className="bi bi-list"></i>
                     </Button>
 
-                    <Offcanvas placement={'end'} show={show} onHide={handleClose}>
+                    <Offcanvas className='w-50' placement={'end'} show={show} onHide={handleClose}>
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title className="text-center">Edit {vacation.vacationTitle} Options</Offcanvas.Title>
                         </Offcanvas.Header>
@@ -692,7 +697,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                                     <div className='row'>
                                                         {
                                                             friends.map((friend) => (
-                                                                <div className='d-flex flex-column col-3' onClick={() => setUserEmail(friend.email) }>
+                                                                <div className='d-flex flex-column col-3' onClick={() => setUserEmail(friend.email)}>
                                                                     <Avatar
                                                                         className='w-auto p-2'
                                                                         src={friend.icon}
