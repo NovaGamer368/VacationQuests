@@ -6,10 +6,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ImageList from '@mui/material/ImageList';
+import CircularProgress from '@mui/material/CircularProgress';
+import ImageListItem from '@mui/material/ImageListItem';
 
 const GoogleAutoComplete = ({ setLocationVar }) => {
     const [place, setPlace] = useState()
     const [locationVar, setThisLocationVar] = useState()
+    const [imageList, setImageList] = useState()
     const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const autoCompleteRef = useRef();
@@ -50,6 +54,13 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
     useEffect(() => {
         if (locationVar) {
             console.log("locationVar is :", locationVar);
+            if (locationVar.photos) {
+                let imgList = []
+                locationVar.photos.forEach((photo) => {
+                    imgList.push(photo.getUrl())
+                    setImageList(imgList)
+                })
+            }
         }
     }, [locationVar])
 
@@ -78,7 +89,7 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
                                                             <b className='mx-auto'>Phone:  </b>
                                                             <span className='' >{locationVar.formatted_phone_number} </span>
                                                         </> : <></>
-                                                }                                               
+                                                }
                                                 {
                                                     locationVar.current_opening_hours ?
                                                         <>
@@ -127,11 +138,11 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
                                                                 <div className='col-6'>
                                                                     {
                                                                         locationVar.website ?
-                                                                            <a className='text-info'                                                                                
+                                                                            <a className='text-info'
                                                                                 href={locationVar.website}
                                                                                 target="_blank"
                                                                                 rel="noreferrer"
-                                                                                >
+                                                                            >
                                                                                 Visit their Website HERE
                                                                             </a>
                                                                             :
@@ -147,52 +158,86 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
                                             </div>
                                             <div className='col-6'>
                                                 {
-                                                    locationVar.reviews ?
-                                                        <div className='mt-2'>
-                                                            <h5>Reviews</h5>
-                                                            {
-                                                                locationVar.reviews.map((review) => (
-                                                                    <>
-                                                                        <Accordion className='card mb-3'>
-                                                                            <AccordionSummary
-                                                                                expandIcon={<ExpandMoreIcon />}
-                                                                                aria-controls="panel1a-content"
-                                                                                id="panel1a-header"
-                                                                            >
-                                                                                <h4>{review.author_name} rates: </h4>
-                                                                                <Rating
-                                                                                    className='ms-auto'
-                                                                                    name="text-feedback"
-                                                                                    value={review.rating}
-                                                                                    readOnly
-                                                                                    precision={0.5}
-                                                                                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                                                                />
-                                                                            </AccordionSummary>
-                                                                            <AccordionDetails>
-                                                                                <div className='card-body'>{review.text}</div>
-                                                                            </AccordionDetails>
-                                                                        </Accordion>
-
-                                                                    </>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                        :
+                                                    locationVar.photos ?
                                                         <>
-                                                        </>
+                                                            {
+                                                                imageList ?
+                                                                    <>
+                                                                        {
+                                                                            locationVar.photos.length === imageList.length ?
+                                                                                <>
+                                                                                    <ImageList sx={{ width: 500, height: 450 }}>
+                                                                                        {imageList.map((item, index) => (
+                                                                                            <ImageListItem key={index}>
+                                                                                                <img
+                                                                                                    src={item}
+                                                                                                    loading="lazy"
+                                                                                                />                                                                                                
+                                                                                            </ImageListItem>
+                                                                                        ))}
+                                                                                    </ImageList>
+                                                                                </>
+                                                                                :
+                                                                                <>
+                                                                                    <CircularProgress />
+                                                                                </>
+                                                                        }                                                                        
+                                                                    </> : <></>
+
+                                                            }
+
+                                                        </> : <></>
                                                 }
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className='row'>
+                                        {
+                                            locationVar.reviews ?
+                                                <div className='mt-2'>
+                                                    <h5>Reviews</h5>
+                                                    {
+                                                        locationVar.reviews.map((review) => (
+                                                            <>
+                                                                <Accordion className='card mb-3'>
+                                                                    <AccordionSummary
+                                                                        expandIcon={<ExpandMoreIcon />}
+                                                                        aria-controls="panel1a-content"
+                                                                        id="panel1a-header"
+                                                                    >
+                                                                        <h4>{review.author_name} rates: </h4>
+                                                                        <Rating
+                                                                            className='ms-auto'
+                                                                            name="text-feedback"
+                                                                            value={review.rating}
+                                                                            readOnly
+                                                                            precision={0.5}
+                                                                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                                                        />
+                                                                    </AccordionSummary>
+                                                                    <AccordionDetails>
+                                                                        <div className='card-body'>{review.text}</div>
+                                                                    </AccordionDetails>
+                                                                </Accordion>
+
+                                                            </>
+                                                        ))
+                                                    }
+                                                </div>
+                                                :
+                                                <>
+                                                </>
+                                        }
                                     </div>
                                 </div>
                                 :
                                 <>
                                     <div className='p-3 mt-3 border rounded border-secondary'>
                                         <h4 className='text-danger'>LOCATION IS CLOSED (OUT OF BUSINESS)</h4>
-                                        </div>
+                                    </div>
                                 </>
                         }
+
 
                     </>
                     : <></>

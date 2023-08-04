@@ -57,3 +57,8 @@ code {
     height: 70vh;
     width: 800px;
 }
+.banner
+{
+    width:auto;
+    height: 100px
+}

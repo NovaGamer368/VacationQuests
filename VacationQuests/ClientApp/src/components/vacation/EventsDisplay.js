@@ -34,6 +34,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                             placeArr.push(JSON.parse(data.location))
                             setDisplayArr(tempArray)
                             setPlaces(placeArr)
+                            console.log(placeArr)
                             update()
                         }
                     })
@@ -44,13 +45,14 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
     }
 
     if (noEvents !== true) {
-        if (!loading) {
+        if (!loading && places) {
             return (
-                <>
+                <>                    
                     <div className='text-center'>
                         {
                             displayArr.map((event, index) => (
-                                <div key={event.id} className='card border-light p-3 mb-3' onClick={ () => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}` }>
+                                <div key={event.id} className='card border-light p-3 mb-3' onClick={() => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}`}>
+                                    {/*<img className='banner' src={ places[index].photos[0].getUrl()} loading='lazy' />*/}
                                     <div>{event.eventName}</div>
                                     <div><b>Location: </b>
                                         {places[index].name}

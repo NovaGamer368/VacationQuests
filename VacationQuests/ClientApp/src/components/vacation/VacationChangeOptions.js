@@ -80,10 +80,10 @@ const VacationChangeOptions = ({ vacation }) => {
     }, [userEmail])
 
     useEffect(() => {
-        console.log('users', users.length)
+        //console.log('users', users.length)
         if (users.length !== 0 && currentUser) {
-            console.log("users:", users)
-            console.log(currentUser)
+            //console.log("users:", users)
+            //console.log(currentUser)
             getFriends()
         }
         forceUpdate()
@@ -525,8 +525,8 @@ const VacationChangeOptions = ({ vacation }) => {
             .catch(e => console.log(e))
     }
     const getFriends = () => {
-        console.log(users.length)
-        console.log(currentUser)
+        //console.log(users.length)
+        //console.log(currentUser)
         let tempFriends = []
         let loop = 0
         users.forEach((user, index) => {
@@ -539,11 +539,11 @@ const VacationChangeOptions = ({ vacation }) => {
                 })
             }
             loop = index + 1
-            console.log(tempFriends, ' array on loop ', loop)
+            //console.log(tempFriends, ' array on loop ', loop)
 
             if (loop === users.length) {
                 setFriends(tempFriends)
-                console.log('friends list', tempFriends)
+                //console.log('friends list', tempFriends)
             }
         })
 
