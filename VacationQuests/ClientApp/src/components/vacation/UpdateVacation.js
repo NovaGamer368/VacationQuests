@@ -28,20 +28,17 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
     }, [])
 
     useEffect(() => {
-        if (numberOfDays) {
-            calculateNewDate()
-        }
         const a = moment(startDate)
         const b = moment(endDate);
         setNumberOfDays(b.diff(a, 'days'))
     }, [startDate])
 
-    const calculateNewDate = () => {
-        const selectedDateObj = new Date(startDate);
-        const newDateObj = new Date(selectedDateObj.getTime() + numberOfDays * 24 * 60 * 60 * 1000);
-        const newDateStr = newDateObj.toISOString().slice(0, 10);
-        setEndDate(newDateStr);
-    };
+    //const calculateNewDate = () => {
+    //    const selectedDateObj = new Date(startDate);
+    //    const newDateObj = new Date(selectedDateObj.getTime() + numberOfDays * 24 * 60 * 60 * 1000);
+    //    const newDateStr = newDateObj.toISOString().slice(0, 10);
+    //    setEndDate(newDateStr);
+    //};
 
     //UPDATE
     const updateVacation = () => {
@@ -56,7 +53,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
 
             //Get the new number of days they want to plan the trip for
             const a = moment(startDate)
-            const b = moment(vacation.endDate);
+            const b = moment(vacation.startDate);
             console.log(a.diff(b, 'days'))
             if (events) {
 
