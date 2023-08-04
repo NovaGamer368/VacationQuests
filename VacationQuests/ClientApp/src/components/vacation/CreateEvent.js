@@ -74,7 +74,7 @@ const CreateEvent = () => {
     //};
 
     const createEvent = () => {
-        if (eventName != '' && location != '' && startTime != selectedDate && endTime != selectedDate) {
+        if (eventName != '' && location != undefined && startTime != selectedDate && endTime != selectedDate) {
             setError('Success')
 
             const requestOptions = {

@@ -24,16 +24,26 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
             options
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
-            setPlace(await autoCompleteRef.current.getPlace())
+            var place = await autoCompleteRef.current.getPlace();
+            if (!place.geometry) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                return;
+            }
+            else {
+                setPlace(await autoCompleteRef.current.getPlace())
+            }
         });
         forceUpdate()
     }, []);
 
     useEffect(() => {
         if (place) {
-            setLocationVar(JSON.stringify(place))
-            console.log("string version of place: ", JSON.stringify(place));
-            setThisLocationVar(place)            
+            if (place.geometry) {
+                setLocationVar(JSON.stringify(place))
+                console.log("string version of place: ", JSON.stringify(place));
+                setThisLocationVar(place)
+            }
         }
     }, [place])
 

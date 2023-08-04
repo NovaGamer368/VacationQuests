@@ -32,7 +32,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        initDates()        
+        initDates()  
+        setLocation(selectedEvent.location)
     }, [])
 
     //useEffect(() => {
@@ -87,28 +88,35 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
     const updateEvent = () => {
         console.log(moment(startTime)._d < moment(endTime)._d)
         if (moment(startTime)._d < moment(endTime)._d) {
-            setUpdating(true)
-            const requestOptions = {
-                mode: 'cors',
-                method: 'PUT',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    EventName: eventName,
-                    Location: location,
-                    StartTime: startTime,
-                    EndTime: endTime,
-                    Description: description,
-                    SelectedDate: selectedDate
-                }),
-                origin: "https://localhost:44455"
-            };
+            if (location != undefined) {
+                setUpdating(true)
+                const requestOptions = {
+                    mode: 'cors',
+                    method: 'PUT',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        EventName: eventName,
+                        Location: location,
+                        StartTime: startTime,
+                        EndTime: endTime,
+                        Description: description,
+                        SelectedDate: selectedDate
+                    }),
+                    origin: "https://localhost:44455"
+                };
 
-            fetch(`https://localhost:7259/api/events/${selectedEvent.id}`, requestOptions)
-                .then(window.location.reload())
-                .catch(e => console.log(e))
+                fetch(`https://localhost:7259/api/events/${selectedEvent.id}`, requestOptions)
+                    .then(window.location.reload())
+                    .catch(e => console.log(e))
+            }
+            else {
+                setError('INVALID location please select one that is suggested')
+
+            }
+           
         }
         else {
             setError('Your start time is after you end time')

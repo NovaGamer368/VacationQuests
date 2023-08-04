@@ -35,7 +35,7 @@ const LocationSelector = ({ location, locationFound }) => {
     //}, [countries]);
 
     const selectCountry = () => {
-        if (selected != 'Select a country') {
+        if (selected != 'Select a country' && selected != '') {
             location(selected)
             locationFound(true)
         }
