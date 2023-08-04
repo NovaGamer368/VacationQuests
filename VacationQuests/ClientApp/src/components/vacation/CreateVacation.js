@@ -34,6 +34,7 @@ const CreateVacation = () => {
                     },
                     body: JSON.stringify({
                         VacationTitle: location + ' Vacation',
+                        Location: location,
                         Owner: currentUser.id,
                         StartDate: startDate,
                         EndDate: endDate,

@@ -100,6 +100,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
                     },
                     body: JSON.stringify({
                         VacationTitle: title,
+                        Location: vacation.location,
                         events: eventsId,
                         owner: vacation.owner,
                         planners: vacation.planners,

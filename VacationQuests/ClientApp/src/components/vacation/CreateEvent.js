@@ -125,6 +125,7 @@ const CreateEvent = () => {
             body: JSON.stringify({
                 VacationTitle: vacation.vacationTitle,
                 StartDate: vacation.startDate,
+                Location: vacation.location,
                 EndDate: vacation.endDate,
                 owner: vacation.owner,
                 planners: vacation.planners,

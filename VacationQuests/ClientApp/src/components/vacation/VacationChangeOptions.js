@@ -203,6 +203,7 @@ const VacationChangeOptions = ({ vacation }) => {
                             },
                             body: JSON.stringify({
                                 VacationTitle: vacation.vacationTitle,
+                                Location: vacation.location,
                                 events: vacation.events,
                                 owner: vacation.owner,
                                 planners: tempArr,
@@ -302,6 +303,7 @@ const VacationChangeOptions = ({ vacation }) => {
                     },
                     body: JSON.stringify({
                         VacationTitle: vacation.vacationTitle,
+                        Location: vacation.location,
                         events: vacation.events,
                         owner: vacation.owner,
                         planners: plannerArr,
@@ -343,6 +345,7 @@ const VacationChangeOptions = ({ vacation }) => {
                 },
                 body: JSON.stringify({
                     VacationTitle: vacation.vacationTitle,
+                    Location: vacation.location,
                     events: vacation.events,
                     owner: vacation.owner,
                     planners: plannerArr,
@@ -426,6 +429,7 @@ const VacationChangeOptions = ({ vacation }) => {
             },
             body: JSON.stringify({
                 VacationTitle: vacation.vacationTitle,
+                Location: vacation.location,
                 events: vacation.events,
                 owner: selectedAdvanced.id,
                 planners: vacation.planners,

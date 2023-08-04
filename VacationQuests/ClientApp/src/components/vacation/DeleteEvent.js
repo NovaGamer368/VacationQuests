@@ -31,6 +31,7 @@ const DeleteEvent = ({ selectedEvent, vacation }) => {
             },
             body: JSON.stringify({
                 vacationTitle: vacation.vacationTitle,
+                Location: vacation.location,
                 events: fillArray,
                 planners: vacation.planners,
                 owner: vacation.owner,
