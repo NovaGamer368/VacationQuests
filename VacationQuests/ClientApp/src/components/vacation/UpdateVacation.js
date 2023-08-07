@@ -31,7 +31,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
         const a = moment(startDate)
         const b = moment(endDate);
         setNumberOfDays(b.diff(a, 'days'))
-    }, [startDate])
+    }, [startDate]) 
 
     //const calculateNewDate = () => {
     //    const selectedDateObj = new Date(startDate);
@@ -150,7 +150,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
             <h4>Updating...</h4>
             <div className="form-group mb-5">
                 <label className="col-form-label col-form-label-lg" htmlFor="inputLarge">Event Title</label>
-                <input className="form-control form-control-lg" maxLength='30' type="text" value={ title } placeholder="Event Title" id="inputLarge" onChange={(e) => setTitle(e.target.value)} />
+                <input className="form-control form-control-lg" maxLength='40' type="text" value={ title } placeholder="Event Title" id="inputLarge" onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className="md-form md-outline input-with-post-icon datepicker d-flex justify-content-center col-10 flex-column mx-auto">
                 <label htmlFor="startDate"><b>New Dates</b></label>
