@@ -40,11 +40,13 @@ const FriendsList = () => {
         if (user && allUsers) {
             let tempFriends = []
             allUsers.forEach((aUser, index) => {
-                user.friends.forEach((friend) => {
-                    if (aUser.id === friend) {
-                        tempFriends.push(aUser)
-                    }
-                })
+                if (user.friends) {
+                    user.friends.forEach((friend) => {
+                        if (aUser.id === friend) {
+                            tempFriends.push(aUser)
+                        }
+                    })
+                }                
             })
             setFriends(tempFriends)
             setLoading(false)
@@ -60,12 +62,14 @@ const FriendsList = () => {
                     removeArr.push(index - removeArr.length)
 
                 }
-                user.friends.forEach((friendID) => {
-                    if (aUser.id === friendID) {
-                        removeArr.push(index - removeArr.length)
-                        console.log('auser:', aUser)
-                    }                    
-                })
+                if (user.friends) {
+                    user.friends.forEach((friendID) => {
+                        if (aUser.id === friendID) {
+                            removeArr.push(index - removeArr.length)
+                            console.log('auser:', aUser)
+                        }
+                    })
+                }               
                 indexLoop = index
             })
             removeArr.forEach((index) => {

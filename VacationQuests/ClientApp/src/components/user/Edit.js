@@ -94,12 +94,12 @@ const Edit = ({ user, stopEdit }) => {
                         </>
                 }
                 <div className="form-floating mb-3">
-                    <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" className="form-control" maxLength='320' id="floatingInput" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                     <label for="floatingInput" className='text-dark'>Email address</label>
                 </div>               
                 <div className="form-group mt-4">
                     <div class="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingBio" placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} />
+                        <input type="text" className="form-control" id="floatingBio" maxLength='63206' placeholder="Bio" value={bio} onChange={(e) => setBio(e.target.value)} />
                         <label for="floatingBio" className='text-dark'>Bio</label>
                     </div>
                 </div>

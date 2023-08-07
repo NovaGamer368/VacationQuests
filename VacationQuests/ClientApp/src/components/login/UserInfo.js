@@ -44,7 +44,7 @@ const UserInfo = () => {
                     <h1 className="mt-4">Additional Information </h1>
                     <UploadAvatar className="align-items-center" icon={ setIcon } />
                     <div class="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingBio" placeholder="Bio" onKeyUp={(e) => setBio(e.target.value)} />
+                        <textarea className="form-control" maxLength='63206' id="floatingBio" placeholder="Bio" onKeyUp={(e) => setBio(e.target.value)} />
                         <label for="floatingBio" className='text-dark'>Bio</label>
                     </div>
                 </div>

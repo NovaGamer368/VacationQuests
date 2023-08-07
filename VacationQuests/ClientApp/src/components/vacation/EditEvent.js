@@ -141,7 +141,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                     </div>
                     <div className="form-group mb-5">
                         <label className="col-form-label col-form-label-lg mt-4" for="inputLarge">Event Title</label>
-                        <input className="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" value={eventName} onChange={(e) => setEventName(e.target.value)} />
+                        <input className="form-control form-control-lg" type="text" maxLength='40' placeholder="Event Title" id="inputLarge" value={eventName} onChange={(e) => setEventName(e.target.value)} />
                     </div>
                     <div className="card m-3 border-info p-5">
                         <label className='mb-2'>Date of the event {moment(selectedDate).format('MMMM Do YYYY')}</label>
@@ -153,7 +153,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                         </fieldset>
                         <fieldset>
                             <label className="form-label mt-4" for="description">Description of Event</label>
-                            <textarea className="form-control" id="description" type="text" placeholder="(optional)" value={description} onChange={(e) => setDescription(e.target.value)} />
+                            <textarea className="form-control" id="description" maxLength='240' type="text" placeholder="(optional)" value={description} onChange={(e) => setDescription(e.target.value)} />
                         </fieldset>
                         <fieldset>
                             <div className='m-2'>

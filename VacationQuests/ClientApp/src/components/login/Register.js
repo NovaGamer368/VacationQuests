@@ -119,7 +119,7 @@ const Register = () => {
                     <div className="form-group">
                         <h1 className="mt-4">Register New User </h1>
                         <div className="form-floating mb-3">
-                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" onKeyUp={(e) => setEmail(e.target.value)} />
+                            <input type="email" className="form-control" maxLength='320' id="floatingInput" placeholder="name@example.com" onKeyUp={(e) => setEmail(e.target.value)} />
                             <label for="floatingInput" className='text-dark'>Email address</label>
                         </div>
                         <div class="form-floating mb-3">

@@ -156,7 +156,7 @@ const CreateEvent = () => {
                 <h3 className='text-warning'>{error}</h3>
                 <div className="form-group mb-5">
                     <label className="col-form-label col-form-label-lg mt-4" htmlFor="inputLarge">Event Title</label>
-                    <input className="form-control form-control-lg" type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
+                    <input className="form-control form-control-lg" maxLength='40' type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
                 </div>
                 <div className="card m-3 border-danger p-5">
                     <fieldset>
@@ -164,7 +164,7 @@ const CreateEvent = () => {
                     </fieldset>
                     <fieldset>
                         <label className="form-label mt-4" htmlFor="description">Description of Event</label>
-                        <textarea className="form-control" id="description" type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
+                        <textarea className="form-control" id="description" maxLength='240' type="text" placeholder="(optional)" onChange={(e) => setDescription(e.target.value)} />
                     </fieldset>
                     <fieldset>
                         <div className='m-2'>
