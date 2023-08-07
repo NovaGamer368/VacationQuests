@@ -18,8 +18,10 @@ const AdvancedEventView = () => {
     const [selectedEvent, setSelectedEvent] = useState()
     const [placeObject, setPlaceObject] = useState()
     const [vacation, setVacation] = useState()
+    const [locationVar, setLocationVar] = useState()
     const [editMode, setEditMode] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [loadFilter, setLoadFilter] = useState(false)
     const [loadmap, setLoadmap] = useState(false)
     const navigate = useNavigate();
 
@@ -45,7 +47,6 @@ const AdvancedEventView = () => {
                     .catch(e => console.log(e))
             }
         }
-
         //console.log(placeObject.geometry.location.lat)
 
 
@@ -53,12 +54,34 @@ const AdvancedEventView = () => {
 
     useEffect(() => {
         if (placeObject) {
-            console.log(placeObject.geometry.location.lat)
-            console.log(placeObject.geometry.location.lng)
-
-            setLoadmap(true)
+                setLoadmap(true)
         }
     }, [placeObject])
+
+    //useEffect(() => {
+    //    if (locationVar) {
+    //        if (placeObject) {
+    //            setLoadmap(true)
+    //        }
+    //    }
+    //}, [locationVar])
+
+    useEffect(() => {
+        if (vacation) {
+            //Getting location
+            let api_url = `https://restcountries.com/v3.1/name/${vacation.location}?fullText=true`
+
+            fetch(api_url)
+                .then(resp => resp.json())
+                .then(data => {
+                    //SORT DATA RETURNED
+                    console.log('data: ', data)
+                    setLocationVar(data)
+                    setLoadFilter(true)
+                })
+                .catch(e => console.log(e))
+        }
+    }, [vacation])
 
     if (!loading) {
         if (!editMode) {
@@ -230,9 +253,15 @@ const AdvancedEventView = () => {
             );
         }
         else {
+            
             return (
                 <>
-                    <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode} vacation={vacation} />
+                    {
+                        loadFilter === true ?
+                            <EditEvent selectedEvent={selectedEvent} clearEdit={setEditMode} vacation={vacation} filter={locationVar[0].cca2} />
+                            :
+                            <h2>Loading</h2>
+                    }       
                 </>
             )
         }

@@ -10,7 +10,7 @@ import ImageList from '@mui/material/ImageList';
 import CircularProgress from '@mui/material/CircularProgress';
 import ImageListItem from '@mui/material/ImageListItem';
 
-const GoogleAutoComplete = ({ setLocationVar }) => {
+const GoogleAutoComplete = ({ setLocationVar, filter }) => {
     const [place, setPlace] = useState()
     const [locationVar, setThisLocationVar] = useState()
     const [imageList, setImageList] = useState()
@@ -18,10 +18,19 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
 
     const autoCompleteRef = useRef();
     const inputRef = useRef();
-    const options = {
-        componentRestrictions: {},
-        types: ["establishment"]
-    };
+    let options
+    if (!filter) {
+        options = {
+            componentRestrictions: {},
+            types: ["establishment"]
+        };
+    }
+    else {
+        options = {
+            componentRestrictions: { country: filter.toLowerCase() },
+            types: ["establishment"]
+        };
+    }
     useEffect(() => {
         autoCompleteRef.current = new window.google.maps.places.Autocomplete(
             inputRef.current,
@@ -172,7 +181,7 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
                                                                                                 <img
                                                                                                     src={item}
                                                                                                     loading="lazy"
-                                                                                                />                                                                                                
+                                                                                                />
                                                                                             </ImageListItem>
                                                                                         ))}
                                                                                     </ImageList>
@@ -181,7 +190,7 @@ const GoogleAutoComplete = ({ setLocationVar }) => {
                                                                                 <>
                                                                                     <CircularProgress />
                                                                                 </>
-                                                                        }                                                                        
+                                                                        }
                                                                     </> : <></>
 
                                                             }

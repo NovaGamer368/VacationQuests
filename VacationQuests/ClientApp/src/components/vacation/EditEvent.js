@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import GoogleAutoComplete from './GoogleAutoComplete';
 
 
-const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
+const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     const [eventName, setEventName] = useState(selectedEvent.eventName)
     const [location, setLocation] = useState()
     //const [time, setTime] = useState()
@@ -149,7 +149,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation }) => {
                             Change Date of event
                         </Button>
                         <fieldset>                            
-                            <GoogleAutoComplete setLocationVar={setLocation} />
+                            <GoogleAutoComplete setLocationVar={setLocation} filter={filter} />
                         </fieldset>
                         <fieldset>
                             <label className="form-label mt-4" for="description">Description of Event</label>

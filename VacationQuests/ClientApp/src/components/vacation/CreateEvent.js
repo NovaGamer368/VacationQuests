@@ -15,6 +15,8 @@ const CreateEvent = () => {
 
     const [eventName, setEventName] = useState()
     const [location, setLocation] = useState()
+    const [locationFilter, setLocationFilter] = useState()
+    const [loadFilter, setLoadFilter] = useState(false)
     //const [time, setTime] = useState()
     const [startTime, setStartTime] = useState(new Date())
     const [endTime, setEndTime] = useState(new Date())
@@ -46,6 +48,22 @@ const CreateEvent = () => {
         setStartTime(selectedDate)
         setEndTime(selectedDate)
     }, [selectedDate])
+
+    useEffect(() => {
+        if (vacation) {
+            let api_url = `https://restcountries.com/v3.1/name/${vacation.location}?fullText=true`
+
+            fetch(api_url)
+                .then(resp => resp.json())
+                .then(data => {
+                    //SORT DATA RETURNED
+                    console.log('data: ', data)
+                    setLocationFilter(data)
+                    setLoadFilter(true)
+                })
+                .catch(e => console.log(e))
+        }
+    },[vacation])
     useEffect(() => {
         if (location) {
             //console.log(location)
@@ -143,7 +161,7 @@ const CreateEvent = () => {
             .catch(e => console.log(e))
     }
 
-    if (vacation && selectedDate) {
+    if (vacation && selectedDate && loadFilter) {
         return (
             <div className='container text-center mt-5'>
                 <div className='d-flex justify-content-center w-100'>
@@ -160,7 +178,7 @@ const CreateEvent = () => {
                 </div>
                 <div className="card m-3 border-danger p-5">
                     <fieldset>
-                        <GoogleAutoComplete locationVar={location} setLocationVar={setLocation} />
+                        <GoogleAutoComplete locationVar={location} setLocationVar={setLocation} filter={locationFilter[0].cca2} />
                     </fieldset>
                     <fieldset>
                         <label className="form-label mt-4" htmlFor="description">Description of Event</label>
