@@ -120,6 +120,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
                     },
                     body: JSON.stringify({
                         VacationTitle: title,
+                        location: vacation.location,
                         events: [],
                         owner: vacation.owner,
                         planners: vacation.planners,
