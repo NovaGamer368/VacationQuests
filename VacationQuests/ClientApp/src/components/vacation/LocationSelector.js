@@ -98,8 +98,8 @@ const LocationSelector = ({ location, locationFound }) => {
                                         <img
                                             loading="lazy"
                                             width="20"
-                                            src={`https://flagcdn.com/w20/${option.cca2.toLowerCase()}.png`}
-                                            srcSet={`https://flagcdn.com/w40/${option.cca2.toLowerCase()}.png 2x`}
+                                            src={`https://flagcdn.com/w20/${option.cca2}.png`}
+                                            srcSet={`https://flagcdn.com/w40/${option.cca2}.png 2x`}
                                             alt=""
                                         />
                                         {option.name.common}

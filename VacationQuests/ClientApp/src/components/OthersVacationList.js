@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import moment from 'moment'
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
+import LocationFlag from './vacation/LocationFlag';
 
 
 const OthersVacationList = () => {
@@ -72,6 +73,9 @@ const OthersVacationList = () => {
                                         <div className='card-body d-flex flex-column'>
                                             <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
                                             <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                        </div>
+                                        <div className='card-footer'>
+                                            <LocationFlag vacation={vacation} />                                            
                                         </div>
                                     </div>
                                 </div>
