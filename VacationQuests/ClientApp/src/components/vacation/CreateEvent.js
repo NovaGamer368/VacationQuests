@@ -5,6 +5,8 @@ import moment from 'moment'
 //import { TimePicker } from 'antd';
 import TimePicker from './TimePicker';
 import GoogleAutoComplete from './GoogleAutoComplete';
+import ChatGPTList from './ChatGPTList';
+import Chatbot from './ChatBot';
 
 
 
@@ -204,6 +206,8 @@ const CreateEvent = () => {
                         <button className='btn btn-primary border-danger mt-3' onClick={() => { createEvent() } }>Create Event</button>
                     </div>
                 </div>
+                <ChatGPTList vacation={vacation} />
+                {/*<Chatbot />*/}
             </div>
         );
     }

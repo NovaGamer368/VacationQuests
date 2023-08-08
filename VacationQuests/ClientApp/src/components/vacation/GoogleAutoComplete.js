@@ -20,7 +20,7 @@ const GoogleAutoComplete = ({ setLocationVar, filter }) => {
     const inputRef = useRef();
     let options
     if (!filter) {
-        options = {
+         options = {
             componentRestrictions: {},
             types: ["establishment"]
         };
