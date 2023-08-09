@@ -11,7 +11,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
 
 const spdActions = [
-    { icon: <FormatListNumberedIcon />, name: "List top 10 Location" },
+    { icon: <FormatListNumberedIcon />, name: "Suggest a location" },
     { icon: <SelfImprovementIcon />, name: "Relaxing areas" },
     { icon: <MapIcon />, name: "Look at map" },
 ];

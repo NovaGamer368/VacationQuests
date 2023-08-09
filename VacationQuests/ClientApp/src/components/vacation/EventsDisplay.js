@@ -11,7 +11,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
     
     useEffect(() => {
         getEvents()
-        update()
+        update()        
     }, [])
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                             placeArr.push(JSON.parse(data.location))
                             setDisplayArr(tempArray)
                             setPlaces(placeArr)
-                            console.log(placeArr)
+                            console.log("place object:", placeArr)
                             update()
                         }
                     })
