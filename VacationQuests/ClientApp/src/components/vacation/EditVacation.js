@@ -5,6 +5,7 @@ import EventsDisplay from './EventsDisplay';
 import Accordion from 'react-bootstrap/Accordion';
 import VacationChangeOptions from './VacationChangeOptions';
 import CircularProgress from '@mui/material/CircularProgress';
+import ImageCarousel from './ImageCarousel';
 //import ShutterstockApi from 'shutterstock-api';
 
 const EditVacation = () => {
@@ -31,7 +32,7 @@ const EditVacation = () => {
     useEffect(() => {
         if (vacation) {
             initDates()
-            console.log(process.env)
+            //console.log(process.env)
             fetchImages()
         }
     }, [vacation])
@@ -214,7 +215,15 @@ const EditVacation = () => {
                             </div>
                         </div>
                 }
-                <hr className='container'/>
+                <hr className='container' />
+                {
+                    images ? 
+                        <>
+                            <ImageCarousel data={images} />
+                        </>
+                        :
+                        <></>
+                }
             </div>
         );
     }
