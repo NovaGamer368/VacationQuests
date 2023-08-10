@@ -59,7 +59,7 @@ const CreateEvent = () => {
                 .then(resp => resp.json())
                 .then(data => {
                     //SORT DATA RETURNED
-                    console.log('data: ', data)
+                    //console.log('data: ', data)
                     setLocationFilter(data)
                     setLoadFilter(true)
                 })

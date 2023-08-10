@@ -1,14 +1,14 @@
 ﻿import { SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
-import * as React from "react";
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import MapIcon from '@mui/icons-material/Map';
 import SendIcon from "@mui/icons-material/Send";
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
+import GoogleMaps from "./GoogleMaps";
 
 const spdActions = [
     { icon: <FormatListNumberedIcon />, name: "Suggest a location" },
@@ -222,11 +222,13 @@ const gptResponse =
 
 
 function ChatGPTList({ vacation }) {
-    const [buttonOpen, setButtonOpen] = React.useState(false);
+    const [buttonOpen, setButtonOpen] = useState(false);
     const handleButtonOpen = () => setButtonOpen(true);
     const handleButtonClose = () => setButtonOpen(false);
     const [response, setResponse]= useState()
     const [gptReponseFound, setGptReponseFound] = useState(false)
+    const [events, setEvents] = useState()
+    const [showMaps, setShowMaps] = useState()
 
     const [showResponse, setShowResponse] = useState(false);
 
@@ -234,13 +236,37 @@ function ChatGPTList({ vacation }) {
         setShowResponse(false);
         setResponse()
     }
-
     const handleShowResponse = () => setShowResponse(true);
+
+    const handleCloseMaps = () => {
+        setShowMaps(false);
+    }
+    const handleShowMaps = () => setShowMaps(true);
 
     function generateRandomNumber(minValue, maxValue) {
         return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     }
-    React.useEffect(() => {
+    useEffect(() => {
+        if (vacation.events) {
+            let tempArray = []
+            vacation.events.forEach((event) => {
+                fetch(`https://localhost:7259/api/events/${event}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        let jsonObject = JSON.parse(data.location)
+                        tempArray.push(jsonObject.geometry.location)
+                        setEvents(tempArray)
+                    })
+                    .catch(e => console.log(e))
+            })
+        }
+    }, [])
+    useEffect(() => {
+        if (events) {
+            //console.log('Events', events)
+        }
+    }, [events])
+    useEffect(() => {
         if (response) {
             if (gptReponseFound && response) {
                 handleShowResponse()
@@ -270,11 +296,10 @@ function ChatGPTList({ vacation }) {
                 
                 break;
             case 1:
-                console.log('Relaxing areas that user can visit sponsered by chat GPT')
+                console.log('Bring up google maps to vacation area and let them explore: ', events)
+                handleShowMaps()
                 break;
-            case 2:
-                console.log('Bring up google maps to vacation area and let them explore')
-                break;
+
         }
     }
 
@@ -325,6 +350,41 @@ function ChatGPTList({ vacation }) {
                             <Modal.Footer className='border border-secondary'>
                                 <div className='d-flex w-100'>                                    
                                     <Button className='m-1 w-50' variant="secondary" onClick={handleCloseResponse}>
+                                        Close
+                                    </Button>
+                                </div>
+                            </Modal.Footer>
+                        </Modal>
+                    </>
+                    :
+                    <></>
+            }
+            {
+                showMaps ?
+                    <>
+                        <Modal
+                            animation={false}
+                            backdrop='static'
+                            fullscreen
+                            size='lg'
+                            centered show={showMaps} onHide={handleCloseMaps}>
+                            <Modal.Header className='border border-secondary justify-content-center'>
+                                <h3 className='text-center'>Explore the map!</h3>
+                                <hr></hr>
+                            </Modal.Header>
+                            <Modal.Body className='bg-primary'>
+                                {
+                                    events ? 
+                                        <center>
+                                            <GoogleMaps latVar={events[0].lat} lngVar={events[0].lng} markers={events} />
+                                        </center>
+                                        :
+                                        <><h1>LOADING</h1></>
+                                }
+                            </Modal.Body>
+                            <Modal.Footer className='border border-secondary'>
+                                <div className='d-flex w-100'>
+                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseMaps}>
                                         Close
                                     </Button>
                                 </div>
