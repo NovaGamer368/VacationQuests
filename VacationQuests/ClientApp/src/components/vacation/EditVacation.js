@@ -73,62 +73,7 @@ const EditVacation = () => {
     }
 
     const fetchImages = async () => {
-        //try {
-        //    const apiUrl = 'https://api.shutterstock.com/v2/images/search';
-        //    const searchTerm = vacation.location; // Example search term
-
-        //    const headers = {
-        //        'Authorization': `Bearer ${shutterApiKey}`
-        //    };
-
-        //    const queryParams = new URLSearchParams({
-        //        query: searchTerm
-        //    });
-
-        //    const apiUrlWithParams = `${apiUrl}?${queryParams}`;
-
-        //    const response = await fetch(apiUrlWithParams, {
-        //        method: 'GET',
-        //        headers: headers
-        //    });
-
-        //    const data = await response.json();
-        //    console.log(data.data) // Assuming the images are nested within the 'data' property
-        //} catch (error) {
-        //    console.error(error);
-        //}
-
-
-        //sstk.setAccessToken(process.env.REACT_APP_SHUTTERSTOCK_API_KEY);
-
-        //const imagesApi = new sstk.ImagesApi();
-
-        //const queryParams = {
-        //    "query": "hiking"
-        //};
-
-        //imagesApi.searchImages(queryParams)
-        //    .then((data) => {
-        //        console.log(data);
-        //    })
-        //    .catch((error) => {
-        //        console.error(error);
-        //    });
-
-        //const shutterstock = new ShutterstockApi({
-        //    clientId: process.env.REACT_APP_SHUTTER_CLIENT_ID,
-        //    clientSecret: process.env.REACT_APP_SHUTTER_SECRET,
-        //});
-        //shutterstock.image.search({ query: vacation.location})
-        //    .then(response => {
-        //        setImages(response.data);
-        //        console.log(response.data)
-        //    })
-        //    .catch(error => {
-        //        console.error('Error fetching images:', error);
-        //    });
-
-        fetch(`${API_BASE_URL}/images/search?query=${vacation.location}`, {
+        fetch(`${API_BASE_URL}/images/search?query=${vacation.location} landmarks&image_type=photo&orientation=horizontal`, {
             headers: {
                 "User-Agent": "application/javascript",
                 'Authorization': `Bearer ${shutterApiKey}`,

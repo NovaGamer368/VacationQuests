@@ -17,7 +17,6 @@ function ImageCarousel({ data }) {
                                     <img src={imageData.assets.preview_1000.url} />
                                     <p className='mb-5'>{imageData.description}</p>
                                 </center>
-
                             </Carousel.Item>
                         ))
                     }

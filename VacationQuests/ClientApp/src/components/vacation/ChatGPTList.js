@@ -12,7 +12,7 @@ import Modal from 'react-bootstrap/Modal';
 
 const spdActions = [
     { icon: <FormatListNumberedIcon />, name: "Suggest a location" },
-    { icon: <SelfImprovementIcon />, name: "Relaxing areas" },
+    //{ icon: <SelfImprovementIcon />, name: "Relaxing areas" },
     { icon: <MapIcon />, name: "Look at map" },
 ];
 
