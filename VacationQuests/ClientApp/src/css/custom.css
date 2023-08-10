@@ -57,8 +57,11 @@ code {
     height: 70vh;
     width: 800px;
 }
-.banner
-{
-    width:auto;
+.largeMap {
+    height: 70vh;
+    width: auto;
+}
+.banner {
+    width: auto;
     height: 100px
 }

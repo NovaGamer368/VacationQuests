@@ -1,4 +1,4 @@
-﻿import { SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
+﻿import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import MapIcon from '@mui/icons-material/Map';
 import SendIcon from "@mui/icons-material/Send";
@@ -9,6 +9,8 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from 'react-bootstrap/Modal';
 import GoogleMaps from "./GoogleMaps";
+import Tooltip from '@mui/material/Tooltip';
+import { useReducer } from "react";
 
 const spdActions = [
     { icon: <FormatListNumberedIcon />, name: "Suggest a location" },
@@ -16,7 +18,7 @@ const spdActions = [
     { icon: <MapIcon />, name: "Look at map" },
 ];
 
-const gptResponse = 
+const gptResponse =
 {
     "response": [
         "South Africa: Pietermaritzburg - Offers historic buildings, botanical gardens, and access to the Drakensberg Mountains.",
@@ -225,10 +227,13 @@ function ChatGPTList({ vacation }) {
     const [buttonOpen, setButtonOpen] = useState(false);
     const handleButtonOpen = () => setButtonOpen(true);
     const handleButtonClose = () => setButtonOpen(false);
-    const [response, setResponse]= useState()
+    const [response, setResponse] = useState()
     const [gptReponseFound, setGptReponseFound] = useState(false)
     const [events, setEvents] = useState()
+    const [eventObjects, setEventObjects] = useState()
     const [showMaps, setShowMaps] = useState()
+    const [centerCoord, setCenterCoord] = useState()
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const [showResponse, setShowResponse] = useState(false);
 
@@ -249,6 +254,7 @@ function ChatGPTList({ vacation }) {
     useEffect(() => {
         if (vacation.events) {
             let tempArray = []
+            let objectsArray = []
             vacation.events.forEach((event) => {
                 fetch(`https://localhost:7259/api/events/${event}`)
                     .then(resp => resp.json())
@@ -256,6 +262,14 @@ function ChatGPTList({ vacation }) {
                         let jsonObject = JSON.parse(data.location)
                         tempArray.push(jsonObject.geometry.location)
                         setEvents(tempArray)
+
+                        setCenterCoord(tempArray[0])
+                        console.log("center", centerCoord)
+
+                        data.location = JSON.parse(data.location)
+                        objectsArray.push(data)
+                        setEventObjects(objectsArray)
+                        forceUpdate()
                     })
                     .catch(e => console.log(e))
             })
@@ -275,7 +289,7 @@ function ChatGPTList({ vacation }) {
                 setResponse('DUE TO FUNDING ISSUES CHAT GPT COULDNT LIST GOOD LOCATIONS TO VISIT')
                 handleShowResponse()
             }
-        }        
+        }
     }, [response])
 
     const chatGPTAction = (index) => {
@@ -293,7 +307,7 @@ function ChatGPTList({ vacation }) {
                 })
                 setResponse(tempArr[generateRandomNumber(0, tempArr.length)])
 
-                
+
                 break;
             case 1:
                 console.log('Bring up google maps to vacation area and let them explore: ', events)
@@ -302,12 +316,16 @@ function ChatGPTList({ vacation }) {
 
         }
     }
+    const moveCoord = (event) => {
+        setCenterCoord(event.location.geometry.location)
+        forceUpdate()
+    }
 
     return (
         <>
             <center>
                 <div className='bg-secondary'>
-                    <SpeedDial                    
+                    <SpeedDial
                         ariaLabel="basic"
                         sx={{
                             position: "fixed",
@@ -323,7 +341,7 @@ function ChatGPTList({ vacation }) {
                             <SpeedDialAction
                                 key={action.name}
                                 icon={action.icon}
-                                onClick={() => chatGPTAction(index) }
+                                onClick={() => chatGPTAction(index)}
                                 tooltipTitle={action.name}
                             />
                         ))}
@@ -331,7 +349,7 @@ function ChatGPTList({ vacation }) {
                 </div>
             </center>
             {
-                response ? 
+                response ?
                     <>
                         <Modal
                             animation={false}
@@ -343,12 +361,10 @@ function ChatGPTList({ vacation }) {
                                 <hr></hr>
                             </Modal.Header>
                             <Modal.Body className='bg-primary'>
-                                
                                 {response}
-
                             </Modal.Body>
                             <Modal.Footer className='border border-secondary'>
-                                <div className='d-flex w-100'>                                    
+                                <div className='d-flex w-100'>
                                     <Button className='m-1 w-50' variant="secondary" onClick={handleCloseResponse}>
                                         Close
                                     </Button>
@@ -374,12 +390,45 @@ function ChatGPTList({ vacation }) {
                             </Modal.Header>
                             <Modal.Body className='bg-primary'>
                                 {
-                                    events ? 
+                                    events && eventObjects ?
                                         <center>
-                                            <GoogleMaps latVar={events[0].lat} lngVar={events[0].lng} markers={events} />
+                                            <GoogleMaps latVar={centerCoord.lat} lngVar={centerCoord.lng} markers={events} largeMap />
+                                            {
+                                                eventObjects.length >= 6 ?
+
+                                                    <div className='d-flex flex-row overflow-x-scroll'>
+                                                        {
+                                                            eventObjects.map((event, index) => (
+                                                                <Tooltip title={"Travel too " + event.location.formatted_address } placement="top">
+                                                                    <div className='card col-2 p-1 mx-1 mb-1' onClick={() => { moveCoord(event) }}>
+                                                                        <div className='card-header'>
+                                                                            {event.eventName}
+                                                                        </div>
+                                                                        <div className='card-body'>{event.location.formatted_address}</div>
+                                                                        <div></div>
+                                                                    </div>
+                                                                </Tooltip>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                    :
+                                                    <div className='d-flex flex-row'>
+                                                        {
+                                                            eventObjects.map((event, index) => (
+                                                                <div className='card p-1 mx-1'>
+                                                                    <div className='card-header'>
+                                                                        {event.eventName}
+                                                                    </div>
+                                                                    <div className='card-body'>{event.location.formatted_address}</div>
+                                                                    <div></div>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                            }
                                         </center>
                                         :
-                                        <><h1>LOADING</h1></>
+                                        <><h1 className='text-center'>LOADING</h1></>
                                 }
                             </Modal.Body>
                             <Modal.Footer className='border border-secondary'>
