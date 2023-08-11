@@ -681,7 +681,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                         <h3 className='text-center'>Add another</h3>
                                         <hr></hr>
                                     </Modal.Header>
-                                    <Modal.Body className='bg-primary'>
+                                    <Modal.Body className=' '>
                                         <div className='text-danger text-center'>{addError}</div>
                                         <div className='row'>
                                             <Autocomplete
@@ -695,7 +695,7 @@ const VacationChangeOptions = ({ vacation }) => {
                                                 renderInput={(params) => <TextField {...params} label="Search for Another user" />}
                                             />
                                         </div>
-                                        <div className='row text-light text-center p-2'>
+                                        <div className='row text-dark text-center p-2'>
                                             {
                                                 friends ?
                                                     <div className='row'>

@@ -1,4 +1,4 @@
-import "./css/bootstrap.css"
+//import "./css/bootstrap.css"
 import './css/custom.css'
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';

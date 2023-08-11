@@ -25,22 +25,21 @@ const Home = () => {
         return (
             <>
                 <div className='d-flex flex-column w-100 mt-5'>
-                    <div className='container  mb-5 card border-primary p-5 text-center'>
-                        <h1 className='card-header text-light'> Your Vacations </h1>
-                        <hr />
+                    <div className='container mb-5 card border-primary p-5 text-center'>
+                        <h1 className='card-header bg-primary text-light'>Your Vacations </h1>
                         <div className='card-body'>
                             <VacationList />
                         </div>
                     </div>
-                    <div className='container p-5 card text-center'>
-                        <h1 className='card-header text-light'>Shared Vacations</h1>
+                    <div className='container p-5 border-primary card text-center'>
+                        <h1 className='card-header bg-primary text-light'>Shared Vacations</h1>
                         <div className='card-body'>
                             <OthersVacationList />
                         </div>
                     </div>
-                    <div className='container mt-5  card border-secondary p-5'>
+                    <div className='container mt-5 border-primary card p-5'>
                         <h3>Our Purpose</h3>
-                        <Link className='btn btn-info' to="/Create">Create your vacation now!</Link>
+                        <Link className='btn btn-primary' to="/Create">Create your vacation now!</Link>
                     </div>
                 </div>
             </>

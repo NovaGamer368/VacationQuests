@@ -67,7 +67,7 @@ const OthersVacationList = () => {
                     <div className='d-flex justify-content-center flex-row flex-wrap'>
                         {
                             userVacations.map((vacation) => (
-                                <div key={vacation.id} className='card btn btn-primary border-0 m-2 col-3 '>
+                                <div key={vacation.id} className='card btn btn-secondary border-primary m-2 col-3'>
                                     <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
                                         <h3 className='card-header'>{vacation.vacationTitle}</h3>
                                         <div className='card-body d-flex flex-column'>

@@ -178,7 +178,7 @@ const CreateEvent = () => {
                     <label className="col-form-label col-form-label-lg mt-4" htmlFor="inputLarge">Event Title</label>
                     <input className="form-control form-control-lg" maxLength='40' type="text" placeholder="Event Title" id="inputLarge" onChange={(e) => setEventName(e.target.value)} />
                 </div>
-                <div className="card m-3 border-danger p-5">
+                <div className="card m-3 border-primary p-5">
                     <fieldset>
                         <GoogleAutoComplete locationVar={location} setLocationVar={setLocation} filter={locationFilter[0].cca2} />
                     </fieldset>
@@ -203,7 +203,7 @@ const CreateEvent = () => {
                         </div>
                     </fieldset>
                     <div>
-                        <button className='btn btn-primary border-danger mt-3' onClick={() => { createEvent() } }>Create Event</button>
+                        <button className='btn btn-primary border-primary mt-3' onClick={() => { createEvent() } }>Create Event</button>
                     </div>
                 </div>
                 <ChatGPTList vacation={vacation} />

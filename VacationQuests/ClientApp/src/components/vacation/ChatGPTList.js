@@ -400,7 +400,7 @@ function ChatGPTList({ vacation }) {
                                                         {
                                                             eventObjects.map((event, index) => (
                                                                 <Tooltip title={"Travel too " + event.location.formatted_address } placement="top">
-                                                                    <div className='card col-2 p-1 mx-1 mb-1' onClick={() => { moveCoord(event) }}>
+                                                                    <div className='card col-2 p-1 m-1' onClick={() => { moveCoord(event) }}>
                                                                         <div className='card-header'>
                                                                             {event.eventName}
                                                                         </div>

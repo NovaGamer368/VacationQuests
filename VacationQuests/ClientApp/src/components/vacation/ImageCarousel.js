@@ -9,7 +9,7 @@ function ImageCarousel({ data }) {
         return (
             <>
                 <h3 className='text-center'>Images of Location</h3>
-                <Carousel fade>
+                <Carousel fade data-bs-theme="dark">
                     {
                         data.map((imageData, index) => (
                             <Carousel.Item key={index} interval={4000}>

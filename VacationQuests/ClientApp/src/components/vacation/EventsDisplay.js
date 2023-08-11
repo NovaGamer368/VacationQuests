@@ -51,7 +51,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                     <div className='text-center'>
                         {
                             displayArr.map((event, index) => (
-                                <div key={event.id} className='card border-light p-3 mb-3' onClick={() => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}`}>
+                                <div key={event.id} className='card btn border-primary p-3 mb-3' onClick={() => window.location.href = `/EventView?e=${event.id}&v=${vacation.id}`}>
                                     {/*<img className='banner' src={ places[index].photos[0].getUrl()} loading='lazy' />*/}
                                     <div>{event.eventName}</div>
                                     <div><b>Location: </b>
