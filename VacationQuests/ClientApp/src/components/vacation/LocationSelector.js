@@ -3,10 +3,10 @@ import Cookies from 'js-cookie';
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import SplitButton from 'react-bootstrap/SplitButton';
-
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import SnackBar from '../SnackBar';
 
 
 const LocationSelector = ({ location, locationFound }) => {
@@ -14,6 +14,21 @@ const LocationSelector = ({ location, locationFound }) => {
     const [selected, setSelected] = useState('Select a country')
     const [countries, setCountries] = useState([])
     const [error, setError] = useState('')
+
+    //Snackbar variables
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     useEffect(() => {
         //let api_url = 'https://restcountries.com/v3.1/all?fields=name'
@@ -41,6 +56,7 @@ const LocationSelector = ({ location, locationFound }) => {
         }
         else {
             setError('Must Select a country')
+            handleClick()
         }
     }
 
@@ -98,8 +114,8 @@ const LocationSelector = ({ location, locationFound }) => {
                                         <img
                                             loading="lazy"
                                             width="20"
-                                            src={`https://flagcdn.com/w20/${option.cca2}.png`}
-                                            srcSet={`https://flagcdn.com/w40/${option.cca2}.png 2x`}
+                                            src={`https://flagcdn.com/w20/${option.cca2.toLowerCase()}.png`}
+                                            srcSet={`https://flagcdn.com/w40/${option.cca2.toLowerCase() }.png 2x`}
                                             alt=""
                                         />
                                         {option.name.common}
@@ -121,6 +137,7 @@ const LocationSelector = ({ location, locationFound }) => {
                 </div>
                 <div className='btn btn-primary mt-5 col-4' onClick={() => { selectCountry(); }}> Select Country</div>
             </div>
+            <SnackBar open={open} close={handleClose} severity={"error"} message={"Must select a country"} />
         </>
     );
 };

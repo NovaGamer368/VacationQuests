@@ -2,6 +2,7 @@
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UploadAvatar from '../login/UploadAvatar';
+import SnackBar from '../SnackBar';
 
 const Edit = ({ user, stopEdit }) => {
     const [email, setEmail] = useState('')
@@ -14,6 +15,20 @@ const Edit = ({ user, stopEdit }) => {
     const [newPFP, setNewPFP] = useState(false)
     const [enableNewPassword, setEnableNewPassword] = useState(false)
 
+    //Snackbar variables
+    const [open, setOpen] = useState(false);
+
+    const handleSnack = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     useEffect(() => {
         setEmail(user.email)
@@ -70,12 +85,15 @@ const Edit = ({ user, stopEdit }) => {
                     return true 
                 }
                 setErrorMessage('New Password doesn\'t Match')
+                handleSnack()
                 return false
             }
             setErrorMessage('Must enter a new Password')
+            handleSnack()
             return false
         }
         setErrorMessage('Must enter current password first')
+        handleSnack()
         return false
     }
 
@@ -89,7 +107,12 @@ const Edit = ({ user, stopEdit }) => {
                         <>
                             <div className='text-center mb-2'>
                                 <div className='text-muted'> Click Icon to make new Profile Picture </div>
-                                <img src={icon} onClick={() => setNewPFP(true)} />
+                                {
+                                    icon === "https://i.pinimg.com/736x/dd/f0/11/ddf0110aa19f445687b737679eec9cb2.jpg" ?
+                                        <img className='max-icon' src={icon} onClick={() => setNewPFP(true)} />
+                                        :
+                                        <img src={icon} onClick={() => setNewPFP(true)} />
+                                }
                             </div>
                         </>
                 }
@@ -121,6 +144,7 @@ const Edit = ({ user, stopEdit }) => {
                                     <input type="password" className="form-control" id="floatingConfirmNewPassword" placeholder="Password" onKeyUp={(e) => setConfirmPassword(e.target.value)} />
                                     <label for="floatingConfirmNewPassword" className='text-dark'>Confirm New Password</label>
                                 </div>
+                                <SnackBar open={open} close={handleClose} severity={"error"} message={errorMessage} />
                             </>
                             :
                             <>

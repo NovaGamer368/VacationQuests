@@ -5,7 +5,7 @@ import UploadAvatar from './UploadAvatar'
 
 const UserInfo = () => {
     const [user, setUser] = useState(null);
-    const [icon, setIcon] = useState("");
+    const [icon, setIcon] = useState("https://i.pinimg.com/736x/dd/f0/11/ddf0110aa19f445687b737679eec9cb2.jpg");
     const [bio, setBio] = useState("");
 
     const navigate = useNavigate();

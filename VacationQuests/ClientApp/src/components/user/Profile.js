@@ -36,7 +36,7 @@ const Profile = () => {
         if (user !== null) {
             console.log("user.vacations to check :", user.vacations)
             if (user.vacations !== null) {
-                user.vacations.forEach((vacationId) => {                    
+                user.vacations.forEach((vacationId) => {
                     fetch(`https://localhost:7259/api/vacations/${vacationId}`)
                         .then(resp => resp.json())
                         .then(data => {
@@ -71,7 +71,13 @@ const Profile = () => {
 
                         <div>
                             <div>
-                                <img src={icon} />
+                                {
+                                    icon === "https://i.pinimg.com/736x/dd/f0/11/ddf0110aa19f445687b737679eec9cb2.jpg" ?
+                                    <img className='max-icon' src={icon} />
+                                    :
+                                    <img src={icon} />
+
+                                }
                                 <div className="my-1">
                                     <b>Email: </b>{email}
                                 </div>

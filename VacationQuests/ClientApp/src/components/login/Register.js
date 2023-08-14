@@ -1,28 +1,93 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useReducer } from 'react';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import GoogleLoginButton from './GoogleLoginButton';
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import SnackBar from '../SnackBar';
+import { useEffect } from 'react';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [checks, setChecks] = useState(0);
+    const [returnedData, setReturnedData] = useState()
     const [googleLogin, setGoogleLogin] = useState(false);
+    const [exists, setExists] = useState(false)
+    //const [click, setClick] = useState(0)
+    const [click, forceUpdate] = useReducer(x => x + 1, 0);
+
+
+    const [trueFound, setTrueFound] = useState(false)
 
     const [message, setMessage] = useState('')
+    //Snackbar variables
+    const [open, setOpen] = useState(false);
+
+    const handleSnack = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     const navigate = useNavigate();
 
-    const createUser = () => {
-        if (emailCheck) {
-            console.log('Email passed!')
-            if (!googleLogin) {
+    useEffect(() => {
+        console.log(checks)
+        if (returnedData) {
+            console.log(returnedData)
+            if (checks !== 0) {
+                setTrueFound(false)
+                if (!exists) {
+                    if (checks === returnedData.length) {
+                        console.log("TRUE")
+                        setTrueFound(true)
+                    }
+                }                
+            }
+        }
+    }, [checks])
 
-                if (passwordCheck()) {
-                    console.log("Creating New User")
+    useEffect(() => {
+        console.log(trueFound)
+        if (click > 0) {
+            if (trueFound) {
+                console.log('Email passed!', email.length)
+                if (!googleLogin) {
 
+                    if (passwordCheck()) {
+                        console.log("Creating New User")
+
+                        const requestOptions = {
+                            mode: 'cors',
+                            method: 'Post',
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ email: email, password: password }),
+                            origin: "https://localhost:44455"
+                        };
+
+                        fetch("https://localhost:7259/api/users", requestOptions)
+                            .then(resp => resp.json())
+                            .then(data => {
+                                console.log("Data from fetch:  ", data.id)
+                                Cookies.set('UserId', data.id, { expires: 7 });
+                                navigate(`/Register/User-Info`)
+                            })
+                            .catch(e => console.log(e))
+                    }
+                }
+                else {
+                    console.log('creating user through google')
                     const requestOptions = {
                         mode: 'cors',
                         method: 'Post',
@@ -30,7 +95,7 @@ const Register = () => {
                             'Access-Control-Allow-Origin': '*',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ email: email, password: password }),
+                        body: JSON.stringify({ email: email }),
                         origin: "https://localhost:44455"
                     };
 
@@ -45,55 +110,101 @@ const Register = () => {
                 }
             }
             else {
-                console.log('creating user through google')
-                const requestOptions = {
-                    mode: 'cors',
-                    method: 'Post',
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: email }),
-                    origin: "https://localhost:44455"
-                };
-
-                fetch("https://localhost:7259/api/users", requestOptions)
-                    .then(resp => resp.json())
-                    .then(data => {
-                        console.log("Data from fetch:  ", data.id)
-                        Cookies.set('UserId', data.id, { expires: 7 });
-                        navigate(`/Register/User-Info`)
-                    })
-                    .catch(e => console.log(e))
+                setMessage("Please input an email address");
+                handleSnack()
+                console.log('Failed')
             }
         }
-        else {
-            console.log('Failed')
-        }
+    }, [trueFound, click])
+
+    //useEffect(() => {
+    //    console.log('click', click)
+    //    setTrueFound(trueFound) 
+    //}, [click])
+
+    const createUser = () => {
+        forceUpdate()
+        emailCheck()
+        //if (trueFound) {
+        //    console.log('Email passed!', email.length)
+        //    if (!googleLogin) {
+
+        //        if (passwordCheck()) {
+        //            console.log("Creating New User")
+
+        //            const requestOptions = {
+        //                mode: 'cors',
+        //                method: 'Post',
+        //                headers: {
+        //                    'Access-Control-Allow-Origin': '*',
+        //                    'Content-Type': 'application/json'
+        //                },
+        //                body: JSON.stringify({ email: email, password: password }),
+        //                origin: "https://localhost:44455"
+        //            };
+
+        //            fetch("https://localhost:7259/api/users", requestOptions)
+        //                .then(resp => resp.json())
+        //                .then(data => {
+        //                    console.log("Data from fetch:  ", data.id)
+        //                    Cookies.set('UserId', data.id, { expires: 7 });
+        //                    navigate(`/Register/User-Info`)
+        //                })
+        //                .catch(e => console.log(e))
+        //        }
+        //    }
+        //    else {
+        //        console.log('creating user through google')
+        //        const requestOptions = {
+        //            mode: 'cors',
+        //            method: 'Post',
+        //            headers: {
+        //                'Access-Control-Allow-Origin': '*',
+        //                'Content-Type': 'application/json'
+        //            },
+        //            body: JSON.stringify({ email: email }),
+        //            origin: "https://localhost:44455"
+        //        };
+
+        //        fetch("https://localhost:7259/api/users", requestOptions)
+        //            .then(resp => resp.json())
+        //            .then(data => {
+        //                console.log("Data from fetch:  ", data.id)
+        //                Cookies.set('UserId', data.id, { expires: 7 });
+        //                navigate(`/Register/User-Info`)
+        //            })
+        //            .catch(e => console.log(e))
+        //    }
+        //}
+        //else {
+        //    console.log('Failed')
+        //}
     }
 
     const emailCheck = () => {
-        if (email !== '') {
+        setChecks(0)
+        console.log("checking")
+        if (email.length !== 0) {
+            setExists(false)
             fetch(`https://localhost:7259/api/users`)
                 .then(resp => resp.json())
                 .then(data => {
+                    setReturnedData(data)
                     for (var i = 0; i < data.length; i++) {
-                        console.log(email.toLowerCase())
-                        console.log(data[i].email.toLowerCase())
                         if (email.toLowerCase() === data[i].email.toLowerCase()) {
                             setMessage("Email Already exists")
+                            handleSnack()
+                            setExists(true)
+                            setTrueFound(false)
                             return false
                         }
+                        setChecks(i + 1)
                     }
-                    return true
                 })
                 .catch(e => console.log(e))
-                      
+
         }
-        else {
-            setMessage('Please fill in email address')
-            return false
-        }
+
     }
 
     const passwordCheck = () => {
@@ -103,11 +214,13 @@ const Register = () => {
             }
             else {
                 setMessage("Password doesn't match")
+                handleSnack()
                 return false
             }
         }
         else {
             setMessage('Must have a password')
+            handleSnack()
             return false
         }
     }
@@ -133,6 +246,8 @@ const Register = () => {
                     </div>
 
                     <div className="text-danger">{message}</div>
+                    <SnackBar open={open} close={handleClose} severity={"error"} message={message} />
+
                     <button className="btn btn-primary w-100 my-3" onClick={createUser}>Create User</button>
                     <NavLink tag={Link} className="text-info mb-3" to="/Login"><u>Already got an account?</u></NavLink>
                 </div>

@@ -3,6 +3,7 @@ import GoogleLoginButton from './GoogleLoginButton';
 import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import SnackBar from '../SnackBar';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,6 +11,22 @@ const Login = () => {
     const [message, setMessage] = useState('');
     const [users, setUsers] = useState();
     const [googleLogin, setGoogleLogin] = useState(false);
+
+    //Snackbar variables
+    const [open, setOpen] = useState(false);
+
+    const handleSnack = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
 
     useEffect(() => {
         fetch(`https://localhost:7259/api/users`)
@@ -34,6 +51,7 @@ const Login = () => {
                     }
                     else {
                         setMessage('Invalid Password')
+                        handleSnack()
                     }
                 }
                 else {
@@ -45,6 +63,7 @@ const Login = () => {
                 break
             }
             setMessage('Invalid Email')
+            handleSnack()
         }
         
     }
@@ -67,6 +86,7 @@ const Login = () => {
                     <div className="text-danger">{message}</div>
                     <button className="btn btn-primary w-100 mt-3" onClick={loginUser}>Login</button>
                 </div>
+                <SnackBar open={open} close={handleClose} severity={"error"} message={message} />
 
                 <NavLink tag={Link} className="text-info my-3" to="/Register"><u>New User?</u></NavLink>
 

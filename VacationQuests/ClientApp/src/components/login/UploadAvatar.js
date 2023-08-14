@@ -19,7 +19,6 @@ const UploadAvatar = ({ icon }) => {
 
     return (
         <div className="d-flex justify-content-center align-items-center flex-column">
-
             <div className='mb-3'>
                 <Avatar
                     width={400}

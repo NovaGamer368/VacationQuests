@@ -7,6 +7,7 @@ import TimePicker from './TimePicker';
 import GoogleAutoComplete from './GoogleAutoComplete';
 import ChatGPTList from './ChatGPTList';
 import Chatbot from './ChatBot';
+import SnackBar from '../SnackBar';
 
 
 
@@ -26,6 +27,21 @@ const CreateEvent = () => {
 
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    //Snackbar variables
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     //Start
     useEffect(() => {
@@ -126,6 +142,7 @@ const CreateEvent = () => {
         }
         else {
             setError('Required Fields need to be filled')
+            handleClick()
         }            
     }
     const updateVacation = (data) => {
@@ -203,10 +220,11 @@ const CreateEvent = () => {
                         </div>
                     </fieldset>
                     <div>
-                        <button className='btn btn-primary border-primary mt-3' onClick={() => { createEvent() } }>Create Event</button>
+                        <button className='btn btn-primary border-primary mt-3' onClick={() => { createEvent() }}>Create Event</button>
                     </div>
                 </div>
                 <ChatGPTList vacation={vacation} />
+                <SnackBar open={open} close={handleClose} severity={"warning"} message={"All fields need to be filled before changes can be made"} />
                 {/*<Chatbot />*/}
             </div>
         );

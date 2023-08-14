@@ -360,12 +360,12 @@ function ChatGPTList({ vacation }) {
                                 <h3 className='text-center'>Chat GPT response</h3>
                                 <hr></hr>
                             </Modal.Header>
-                            <Modal.Body className='bg-primary'>
+                            <Modal.Body className=''>
                                 {response}
                             </Modal.Body>
                             <Modal.Footer className='border border-secondary'>
                                 <div className='d-flex w-100'>
-                                    <Button className='m-1 w-50' variant="secondary" onClick={handleCloseResponse}>
+                                    <Button className='m-1 w-100' variant="secondary" onClick={handleCloseResponse}>
                                         Close
                                     </Button>
                                 </div>
