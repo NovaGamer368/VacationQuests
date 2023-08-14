@@ -22,8 +22,18 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
+
+//GOOGLE ATHENTICATION
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    IConfigurationSection googleAuthNSection =
+       builder.Configuration.GetSection("Authentication:Google");
+    googleOptions.ClientId = builder.Configuration["Google:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["Google:ClientSecret"];
+});
+
 
 var app = builder.Build();
 
@@ -35,8 +45,10 @@ if (app.Environment.IsDevelopment())
 else
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

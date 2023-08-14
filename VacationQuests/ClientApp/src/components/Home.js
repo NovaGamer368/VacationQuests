@@ -1,26 +1,60 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import VacationList from './VacationList'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import OthersVacationList from './OthersVacationList';
 
-export class Home extends Component {
-  static displayName = Home.name;
 
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
-}
+
+const Home = () => {
+    const session = useSession(); //tokens
+    const supabase = useSupabaseClient(); // talk to supabase
+
+
+    useEffect(() => {
+        getSessionFromSupaBase()
+    }, [])
+
+    const getSessionFromSupaBase = async () => {
+        const { error } = await supabase.auth.getSession()
+        console.log(session)
+    }
+    if (Cookies.get("UserId")) {
+        return (
+            <>
+                <div className='d-flex flex-column w-100 mt-5'>
+                    <div className='container mb-5 card border-primary p-5 text-center'>
+                        <h1 className='card-header bg-primary text-light'>Your Vacations </h1>
+                        <div className='card-body'>
+                            <VacationList />
+                        </div>
+                    </div>
+                    <div className='container p-5 border-primary card text-center'>
+                        <h1 className='card-header bg-primary text-light'>Shared Vacations</h1>
+                        <div className='card-body'>
+                            <OthersVacationList />
+                        </div>
+                    </div>
+                    <div className='container mt-5 border-primary card p-5'>
+                        <h3>Our Purpose</h3>
+                        <Link className='btn btn-primary' to="/Create">Create your vacation now!</Link>
+                    </div>
+                </div>
+            </>
+        );
+    }
+    else {
+        return (
+            <div className='container'>
+                <div className='d-flex h-100 justify-content-center align-selft-center text-center'>
+                    <h1>WELCOME TO VACATION QUESTS! Start making your vacations today!</h1>
+                </div>
+            </div>
+
+        )
+    }
+};
+
+export default Home; 

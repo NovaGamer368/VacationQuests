@@ -1,0 +1,81 @@
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+code {
+    color: #E01A76;
+}
+
+/*.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}*/
+
+.w-max-1 {
+    max-width: 1fr;
+}
+
+.set-height-200 {
+    height: 200px
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.d-flex-align {
+    display: flex;
+    align-items: center;
+}
+
+.wrapper {
+    position: relative;
+}
+
+.icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: 4px;
+    position: absolute;
+    box-sizing: border-box;
+    top: 40%;
+    right: 5px;
+    transform: translateY(-50%);
+}
+
+.input {
+    height: 50px;
+    box-sizing: border-box;
+    padding-left: 1.5rem;
+}
+
+.map-container {
+    height: 100%;
+    width: 100%;
+}
+
+.map {
+    height: 70vh;
+    width: 800px;
+}
+
+.largeMap {
+    height: 70vh;
+    width: auto;
+}
+
+.banner {
+    width: auto;
+    height: 100px
+}
+
+.max-icon {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+}
