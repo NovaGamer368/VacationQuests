@@ -1,10 +1,15 @@
 ﻿import { GoogleMap, useLoadScript, InfoWindow, Marker } from "@react-google-maps/api";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import moment from 'moment'
 
-const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
+const GoogleMaps = ({ latVar, lngVar, markers, vacationEvents, largeMap }) => {
     const [selectedElement, setSelectedElement] = useState(null);
     const [activeMarker, setActiveMarker] = useState(null);
     const [showInfoWindow, setInfoWindowFlag] = useState(true);
+
+    useEffect(() => {
+        console.log(vacationEvents)
+    }, [])
 
     if (largeMap) {
         return (
@@ -43,7 +48,17 @@ const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
                                                     }}
                                                 >
                                                     <div>
-                                                        <h1>{selectedElement.lng}</h1>
+                                                        <h3>{vacationEvents[index].eventName}</h3>
+                                                        <hr></hr>
+                                                        {
+                                                            console.log(vacationEvents[index])
+                                                        }
+                                                        <p>
+                                                            This events starts at <b>{moment(vacationEvents[index].startTime).format('hh:mm a')}</b> on {moment(vacationEvents[index].startTime).format('MMMM Do YYYY')}
+                                                        </p>
+                                                        <p>
+                                                            You planned on being finished at <b>{moment(vacationEvents[index].endTime).format('hh:mm a')}</b>
+                                                        </p>
                                                     </div>
                                                 </InfoWindow>
                                             )}

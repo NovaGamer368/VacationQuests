@@ -231,6 +231,7 @@ function ChatGPTList({ vacation }) {
     const [gptReponseFound, setGptReponseFound] = useState(false)
     const [events, setEvents] = useState()
     const [eventObjects, setEventObjects] = useState()
+    const [vacationEvents, setVacationEvents] = useState()
     const [showMaps, setShowMaps] = useState()
     const [centerCoord, setCenterCoord] = useState()
     const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -255,6 +256,7 @@ function ChatGPTList({ vacation }) {
         if (vacation.events) {
             let tempArray = []
             let objectsArray = []
+            let vEvents = []
             vacation.events.forEach((event) => {
                 fetch(`https://localhost:7259/api/events/${event}`)
                     .then(resp => resp.json())
@@ -269,6 +271,9 @@ function ChatGPTList({ vacation }) {
                         data.location = JSON.parse(data.location)
                         objectsArray.push(data)
                         setEventObjects(objectsArray)
+
+                        vEvents.push(data)
+                        setVacationEvents(vEvents)
                         forceUpdate()
                     })
                     .catch(e => console.log(e))
@@ -302,7 +307,6 @@ function ChatGPTList({ vacation }) {
                     if (response.substring(0, response.indexOf(':')).toLowerCase().includes(vacation.location.toLowerCase())) {
                         tempArr.push(response)
                         setGptReponseFound(true)
-
                     }
                 })
                 setResponse(tempArr[generateRandomNumber(0, tempArr.length)])
@@ -391,7 +395,7 @@ function ChatGPTList({ vacation }) {
                                 {
                                     events && eventObjects ?
                                         <center>
-                                            <GoogleMaps latVar={centerCoord.lat} lngVar={centerCoord.lng} markers={events} largeMap />
+                                            <GoogleMaps latVar={centerCoord.lat} lngVar={centerCoord.lng} vacationEvents={ vacationEvents } markers={events} largeMap />
                                             {
                                                 eventObjects.length >= 6 ?
 
@@ -414,13 +418,15 @@ function ChatGPTList({ vacation }) {
                                                     <div className='d-flex flex-row'>
                                                         {
                                                             eventObjects.map((event, index) => (
-                                                                <div className='card p-1 mx-1'>
-                                                                    <div className='card-header'>
-                                                                        {event.eventName}
+                                                                <Tooltip title={"Travel too " + event.location.formatted_address} placement="top">
+                                                                    <div className='card col-2 p-1 m-1' onClick={() => { moveCoord(event) }}>
+                                                                        <div className='card-header'>
+                                                                            {event.eventName}
+                                                                        </div>
+                                                                        <div className='card-body'>{event.location.formatted_address}</div>
+                                                                        <div></div>
                                                                     </div>
-                                                                    <div className='card-body'>{event.location.formatted_address}</div>
-                                                                    <div></div>
-                                                                </div>
+                                                                </Tooltip>
                                                             ))
                                                         }
                                                     </div>
