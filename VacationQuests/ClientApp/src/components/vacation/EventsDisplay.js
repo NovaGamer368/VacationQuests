@@ -6,48 +6,79 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
     const [eventsArr, setEventsArr] = useState(events)
     const [displayArr, setDisplayArr] = useState();
     const [places, setPlaces] = useState()
+    const [count, setCount] = useState()
     const [noEvents, setNoEvents] = useState(true)
     const [loading, setLoading] = useState(true)
-    
+
     useEffect(() => {
         getEvents()
-        update()        
+        update()
     }, [])
-
     useEffect(() => {
         //console.log("display Array:", displayArr)
         if (displayArr) {
+            let sortArray = [...displayArr]
+            //sortArray.sort((a, b) => moment(a.startTime)._d.getTime - moment(b.startTime)._d.getTime())
             setNoEvents(false)
+            console.log('Sorted: ', sortArray)
+            update()
         }
     }, [displayArr])
 
-    async function getEvents (){
+    useEffect(() => {
+        if (count) {
+            let sortArray = [...displayArr]
+            //sortArray.sort((a, b) => moment(a.startTime)._d.getTime - moment(b.startTime)._d.getTime())
+            setDisplayArr(sortArray)
+        }
+    }, [count])
+
+    //useEffect(() => {
+    //    if (displayArr) {
+    //        let sortArray = [...displayArr]; // Create a copy to avoid mutating state directly
+    //        sortArray.sort((a, b) => moment(a.startTime)._d.getTime() - moment(b.startTime)._d.getTime());
+    //        console.log('Sorted: ', sortArray);
+    //        setDisplayArr(sortArray);
+    //        
+
+    //    }
+    //}, [displayArr]);
+
+
+
+    async function getEvents() {
         let tempArray = []
         let placeArr = []
         if (eventsArr != null) {
-            eventsArr.forEach((event) => {
-                fetch(`https://localhost:7259/api/events/${event}`)
-                    .then(resp => resp.json())
-                    .then(data => {
-                        if (moment(date).format('MMMM Do YYYY') == moment(data.selectedDate).format('MMMM Do YYYY')) {
-                            tempArray.push(data)
-                            placeArr.push(JSON.parse(data.location))
-                            setDisplayArr(tempArray)
-                            setPlaces(placeArr)
-                            console.log("place object:", placeArr)
-                            update()
-                        }
-                    })
-                    .catch(e => console.log(e))
+            for (const event of eventsArr) {
+                try {
+                    const resp = await fetch(`https://localhost:7259/api/events/${event}`);
+                    const data = await resp.json();
+
+
+                    if (moment(date).format('MMMM Do YYYY') == moment(data.selectedDate).format('MMMM Do YYYY')) {
+                        setCount(count + 1)
+                        tempArray.push(data)                 
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            tempArray.sort((a, b) => moment(a.startTime)._d.getTime() - moment(b.startTime)._d.getTime())
+
+            tempArray.forEach((event) => {
+                placeArr.push(JSON.parse(event.location))
             })
+            setPlaces(placeArr)
+            setDisplayArr(tempArray)
+            update()
             setLoading(false)
         }
     }
-
     if (noEvents !== true) {
         if (!loading && places) {
             return (
-                <>                    
+                <>
                     <div className='text-center'>
                         {
                             displayArr.map((event, index) => (
