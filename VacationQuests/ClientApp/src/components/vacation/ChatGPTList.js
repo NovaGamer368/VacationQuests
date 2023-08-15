@@ -310,7 +310,6 @@ function ChatGPTList({ vacation }) {
 
                 break;
             case 1:
-                console.log('Bring up google maps to vacation area and let them explore: ', events)
                 handleShowMaps()
                 break;
 

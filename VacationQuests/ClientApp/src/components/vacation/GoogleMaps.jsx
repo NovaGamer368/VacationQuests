@@ -1,11 +1,11 @@
-﻿import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import { useMemo } from "react";
+﻿import { GoogleMap, useLoadScript, InfoWindow, Marker } from "@react-google-maps/api";
+import { useMemo, useState } from "react";
 
 const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
-    //const { isLoaded } = useLoadScript({
-    //    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-    //});
-    //const center = useMemo(() => ({ lat: latVar, lng: lngVar }), []);
+    const [selectedElement, setSelectedElement] = useState(null);
+    const [activeMarker, setActiveMarker] = useState(null);
+    const [showInfoWindow, setInfoWindowFlag] = useState(true);
+
     if (largeMap) {
         return (
             <div className='largeMap'>
@@ -26,7 +26,28 @@ const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
                                         <Marker position={{
                                             lat: event.lat,
                                             lng: event.lng
-                                        }} key={index} />
+                                        }}
+                                            title={event.lat}
+                                            key={index}
+                                            onClick={(props, marker) => {
+                                                setSelectedElement(event);
+                                                setActiveMarker(marker);
+                                            }}
+                                        >
+                                            {selectedElement && selectedElement.lat === event.lat && selectedElement.lng === event.lng && (
+                                                <InfoWindow
+                                                    visible={true}  // Always show the InfoWindow when the selected marker matches
+                                                    marker={activeMarker}
+                                                    onCloseClick={() => {
+                                                        setSelectedElement(null);
+                                                    }}
+                                                >
+                                                    <div>
+                                                        <h1>{selectedElement.lng}</h1>
+                                                    </div>
+                                                </InfoWindow>
+                                            )}
+                                        </Marker>
                                     ))
                                 }
                             </>
@@ -39,7 +60,6 @@ const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
                     }
 
                 </GoogleMap>
-
             </div>
         );
     }
@@ -70,13 +90,12 @@ const GoogleMaps = ({ latVar, lngVar, markers, largeMap }) => {
                             }}
                             />
                     }
-
                 </GoogleMap>
 
             </div>
         );
     }
-    
+
 };
 
 export default GoogleMaps;
