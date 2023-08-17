@@ -59,6 +59,12 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     }, [startTime])
 
     useEffect(() => {
+        if (startTime) {
+            console.log("end time new value is", moment(endTime)._d.getTime())
+        }
+    }, [endTime])
+
+    useEffect(() => {
         if (value) {
             console.log(value)
         } 
@@ -86,8 +92,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     }
 
     const updateEvent = () => {
-        console.log(moment(startTime)._d < moment(endTime)._d)
-        if (moment(startTime)._d < moment(endTime)._d) {
+        console.log(moment(startTime)._d.getTime() < moment(endTime)._d.getTime())
+        if (moment(startTime)._d.getTime() < moment(endTime)._d.getTime()) {
             if (location != undefined) {
                 setUpdating(true)
                 const requestOptions = {
@@ -124,10 +130,11 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
         
     }
     const selectedNewDate = (date) => {
-        setSelectedDate(date);
-        console.log(selectedDate)
+        setSelectedDate(date);        
+        console.log(moment(selectedDate)._d)
         setShow(false);
     }
+
     if (!updating) {
         return (
             <>
@@ -186,8 +193,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
                     <Modal.Body>
                         <div className='d-flex justify-content-center flex-wrap text-center'>
                             {
-                                dates.map((date) => (
-                                    <span className='btn btn-secondary p-2 m-1' onClick={() => { selectedNewDate(date) }}>
+                                dates.map((date, index) => (
+                                    <span key={index} className='btn btn-secondary p-2 m-1' onClick={() => { selectedNewDate(date) }}>
                                         {moment(date).format('MMMM Do YYYY')}
                                     </span>
                                 ))

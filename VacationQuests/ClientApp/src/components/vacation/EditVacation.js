@@ -136,8 +136,8 @@ const EditVacation = () => {
                         <div className='pb-5 container'>
                             <div className='d-flex justify-content-center mx-2'>
                                 {
-                                    dates.map((date) => (
-                                        <div className='card col-md-3 me-1 mb-1 text-center'>
+                                    dates.map((date, index) => (
+                                        <div className='card col-md-3 me-1 mb-1 text-center' key={index}>
                                             <h2 className='card-header'>{moment(date).format('MMMM Do YYYY')}</h2>
                                             <div className='card-body d-flex flex-column border-secondary '>
                                                 <Accordion className='mb-3' defaultActiveKey="1">

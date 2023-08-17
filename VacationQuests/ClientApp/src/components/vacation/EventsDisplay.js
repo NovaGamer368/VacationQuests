@@ -77,7 +77,7 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
     const moreEvents = () => {
         handleShow()
         places.forEach((place) => {
-            fetchImages(place.name)
+            //fetchImages(place.name)
         })
     }
 
@@ -89,7 +89,6 @@ const EventsDisplay = ({ date, events, update, vacation }) => {
                 try {
                     const resp = await fetch(`https://localhost:7259/api/events/${event}`);
                     const data = await resp.json();
-
 
                     if (moment(date).format('MMMM Do YYYY') == moment(data.selectedDate).format('MMMM Do YYYY')) {
                         setCount(count + 1)
