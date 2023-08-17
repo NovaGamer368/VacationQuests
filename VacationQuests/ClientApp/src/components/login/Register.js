@@ -251,7 +251,7 @@ const Register = () => {
                     <button className="btn btn-primary w-100 my-3" onClick={createUser}>Create User</button>
                     <NavLink tag={Link} className="text-info mb-3" to="/Login"><u>Already got an account?</u></NavLink>
                 </div>
-                <GoogleLoginButton className='mt-3' email={setEmail} googleLogin={setGoogleLogin} create={createUser} />
+                {/*<GoogleLoginButton className='mt-3' email={setEmail} googleLogin={setGoogleLogin} create={createUser} />*/}
             </div>
         </>
     );

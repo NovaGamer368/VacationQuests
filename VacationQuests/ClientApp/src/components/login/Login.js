@@ -91,7 +91,7 @@ const Login = () => {
                 <NavLink tag={Link} className="text-info my-3" to="/Register"><u>New User?</u></NavLink>
 
                 {/*DOES'T WORK YET!!!*/}
-                <GoogleLoginButton className="mt-3" email={setEmail} googleLogin={setGoogleLogin} login={loginUser} />
+                {/*<GoogleLoginButton className="mt-3" email={setEmail} googleLogin={setGoogleLogin} login={loginUser} />*/}
             </div>
         </>
     );
