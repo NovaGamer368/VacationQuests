@@ -4,12 +4,13 @@ import moment from 'moment'
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import LocationFlag from './vacation/LocationFlag';
-
+import Tooltip from '@mui/material/Tooltip';
 
 const VacationList = () => {
     const [userVacations, setUserVacations] = useState(null)
     const [vacationList, setVacationList] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [shownNumber, setShownNumber] = useState(6)
     const userId = Cookies.get('UserId')
 
     const navigate = useNavigate();
@@ -42,6 +43,11 @@ const VacationList = () => {
         }
     }, [userVacations])
 
+    const showMore = () => {
+        let number = shownNumber + 6
+        setShownNumber(number)
+    }
+
     if (!loading) {
         if (userVacations.length === 0) {
             return (
@@ -56,23 +62,42 @@ const VacationList = () => {
                 <div>
                     <div className='d-flex justify-content-center flex-row flex-wrap'>
                         {
-                            userVacations.map((vacation) => (
-                                <div key={vacation.id} className='card btn btn-secondary border-primary m-2 col-3'>
-                                    <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
-                                        <h3 className='card-header'>{vacation.vacationTitle}</h3>
-                                        <div className='card-body d-flex flex-column'>
-                                            <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                            <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
-                                        </div>
-                                    </div>
-                                    <div className='card-footer'>
-                                        <LocationFlag vacation={vacation} />
-                                    </div>
-                                </div>
+                            userVacations.map((vacation, index) => (
+                                <>
+                                    {
+                                        index < shownNumber ?
+                                            <div key={vacation.id
+                                            } className='card btn btn-secondary border-primary m-2 col-3' >
+
+                                                <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                    <h3 className='card-header'>{vacation.vacationTitle}</h3>
+                                                    <div className='card-body d-flex flex-column'>
+                                                        <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                        <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                    </div>
+                                                </div>
+                                                <div className='card-footer'>
+                                                    <LocationFlag vacation={vacation} />
+                                                </div>
+                                            </div>
+
+                                            :
+                                            <>
+                                                {
+                                                    index === shownNumber+1 ? 
+                                                        <Tooltip title="Show more vacations" postion='top'>
+                                                            <button className='col-12 btn btn-primary' onClick={showMore}>Show more</button>   
+                                                        </Tooltip>
+                                                        :
+                                                        <></>
+                                                }   
+                                            </>
+                                    }
+                                </>
                             ))
                         }
                     </div>
-                </div>
+                </div >
             )
         }
     }
