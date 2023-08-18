@@ -82,9 +82,9 @@ const VacationList = ({ history }) => {
                                                 index < shownNumber ?
                                                     <Tooltip title={"View " + vacation.vacationTitle}>
                                                         <div key={vacation.id
-                                                        } className='card btn btn-secondary border-primary m-2 col-3' >
+                                                        } className='card btn btn-secondary border-primary m-2 col-3' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
 
-                                                            <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                            <div className='text-center h-100' >
                                                                 <h3 className='card-header'>{vacation.vacationTitle}</h3>
                                                                 <div className='card-body d-flex flex-column'>
                                                                     <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
@@ -125,9 +125,9 @@ const VacationList = ({ history }) => {
                                                             index < shownNumber ?
                                                                 <Tooltip title={"View " + vacation.vacationTitle}>
                                                                     <div key={vacation.id
-                                                                    } className='card btn btn-secondary border-primary m-2 col-3' >
+                                                                    } className='card btn btn-secondary border-primary m-2 col-3' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
 
-                                                                        <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                                        <div className='text-center h-100' >
                                                                             <h3 className='card-header'>{vacation.vacationTitle}</h3>
                                                                             <div className='card-body d-flex flex-column'>
                                                                                 <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
