@@ -143,6 +143,17 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     const selectedNewDate = (date) => {
         setSelectedDate(date);        
         console.log(moment(selectedDate)._d)
+
+        let endTimeDate = new Date(endTime)
+        endTimeDate.setDate(moment(selectedDate)._d.getDate())
+        setNewDateEndTime(endTimeDate)
+
+        let startTimeDate = new Date(startTime)
+        startTimeDate.setDate(moment(selectedDate)._d.getDate())
+
+        console.log("start time new value is", moment(startTimeDate)._d)
+        setNewDateStartTime(startTimeDate)
+
         setShow(false);
     }
 
