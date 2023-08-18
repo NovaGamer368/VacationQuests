@@ -18,6 +18,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     const [selectedDate, setSelectedDate] = useState(selectedEvent.selectedDate)
     const [error, setError] = useState('');
 
+    const [newDateStartTime, setNewDateStartTime] = useState(selectedEvent.startTime)
+    const [newDateEndTime, setNewDateEndTime] = useState(selectedEvent.endTime)
     const [dates, setDates] = useState([])
     const [updating, setUpdating] = useState(false)
 
@@ -54,19 +56,27 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
 
     useEffect(() => {
         if (startTime) {
-            console.log("start time new value is", moment(startTime)._d)
+            let startTimeDate = new Date(startTime)
+            startTimeDate.setDate(moment(selectedDate)._d.getDate())            
+            
+            console.log("start time new value is", moment(startTimeDate)._d)
+            setNewDateStartTime(startTimeDate)
+            //setStartTime(startTimeDate)
         }
     }, [startTime])
 
     useEffect(() => {
-        if (startTime) {
-            console.log("end time new value is", moment(endTime)._d.getTime())
+        if (endTime) {
+            //console.log("end time new value is", moment(endTime)._d)
+            let endTimeDate = new Date(endTime)
+            endTimeDate.setDate(moment(selectedDate)._d.getDate())   
+            setNewDateEndTime(endTimeDate)
         }
     }, [endTime])
 
     useEffect(() => {
         if (value) {
-            console.log(value)
+            //console.log(value)
         } 
     }, [value])
 
@@ -92,7 +102,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
     }
 
     const updateEvent = () => {
-        console.log(moment(startTime)._d.getTime() < moment(endTime)._d.getTime())
+        //console.log(moment(startTime)._d.getTime() < moment(endTime)._d.getTime())
         if (moment(startTime)._d.getTime() < moment(endTime)._d.getTime()) {
             if (location != undefined) {
                 setUpdating(true)
@@ -106,8 +116,8 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
                     body: JSON.stringify({
                         EventName: eventName,
                         Location: location,
-                        StartTime: startTime,
-                        EndTime: endTime,
+                        StartTime: newDateStartTime,
+                        EndTime: newDateEndTime,
                         Description: description,
                         SelectedDate: selectedDate
                     }),
@@ -116,6 +126,7 @@ const EditEvent = ({ selectedEvent, clearEdit, vacation, filter }) => {
 
                 fetch(`https://localhost:7259/api/events/${selectedEvent.id}`, requestOptions)
                     .then(window.location.reload())
+                    //.then(console.log('New selectedDate ', selectedDate))
                     .catch(e => console.log(e))
             }
             else {
