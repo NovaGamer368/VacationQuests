@@ -6,10 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LocationFlag from './vacation/LocationFlag';
 import Tooltip from '@mui/material/Tooltip';
 
-const VacationList = () => {
+const VacationList = ({ history }) => {
     const [userVacations, setUserVacations] = useState(null)
     const [vacationList, setVacationList] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [upcomingVacations, setUpcomingVacations] = useState([])
     const [shownNumber, setShownNumber] = useState(6)
     const userId = Cookies.get('UserId')
 
@@ -33,12 +34,23 @@ const VacationList = () => {
                     tempArr.push(vacation)
                 }
             })
+            tempArr.sort((a, b) => moment(a.startDate)._d - moment(b.startDate)._d)
             setUserVacations(tempArr)
         }
     }, [vacationList])
 
     useEffect(() => {
         if (userVacations != null) {
+
+            let currentArr = []
+            let today = new Date
+            userVacations.forEach((vacation) => {
+                if (moment(vacation.endDate)._d > moment(today)._d) {
+                    currentArr.push(vacation)
+                }
+            })
+            console.log('current:', currentArr)
+            setUpcomingVacations(currentArr)
             setLoading(false)
         }
     }, [userVacations])
@@ -60,43 +72,95 @@ const VacationList = () => {
 
             return (
                 <div>
-                    <div className='d-flex justify-content-center flex-row flex-wrap'>
-                        {
-                            userVacations.map((vacation, index) => (
-                                <>
-                                    {
-                                        index < shownNumber ?
-                                            <div key={vacation.id
-                                            } className='card btn btn-secondary border-primary m-2 col-3' >
+                    {
+                        history ? 
+                            <div className='d-flex justify-content-center flex-row flex-wrap'>
+                                {
+                                    userVacations.map((vacation, index) => (
+                                        <>
+                                            {
+                                                index < shownNumber ?
+                                                    <Tooltip title={"View " + vacation.vacationTitle}>
+                                                        <div key={vacation.id
+                                                        } className='card btn btn-secondary border-primary m-2 col-3' >
 
-                                                <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
-                                                    <h3 className='card-header'>{vacation.vacationTitle}</h3>
-                                                    <div className='card-body d-flex flex-column'>
-                                                        <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
-                                                        <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
-                                                    </div>
-                                                </div>
-                                                <div className='card-footer'>
-                                                    <LocationFlag vacation={vacation} />
-                                                </div>
-                                            </div>
+                                                            <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                                <h3 className='card-header'>{vacation.vacationTitle}</h3>
+                                                                <div className='card-body d-flex flex-column'>
+                                                                    <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                                    <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className='card-footer'>
+                                                                <LocationFlag vacation={vacation} />
+                                                            </div>
+                                                        </div>
+                                                    </Tooltip>
 
-                                            :
-                                            <>
-                                                {
-                                                    index === shownNumber+1 ? 
-                                                        <Tooltip title="Show more vacations" postion='top'>
-                                                            <button className='col-12 btn btn-primary' onClick={showMore}>Show more</button>   
-                                                        </Tooltip>
-                                                        :
-                                                        <></>
-                                                }   
-                                            </>
-                                    }
-                                </>
-                            ))
-                        }
-                    </div>
+                                                    :
+                                                    <>
+                                                        {
+                                                            index === shownNumber ?
+                                                                <Tooltip title="Show more vacations" postion='top'>
+                                                                    <button className='col-12 btn btn-primary' onClick={showMore}>Show more</button>
+                                                                </Tooltip>
+                                                                :
+                                                                <></>
+                                                        }
+                                                    </>
+                                            }
+                                        </>
+                                    ))
+                                }
+                            </div>
+                            :
+                            <div className='d-flex justify-content-center flex-row flex-wrap'>
+                                {
+                                    <>
+                                        {
+                                            upcomingVacations.length !== 0 ?
+                                                upcomingVacations.map((vacation, index) => (
+                                                    <>
+                                                        {
+                                                            index < shownNumber ?
+                                                                <Tooltip title={"View " + vacation.vacationTitle}>
+                                                                    <div key={vacation.id
+                                                                    } className='card btn btn-secondary border-primary m-2 col-3' >
+
+                                                                        <div className='text-center h-100' onClick={() => { navigate(`/EditVacation?v=${vacation.id}`) }}>
+                                                                            <h3 className='card-header'>{vacation.vacationTitle}</h3>
+                                                                            <div className='card-body d-flex flex-column'>
+                                                                                <p><b>Starts on:</b> {moment(vacation.startDate).format('MMMM Do YYYY')}</p>
+                                                                                <p><b>End on: </b>{moment(vacation.endDate).format('MMMM Do YYYY')}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='card-footer'>
+                                                                            <LocationFlag vacation={vacation} />
+                                                                        </div>
+                                                                    </div>
+                                                                </Tooltip>
+                                                                :
+                                                                <>
+                                                                    {
+                                                                        index === shownNumber ?
+                                                                            <Tooltip title="Show more vacations" postion='top'>
+                                                                                <button className='col-12 btn btn-primary' onClick={showMore}>Show more</button>
+                                                                            </Tooltip>
+                                                                            :
+                                                                            <></>
+                                                                    }
+                                                                </>
+                                                        }
+                                                    </>
+                                                ))
+                                                :
+                                                <><h2>No planned vacations coming up</h2></>
+                                        }
+                                    </>
+                                }
+                            </div>
+                    }
+                   
                 </div >
             )
         }
