@@ -21,9 +21,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 
-export default function MaterialUIPickers({ startDate, endDate }) {
+export default function MaterialUIPickers({ startDate, endDate, startValue, endValue }) {
     //const [value, setValue] = React.useState()
     const [value, setValue] = React.useState([moment(), moment()]);
+    React.useEffect(() => {
+        if (startValue && endValue) {
+            setValue([moment(startValue), moment(endValue)]);
+        }
+    }, [])
+
 
     React.useEffect(() => {
         value.forEach((date, index) => {
@@ -44,7 +50,7 @@ export default function MaterialUIPickers({ startDate, endDate }) {
     };
     return (
         <LocalizationProvider dateAdapter={AdapterMoment}>
-            <div  className='bg-secondary text-light rounded p-5'>           
+            <div className='bg-secondary text-light rounded p-5'>
 
                 <DateRangePicker
                     value={value}

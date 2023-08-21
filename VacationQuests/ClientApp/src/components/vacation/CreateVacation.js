@@ -81,7 +81,7 @@ const CreateVacation = () => {
         };
         fetch(`https://localhost:7259/api/users/${Cookies.get('UserId')}`, requestOptions)
             .then(resp => resp.json())
-            .then(window.location.href = '/')
+            .then(window.location.href = `/Editvacation?v=${data.id}`)
             .catch(e => console.log(e))
     }
 

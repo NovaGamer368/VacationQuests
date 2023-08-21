@@ -22,13 +22,13 @@ const GoogleAutoComplete = ({ setLocationVar, filter }) => {
     if (!filter) {
          options = {
             componentRestrictions: {},
-             types: ["point_of_interest"]
+             types: ["establishment"]
         };
     }
     else {
         options = {
             componentRestrictions: { country: filter.toLowerCase() },
-            types: ["point_of_interest"]
+            types: ["establishment"]
         };
     }
     useEffect(() => {

@@ -154,7 +154,7 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
             </div>
             <div className="md-form md-outline input-with-post-icon datepicker d-flex justify-content-center col-10 flex-column mx-auto">
                 <label htmlFor="startDate"><b>New Dates</b></label>
-                <MaterialUIPickers startDate={setStartDate} endDate={setEndDate } />
+                <MaterialUIPickers startDate={setStartDate} endDate={setEndDate} startValue={startDate} endValue={ endDate } />
             </div>
             {endDate && <p className='text-center mb-3'>The dates of the vacation would be from <br/> { moment(startDate).format('MMMM Do YYYY') } till { moment(endDate).format('MMMM Do YYYY') }.</p>}
             <div className='text-danger text-center '>{errorMessage}</div>
