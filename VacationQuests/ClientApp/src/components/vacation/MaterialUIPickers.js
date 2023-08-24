@@ -51,12 +51,10 @@ export default function MaterialUIPickers({ startDate, endDate, startValue, endV
     return (
         <LocalizationProvider dateAdapter={AdapterMoment}>
             <div className='bg-secondary text-light rounded p-5'>
-
                 <DateRangePicker
                     value={value}
                     onChange={(newValue) => handleChange(newValue)}
                 />
-
             </div>
         </LocalizationProvider>
     );

@@ -43,10 +43,10 @@ const UpdateVacation = ({ vacation, closeUpdate }) => {
     //UPDATE
     const updateVacation = () => {
         //Validation that fields are filled
-        console.log('startDate check: ', moment(startDate)._i !== moment(vacation.startDate)._i)
+        console.log('startDate check: ', moment(startDate)._d !== moment(vacation.startDate)._d)
         console.log('endDate check: ', moment(endDate).format('MMMM Do YYYY') !== moment(vacation.endDate).format('MMMM Do YYYY'))
         
-        if (moment(startDate)._i !== moment(vacation.startDate)._i
+        if (moment(startDate)._d !== moment(vacation.startDate)._d
             && moment(endDate).format('MMMM Do YYYY') !== moment(vacation.endDate).format('MMMM Do YYYY')) {
             console.log('Updating Vacation... ')
             setErrorMessage('')
